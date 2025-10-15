@@ -1,4 +1,9 @@
 # JM-Comfort
+
 # Collaborators:
+
 # Ibrahim Aljanabi
-# Cole Hollandsworth 
+
+# Cole Hollandsworth
+
+# Kevin Maldonado
