@@ -1,122 +1,158 @@
-import { useState } from "react";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebook, FaInstagram, FaTwitter, FaClock } from "react-icons/fa";
-
-// Import your page components
-import Home from "../pages/Home";
-import About from "../pages/About";
-import Services from "../pages/Services";
-import Reviews from "../pages/Reviews";
-import Contact from "../pages/Contact";
-import RequestQuote from "../pages/RequestQuote";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const [currentPage, setCurrentPage] = useState("home");
-
-  // Function to render the selected page
-  const renderPage = () => {
-    switch (currentPage) {
-      case "home": return <Home />;
-      case "about": return <About />;
-      case "services": return <Services />;
-      case "reviews": return <Reviews />;
-      case "contact": return <Contact />;
-      case "requestquote": return <RequestQuote />;
-      default: return <Home />;
-    }
-  };
-
   return (
-    <>
-      {/* Header */}
-      <header className="w-full bg-gray-100 border-b border-gray-300 sticky top-0 z-50">
-        <nav className="mx-auto max-w-7xl px-4 py-4">
-          <ul className="flex flex-wrap justify-center md:justify-start gap-4 md:gap-6 text-sm font-medium">
-            <li>
-              <button onClick={() => setCurrentPage("home")} className="px-3 py-1 hover:text-gray-700">Home</button>
-            </li>
-            <li>
-              <button onClick={() => setCurrentPage("about")} className="px-3 py-1 hover:text-gray-700">About</button>
-            </li>
-            <li>
-              <button onClick={() => setCurrentPage("services")} className="px-3 py-1 hover:text-gray-700">Services</button>
-            </li>
-            <li>
-              <button onClick={() => setCurrentPage("reviews")} className="px-3 py-1 hover:text-gray-700">Reviews</button>
-            </li>
-            <li>
-              <button onClick={() => setCurrentPage("contact")} className="px-3 py-1 hover:text-gray-700">Contact</button>
-            </li>
-            <li>
-              <button onClick={() => setCurrentPage("requestquote")} className="px-3 py-1 hover:text-gray-700">Request Quote</button>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
-      {/* Main content: dynamically render page */}
-      <main className="mx-auto max-w-7xl px-4 py-10">
-        {renderPage()}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-200 mt-12">
-        <div className="mx-auto max-w-7xl px-4 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand */}
+    <footer style={{ 
+      backgroundColor: '#000000', 
+      color: '#E5E7EB', 
+      width: '100vw',
+      position: 'relative',
+      left: '50%',
+      right: '50%',
+      marginLeft: '-50vw',
+      marginRight: '-50vw',
+      marginTop: 0,
+      marginBottom: 0,
+      padding: 0
+    }}>
+      {/* Main Footer Content */}
+      <div style={{ 
+        maxWidth: '1280px', 
+        margin: '0 auto', 
+        padding: '40px 64px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '32px'
+      }}>
+        {/* Top Row - Brand and Social */}
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '16px'
+        }}>
           <div>
-            <h3 className="text-xl font-semibold">JM Comfort</h3>
-            <p className="mt-3 text-sm text-gray-400">Heating • Cooling • Comfort</p>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-semibold mb-3">Contact</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <FaMapMarkerAlt className="mt-0.5" />
-                <span>1234 Elm St, Sacramento CA 95819</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <FaPhone className="mt-0.5" />
-                <a href="tel:+19165551234" className="hover:text-white">(916) 555-1234</a>
-              </li>
-              <li className="flex items-start gap-2">
-                <FaEnvelope className="mt-0.5" />
-                <a href="mailto:hello@jmcomfort.example" className="hover:text-white">hello@jmcomfort.example</a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Hours */}
-          <div>
-            <h4 className="font-semibold mb-3">Operating Hours</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2"><FaClock /> Mon–Fri 8 AM – 6 PM</li>
-              <li className="flex items-center gap-2"><FaClock /> Sat 9 AM – 2 PM</li>
-              <li className="flex items-center gap-2"><FaClock /> Sun Closed</li>
-            </ul>
-          </div>
-
-          {/* Social */}
-          <div>
-            <h4 className="font-semibold mb-3">Follow Us</h4>
-            <div className="flex gap-4 text-xl">
-              <a href="#" className="hover:text-white"><FaFacebook /></a>
-              <a href="#" className="hover:text-white"><FaInstagram /></a>
-              <a href="#" className="hover:text-white"><FaTwitter /></a>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-800">
-          <div className="mx-auto max-w-7xl px-4 py-4 text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© {new Date().getFullYear()} JM Comfort. All rights reserved.</p>
-            <p>
-              <button onClick={() => setCurrentPage("privacy")} className="hover:text-white">Privacy</button> · 
-              <button onClick={() => setCurrentPage("terms")} className="hover:text-white">Terms</button>
+            <h3 style={{ fontSize: '24px', fontWeight: '600', margin: 0, color: 'white' }}>JM Comfort</h3>
+            <p style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#9CA3AF' }}>
+              Heating • Cooling • Comfort
             </p>
           </div>
+
+          {/* Social Links */}
+          <div style={{ display: 'flex', gap: '16px', fontSize: '20px' }}>
+            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }} 
+               onMouseOver={(e) => e.target.style.color = 'white'}
+               onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
+              <FaFacebook />
+            </a>
+            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
+               onMouseOver={(e) => e.target.style.color = 'white'}
+               onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
+              <FaInstagram />
+            </a>
+            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
+               onMouseOver={(e) => e.target.style.color = 'white'}
+               onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
+              <FaTwitter />
+            </a>
+          </div>
         </div>
-      </footer>
-    </>
+
+        {/* Middle Row - Contact Info (Horizontal) */}
+        <div style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap',
+          gap: '32px',
+          fontSize: '14px',
+          color: '#E5E7EB'
+        }}>
+          {/* Address */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaMapMarkerAlt style={{ fontSize: '16px', flexShrink: 0 }} />
+            <span>1234 Elm St, Sacramento CA 95819</span>
+          </div>
+
+          {/* Phone */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaPhone style={{ fontSize: '16px', flexShrink: 0 }} />
+            <a href="tel:+19165551234" 
+               style={{ color: '#E5E7EB', textDecoration: 'none', transition: 'color 0.2s' }}
+               onMouseOver={(e) => e.target.style.color = 'white'}
+               onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
+              (916) 555-1234
+            </a>
+          </div>
+
+          {/* Email */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FaEnvelope style={{ fontSize: '16px', flexShrink: 0 }} />
+            <a href="mailto:hello@jmcomfort.example" 
+               style={{ color: '#E5E7EB', textDecoration: 'none', transition: 'color 0.2s' }}
+               onMouseOver={(e) => e.target.style.color = 'white'}
+               onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
+              hello@jmcomfort.example
+            </a>
+          </div>
+        </div>
+
+        {/* Operating Hours - Horizontal */}
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center',
+          gap: '24px',
+          fontSize: '14px',
+          flexWrap: 'wrap',
+          color: '#E5E7EB'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <FaClock />
+            <span style={{ fontWeight: '600' }}>Hours:</span>
+          </div>
+          <span>Mon–Fri 8 AM – 6 PM</span>
+          <span>•</span>
+          <span>Sat 9 AM – 2 PM</span>
+          <span>•</span>
+          <span>Sun Closed</span>
+        </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div style={{ 
+        borderTop: '1px solid #374151',
+        width: '100%'
+      }}>
+        <div style={{ 
+          maxWidth: '1280px', 
+          margin: '0 auto', 
+          padding: '20px 64px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontSize: '12px',
+          color: '#9CA3AF',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          <p style={{ margin: 0 }}>© {new Date().getFullYear()} JM Comfort. All rights reserved.</p>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Link to="/privacy" 
+                  style={{ color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s' }}
+                  onMouseOver={(e) => e.target.style.color = 'white'}
+                  onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+              Privacy
+            </Link>
+            <span>•</span>
+            <Link to="/terms" 
+                  style={{ color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s' }}
+                  onMouseOver={(e) => e.target.style.color = 'white'}
+                  onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+              Terms
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }

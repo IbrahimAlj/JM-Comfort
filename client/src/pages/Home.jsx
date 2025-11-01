@@ -1,7 +1,14 @@
+import HeroBanner from '../components/HeroBanner';
+import Navbar from '../components/Navbar';
+
 export default function Home() {
   return (
-    <main>
-      <h1>Welcome to JM Comfort</h1>
-    </main>
+    <>
+      <Navbar />
+      <HeroBanner />
+      
+      {/* Add other homepage sections below */}
+      {/* Services preview, testimonials, etc. */}
+    </>
   );
 }
