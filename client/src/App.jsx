@@ -22,7 +22,7 @@ function App() {
         </Routes>
 
         {/* Footer - Shows on all pages */}
-        <Footer />
+        { <Footer /> }
       </div>
     </Router>
   );
