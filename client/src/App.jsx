@@ -6,6 +6,7 @@ import Services from "./pages/Services";
 import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
+import { Helmet } from 'react-helmet-async';
 
 function App() {
   return (
