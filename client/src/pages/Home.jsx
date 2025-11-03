@@ -6,9 +6,9 @@ export default function Home() {
     <>
       <Navbar />
       <HeroBanner />
-      
-      {/* Add other homepage sections below */}
-      {/* Services preview, testimonials, etc. */}
+
+      {/* Add other homepage sections below /}
+      {/ Services preview, testimonials, etc. */}
     </>
   );
 }
