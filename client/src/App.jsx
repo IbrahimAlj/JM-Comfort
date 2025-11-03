@@ -8,6 +8,9 @@ import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
+import CTAFloatingButton from "./components/CallToActionBanner";
+
+
 
 function App() {
   return (
@@ -22,6 +25,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/request-quote" element={<RequestQuote />} />
         </Routes>
+
+        {/* Floating CTA button */}
+        <CTAFloatingButton />
 
         {/* Footer - Shows on all pages */}
         { <Footer /> }
