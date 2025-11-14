@@ -1,15 +1,26 @@
-import WhyChooseUs from "./components/WhyChooseUs/index.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import Contact from "./pages/Contact";
+import ServiceDetail from "./pages/services/[slug]";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-export default function App() {
+function App() {
   return (
-    <div className="min-h-screen bg-white">
-      <header className="px-4 py-6">
-        <h1 className="text-3xl font-extrabold">JM Comfort Website</h1>
-      </header>
-
-      <main>
-        <WhyChooseUs />
-      </main>
-    </div>
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:slug" element={<ServiceDetail />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
+
+export default App;
