@@ -1,37 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Footer from "./components/Footer";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
-import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
-import RequestQuote from "./pages/RequestQuote";
-import { Helmet } from 'react-helmet-async';
-import homeMeta from "./seo/homeMeta";
-import CTAFloatingButton from "./components/CallToActionBanner";
-
-
+import ServiceDetail from "./pages/services/[slug]";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        {/* Routes - Different pages */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/request-quote" element={<RequestQuote />} />
-        </Routes>
-
-        {/* Floating CTA button */}
-        <CTAFloatingButton />
-
-        {/* Footer - Shows on all pages */}
-        { <Footer /> }
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/services/:slug" element={<ServiceDetail />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+      <Footer />
     </Router>
   );
 }
