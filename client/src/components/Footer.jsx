@@ -12,7 +12,7 @@ export default function Footer() {
       right: '50%',
       marginLeft: '-50vw',
       marginRight: '-50vw',
-      marginTop: 0,
+      marginTop: 'auto',
       marginBottom: 0,
       padding: 0
     }}>
