@@ -9,6 +9,8 @@ import RequestQuote from "./pages/RequestQuote";
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
+import AdminRoutes from "./admin/AdminRoutes"; 
+
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/request-quote" element={<RequestQuote />} />
+            <Route path="/*" element={<AdminRoutes />} />
+            
           </Routes>
         </div>
 

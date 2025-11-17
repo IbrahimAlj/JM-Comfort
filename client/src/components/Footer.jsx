@@ -137,19 +137,30 @@ export default function Footer() {
         }}>
           <p style={{ margin: 0 }}>© {new Date().getFullYear()} JM Comfort. All rights reserved.</p>
           <div style={{ display: 'flex', gap: '8px' }}>
-            <Link to="/privacy" 
-                  style={{ color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s' }}
-                  onMouseOver={(e) => e.target.style.color = 'white'}
-                  onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+          
+          {/* Privacy (placeholder - add page ref once created) */}
+            <span style={{ color: '#9CA3AF' }}>
               Privacy
-            </Link>
+            
+            </span>
             <span>•</span>
-            <Link to="/terms" 
+            
+          {/* Terms (placeholder - add page ref once created) */}
+            <span style={{ color: '#9CA3AF' }}>
+            
+              Terms
+            </span>
+            <span>•</span>
+            
+          {/* Admin Login Link */}
+          {/* We'll do this for Privacy and Terms, same format just once they have a working link */}
+            <Link to="/admin/login"
                   style={{ color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s' }}
                   onMouseOver={(e) => e.target.style.color = 'white'}
                   onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
-              Terms
-            </Link>
+              Login
+          </Link>
+
           </div>
         </div>
       </div>
