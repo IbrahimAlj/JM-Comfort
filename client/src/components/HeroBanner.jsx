@@ -3,16 +3,14 @@ import React from 'react';
 const HeroBanner = () => {
   return (
     <section 
-      style={{
+       style={{
         position: 'relative',
         width: '100%',
-        height: '100vh',
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        overflow: 'hidden',
-        backgroundColor: 'white'
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        paddingBottom: '80px'
       }}
       role="banner"
       aria-label="Homepage hero section"
