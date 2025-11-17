@@ -4,7 +4,7 @@ export default function CTAFloatingButton() { // can change function name, but c
     const { pathname } = useLocation();
 
     // avoid redundancy, so it doesn't appear on the request-quote page
-    if (pathname === "/request-quote") return null; 
+    if (pathname === "/request-quote" || pathname.startsWith("/admin")) return null; 
 
     return (
     <div
