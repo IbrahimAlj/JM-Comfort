@@ -58,6 +58,10 @@ export default function Navbar() {
             <Link to="/about" style={buttonStyle}>
               About
             </Link>
+            {/* Gallery Button Added */}
+            <Link to="/gallery" style={buttonStyle}>
+              Gallery
+            </Link>
             <Link to="/request-quote" style={darkButtonStyle}>
               Request Quote
             </Link>
