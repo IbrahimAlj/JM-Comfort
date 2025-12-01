@@ -94,13 +94,26 @@ It's our goal to have more finalized versions of evreything by the end of the fi
 ### Home page 
 <img src="client/public/Home.png" alt="HVAC home page" width="500" />
 
+### About page 
+<img src="client/public/About.png" alt="HVAC About" width="500" />
+
 ### Reviews Page 
 <img src="client/public/Reviews.png" alt="HVAC Review" width="500" /> 
+
+### Services Page 
+<img src="client/public/Services.png" alt="HVAC Services Page" width="500" />
+
+### Login page
+<img src="client/public/Inital Login Screen.png" alt="HVAC Login Page" width="500" />
+
+### Successful Login
+<img src="client/public/login successful.png" alt="HVAC successful login" width="500" />
+# note more 
 
 ### ERD diagram 
 <img src="client/public/ERD.png.png" alt="ERD diagram" width="500" />
 
-Very basic Erd diagram, we need to establish more relations with the admins, since that's the only login account for our entire project. 
+Very basic Erd diagram, it's need that we establish more relations with the admins, since that's the only login account for our entire project, a more up to date ERD diagram will be pushed before the semester ends. 
  
 
 ## Project Timeline
