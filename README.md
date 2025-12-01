@@ -1,17 +1,16 @@
-JM-Comfort
------
+## JM-Comfort
 
-# Table of Contents
--[Collaborators][#-collaborators]
--[Synopsis][#-synopsis]
--[Visuals][#-visuals]
--[Project Timeline][#-project-timeline]
--[Testing][#-testing]
--[Development][#-development]
--[Developer Instructions][#-developer-instructions]
+## Table of Contents
+-[Collaborators](#collaborators)
+-[Synopsis](#synopsis)
+-[Visuals](#visuals)
+-[Project Timeline](#project-timeline)
+-[Testing](#testing)
+-[Development](#development)
+-[Developer Instructions](#developer-instructions)
 
 
-# Synopsis 
+## Synopsis 
 Start here
 - bullet point
 - **why:** because I said so
@@ -19,21 +18,21 @@ Start here
 finish here 
 
 
-# Testing 
+## Testing 
 To be completed in CSC 191
 
-# Deployment
+## Deployment
 To be completed in CSC 191 
 
-# Developer Instructions
+## Developer Instructions
 To be completed in CSC 191
 
-# Visuals 
+## Visuals 
 
-# Project Timeline
+## Project Timeline
 
 
-# Collaborators:
+## Collaborators:
 - Ibrahim Aljanabi
 - Cole Hollandsworth
 - Kevin Maldonado
