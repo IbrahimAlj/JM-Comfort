@@ -1,9 +1,9 @@
 <h1 align="center">JM-Comfort</h1>
 
 <p align="center">
-  <img src="client/public/logo.png" alt="JM-Comfort Logo" width="200" />
+  <img src="client/public/logo.png" alt="JM-Comfort Logo" width="400" />
 </p>
-This also serves as our software logo
+                    This also serves as our software logo
 
 ## Table of Contents
 - [Collaborators](#collaborators)
