@@ -16,7 +16,8 @@
 - [Testing](#testing)
 - [Development](#development)
 - [Developer Instructions](#developer-instructions)
-- [Academic Information](#-academic-information)
+- [Academic Information](#academic-information)
+- [Project Product Owner](#project-product-owner)
 
 
 ## 📝 Synopsis 
@@ -158,4 +159,9 @@ This timeline outlines our expected development milestones for JM-Comfort during
 - Faizan Tariq
 - Ammar Taeha
 
+### 🤵 Project Product Owner
+**Name:** Jose Maldanado     
+**Title:** Owner   
+**Organization:** JM Comfort     
+**Email:** (upon request?)  
 
