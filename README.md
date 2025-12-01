@@ -58,6 +58,7 @@ To be completed in CSC 191.
     <summary><strong> To be completed in CSC 191.</strong></summary>
   
     <br>
+    
 **This section will include:**
 - How to run the frontend & backend locally
 - API route documentation
