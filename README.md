@@ -109,12 +109,12 @@ This timeline outlines our expected development milestones for JM-Comfort during
   | Sprint 8 | more stuff      | reference these stories      | ⏳ Upcoming       |
 
 ## Academic Information 
-**Sacramento State - CSC 190/191 Senior Project**
-**Course:** Senior Project Parts 1 and 2
-**Semester:** Fall 2025 - Spring 2026
-**Instructor:** Kenneth Elliot 
-**190 Lab Advisor:** Peng Kang 
-**191 Lab Advisor:** TBD 
+** Sacramento State - CSC 190/191 Senior Project**
+** Course:** Senior Project Parts 1 and 2
+** Semester:** Fall 2025 - Spring 2026
+** Instructor:** Kenneth Elliot 
+** 190 Lab Advisor:** Peng Kang 
+** 191 Lab Advisor:** TBD 
 
 ## 🤝 Collaborators:
 - Ibrahim Aljanabi
