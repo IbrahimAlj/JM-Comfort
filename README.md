@@ -9,15 +9,15 @@
 </p>
 
 ## Table of Contents
-- [Collaborators](#collaborators)
-- [Synopsis](#synopsis)
-- [Visuals](#visuals)
+- [Collaborators](#-collaborators)
+- [Synopsis](#-synopsis)
+- [Visuals](#-visuals)
 - [Project Timeline](#project-timeline)
-- [Testing](#testing)
-- [Development](#development)
-- [Developer Instructions](#developer-instructions)
-- [Academic Information](#academic-information)
-- [Project Product Owner](#project-product-owner)
+- [Testing](#-testing)
+- [Development](#-development)
+- [Developer Instructions](#-developer-instructions)
+- [Academic Information](#-academic-information)
+- [Project Product Owner](#-project-product-owner)
 
 
 ## 📝 Synopsis 
