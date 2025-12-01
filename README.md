@@ -99,16 +99,18 @@ This timeline outlines our expected development milestones for JM-Comfort during
 
   | Sprint   | Key Feature(s)               | Date | Status        |
   |----------|-----------------|------------------------------|--------------------|
-  | Sprint 1 |                 |                               |                  |
-  | Sprint 2 |                 |                              |                   |
-  | Sprint 3 |                 |                              |                   |
-  | Sprint 4 |                 |                              |                   |
-  | Sprint 5 |Implement backend developmetn | US-01, US-02         | ⏳ Upcoming  |
-  | Sprint 6 | start on some stuff  | Jhabib-32 | ⏳ Upcoming                     |
-  | Sprint 7 | Jan 29–Feb 4    | Booking System & Calendar    | ⏳ Upcoming       |
-  | Sprint 8 | more stuff      | reference these stories      | ⏳ Upcoming       |
+  | Spirnt 0 |  Foundation/Setup | 8/25-9/21  | Complete ✅ |
+  | Sprint 1 |  Research |       9/22-10/05   | Complete✅  |
+  | Sprint 2 |     Setting up DB, server, and creating the pages |  10/06-10/19    |  Complete✅  |
+  | Sprint 3 |       Add companies introduction and main page  |      10/20-11/02   |      Complete✅  |
+  | Sprint 4 |    Implement Services, Reviews, adn Login Admin page for gallery images   |          11/03-11/16    |    Review ⏰       |
+  | Sprint 5 |  | TBD         | ⏳ Upcoming  |
+  | Sprint 6 | start on some stuff  | TBD | ⏳ Upcoming                     |
+  | Sprint 7 | Jan 29–Feb 4    | TBD    | ⏳ Upcoming       |
+  | Sprint 8 | more stuff      | TBD      | ⏳ Upcoming       |
+  | Sprint 9 | Testing and Deployment | TBD | ⏳ Upcoming  |
 
-## Academic Information 
+## 🏫 Academic Information 
 **Sacramento State - CSC 190/191 Senior Project**  
 
 **Course:** Senior Project Parts 1 and 2
