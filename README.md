@@ -30,7 +30,7 @@ To be completed in CSC 191
 ## Visuals 
 
 ### Software Logo 
-![](C:JM-Comfort\client\public\logo.png)
+![JM-Comfort Logo](client/public/logo.png)
 
 ## Project Timeline
 
