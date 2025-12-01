@@ -97,12 +97,24 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 This timeline outlines our expected development milestones for JM-Comfort during CSC 191, based on the user stories and estimates from our current JIRA backlog.
 
-  | Sprint   | Key Feature(s)               | User Story Reference | Status        |
+  | Sprint   | Key Feature(s)               | Date | Status        |
   |----------|-----------------|------------------------------|--------------------|
+  | Sprint 1 |                 |                               |                  |
+  | Sprint 2 |                 |                              |                   |
+  | Sprint 3 |                 |                              |                   |
+  | Sprint 4 |                 |                              |                   |
   | Sprint 5 |Implement backend developmetn | US-01, US-02         | ⏳ Upcoming  |
   | Sprint 6 | start on some stuff  | Jhabib-32 | ⏳ Upcoming                     |
   | Sprint 7 | Jan 29–Feb 4    | Booking System & Calendar    | ⏳ Upcoming       |
   | Sprint 8 | more stuff      | reference these stories      | ⏳ Upcoming       |
+
+## Academic Information 
+**Sacramento State - CSC 190/191 Senior Project**
+**Course:** Senior Project Parts 1 and 2
+**Semester:** Fall 2025 - Spring 2026
+**Instructor:** Kenneth Elliot 
+**190 Lab Advisor:** Peng Kang 
+**191 Lab Advisor:** TBD 
 
 ## 🤝 Collaborators:
 - Ibrahim Aljanabi
