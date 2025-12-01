@@ -3,7 +3,10 @@
 <p align="center">
   <img src="client/public/logo.png" alt="JM-Comfort Logo" width="400" />
 </p>
-                    This also serves as our software logo
+
+<p align="center">
+  This also serves as our software logo.
+</p>
 
 ## Table of Contents
 - [Collaborators](#collaborators)
