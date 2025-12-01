@@ -18,7 +18,7 @@
 - [Developer Instructions](#developer-instructions)
 
 
-## Synopsis 
+## 📝 Synopsis 
 
 JM Comfort is a full-stack HVAC service management platform designed to streamline the experience for both customers and mechanics. Our system focuses on allowing customers to schedule appointments, view services, read promotions, and interact with mechanics, while giving the business side tools for performance analytics, salary calculations, and status tracking.
 
@@ -37,7 +37,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 **Why:** Our aim is to digitize and modernize the JM Comfort service experience by creating a seamless and user-friendly platform that benefits both customers and employees.
 
 
-## Testing
+## 🧪 Testing
 
 <details>
   <summary><strong>To be completed in CSC 191</strong></summary>
@@ -53,7 +53,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 </details>
 
 
-## Deployment
+## 🚀 Deployment
 
 <details>
   <summary><strong>To be completed in CSC 191</strong></summary>
@@ -69,7 +69,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 </details>
 
 
-## Developer Instructions
+## 📃 Developer Instructions
 
 <details>
   <summary><strong>To be completed in CSC 191</strong></summary>
@@ -85,7 +85,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 </details>
 
-## Visuals 
+## 🖼️ Visuals 
 
 ### ERD diagram 
 
@@ -93,12 +93,9 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 ## Project Timeline
 
-<details>
-  <summary>📅 Project Timeline (CSC 191)</summary>
+📅 **CSC 191 Timeline** 
 
-  <br>
-
-  This timeline outlines our expected development milestones for JM-Comfort during CSC 191, based on the user stories and estimates from our JIRA backlog.
+This timeline outlines our expected development milestones for JM-Comfort during CSC 191, based on the user stories and estimates from our current JIRA backlog.
 
   | Sprint   | Key Feature(s)               | User Story Reference | Status        |
   |----------|-----------------|------------------------------|--------------------|
@@ -107,9 +104,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
   | Sprint 7 | Jan 29–Feb 4    | Booking System & Calendar    | ⏳ Upcoming       |
   | Sprint 8 | more stuff      | reference these stories      | ⏳ Upcoming       |
 
-</details>
-
-## Collaborators:
+## 🤝 Collaborators:
 - Ibrahim Aljanabi
 - Cole Hollandsworth
 - Kevin Maldonado
