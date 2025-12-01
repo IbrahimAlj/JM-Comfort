@@ -37,41 +37,51 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 **Why:** Our aim is to digitize and modernize the JM Comfort service experience by creating a seamless and user-friendly platform that benefits both customers and employees.
 
 
-## Testing 
-<details>
-    <summary><strong> To be completed in CSC 191.</strong></summary>
-    <br>
-**Some Expected deliverables to include:**
-- Unit tests for backend services
-- Integration tests for API routes
-- Automated frontend tests for components
-- Manual workflow testing (with logs + screenshots)
+## Testing
 
 <details>
+  <summary><strong>To be completed in CSC 191</strong></summary>
+
+  <br>
+
+  **Some expected deliverables to include:**
+  - Unit tests for backend services
+  - Integration tests for API routes
+  - Automated frontend tests for components
+  - Manual workflow testing (with logs + screenshots)
+
+</details>
+
 
 ## Deployment
-<details>
-    <summary><strong> To be completed in CSC 191.</strong></summary>
-    <br>
 
-**Deployment targets may include:**
-- Frontend: React / Tailwind / Vite
-- Backend: Node.js
-- Database: AWS RDS (MySQL)
-- Environment: CI/CD via GitHub Actions
 <details>
+  <summary><strong>To be completed in CSC 191</strong></summary>
+
+  <br>
+
+  **Deployment targets may include:**
+  - Frontend: React / Tailwind / Vite
+  - Backend: Node.js
+  - Database: AWS RDS (MySQL)
+  - Environment: CI/CD via GitHub Actions
+
+</details>
+
 
 ## Developer Instructions
-<details>
-    <summary><strong> To be completed in CSC 191.</strong></summary>
-    <br>
 
-**This section will include:**
-- How to run the frontend & backend locally
-- API route documentation
-- Database setup instructions
-- Environment variable configuration
-- How to add new features or components
+<details>
+  <summary><strong>To be completed in CSC 191</strong></summary>
+
+  <br>
+
+  **This section will include:**
+  - How to run the frontend & backend locally
+  - API route documentation
+  - Database setup instructions
+  - Environment variable configuration
+  - How to add new features or components
 
 </details>
 
