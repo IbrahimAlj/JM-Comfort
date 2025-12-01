@@ -1,9 +1,39 @@
-## JM-Comfort
-
-# test
-
-Collaborators:
+JM-Comfort
 -----
+
+# Table of Contents
+-[Collaborators][#-collaborators]
+-[Synopsis][#-synopsis]
+-[Visuals][#-visuals]
+-[Project Timeline][#-project-timeline]
+-[Testing][#-testing]
+-[Development][#-development]
+-[Developer Instructions][#-developer-instructions]
+
+
+# Synopsis 
+Start here
+- bullet point
+- **why:** because I said so
+- summary of project 
+finish here 
+
+
+# Testing 
+To be completed in CSC 191
+
+# Deployment
+To be completed in CSC 191 
+
+# Developer Instructions
+To be completed in CSC 191
+
+# Visuals 
+
+# Project Timeline
+
+
+# Collaborators:
 - Ibrahim Aljanabi
 - Cole Hollandsworth
 - Kevin Maldonado
@@ -12,23 +42,5 @@ Collaborators:
 - Jan Nassri
 - Faizan Tariq
 - Ammar Taeha
-
-Synopsis 
------
-**To be completed in CSC 191**
-
-Testing 
------
-**To be completed in CSC 191**
-
-# Developer Instructions
-**To be completed in CSC 191**
-
-# Visuals 
------
-
-
-# Project Timeline
------
 
 
