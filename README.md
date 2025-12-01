@@ -1,4 +1,9 @@
-## JM-Comfort
+<h1 align="center">JM-Comfort</h1>
+
+<p align="center">
+  <img src="client/public/logo.png" alt="JM-Comfort Logo" width="200" />
+</p>
+This also serves as our software logo
 
 ## Table of Contents
 - [Collaborators](#collaborators)
@@ -29,8 +34,9 @@ To be completed in CSC 191
 
 ## Visuals 
 
-### Software Logo 
-![JM-Comfort Logo](client/public/logo.png)
+### ERD diagram 
+
+### Prototype images 
 
 ## Project Timeline
 
