@@ -12,7 +12,7 @@
 - [Collaborators](#-collaborators)
 - [Synopsis](#-synopsis)
 - [Visuals](#-visuals)
-- [Project Timeline](#project-timeline)
+- [Project Timeline](#-project-timeline)
 - [Testing](#-testing)
 - [Development](#-development)
 - [Developer Instructions](#-developer-instructions)
@@ -117,9 +117,9 @@ It's our goal to have more finalized versions of evreything by the end of the fi
 Very basic Erd diagram, it's need that we establish more relations with the admins, since that's the only login account for our entire project, a more up to date ERD diagram will be pushed before the semester ends. 
  
 
-## Project Timeline
+## 📅 Project Timeline
 
-📅 **CSC 191 Timeline** 
+**CSC 191 Timeline** 
 
 This timeline outlines our expected development milestones for JM-Comfort during CSC 191, based on the user stories and estimates from our current JIRA backlog.
 
@@ -159,9 +159,9 @@ This timeline outlines our expected development milestones for JM-Comfort during
 - Faizan Tariq
 - Ammar Taeha
 
-### 🤵 Project Product Owner
+## 🤵 Project Product Owner
 **Name:** Jose Maldanado     
 **Title:** Owner   
 **Organization:** JM Comfort     
-**Email:** (upon request?)  
+**Email:** (upon request)  
 
