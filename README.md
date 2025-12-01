@@ -38,24 +38,33 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 
 ## Testing 
-This section will be completed during CSC 191.
+<details>
+    <summary><strong> To be completed in CSC 191.</strong></summary>
+    <br>
 **Some Expected deliverables to include:**
 - Unit tests for backend services
 - Integration tests for API routes
 - Automated frontend tests for components
 - Manual workflow testing (with logs + screenshots)
 
+<details>
+
 ## Deployment
-To be completed in CSC 191.
+<details>
+    <summary><strong> To be completed in CSC 191.</strong></summary>
+    <br>
+
 **Deployment targets may include:**
 - Frontend: React / Tailwind / Vite
 - Backend: Node.js
 - Database: AWS RDS (MySQL)
 - Environment: CI/CD via GitHub Actions
+<details>
 
 ## Developer Instructions
 <details>
     <summary><strong> To be completed in CSC 191.</strong></summary>
+    <br>
 
 **This section will include:**
 - How to run the frontend & backend locally
