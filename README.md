@@ -22,59 +22,50 @@
 
 JM Comfort is a full-stack HVAC service management platform designed to streamline the experience for both customers and mechanics. Our system focuses on allowing customers to schedule appointments, view services, read promotions, and interact with mechanics, while giving the business side tools for performance analytics, salary calculations, and status tracking.
 
-Core goals:
+**Core goals:**
 
-Build a clean, modern, mobile-friendly interface for customers
+- Build a clean, modern, mobile-friendly interface for customers
 
-Provide an intuitive dashboard for mechanics and staff
+- Provide an intuitive dashboard for mechanics and staff
 
-Implement an appointment scheduling system with confirmations & notifications
+- Implement an appointment scheduling system with confirmations & notifications
 
-Track services, promotions, reviews, and status updates
+- Track services, promotions, reviews, and status updates
 
-Support analytics features such as performance metrics and salary calculations
+- Support analytics features such as performance metrics and salary calculations
 
-Why:
-Our aim is to digitize and modernize the JM Comfort service experience by creating a seamless and user-friendly platform that benefits both customers and employees.
+**Why:** Our aim is to digitize and modernize the JM Comfort service experience by creating a seamless and user-friendly platform that benefits both customers and employees.
 
 
 ## Testing 
 This section will be completed during CSC 191.
-Expected deliverables include:
-
-Unit tests for backend services
-
-Integration tests for API routes
-
-Automated frontend tests for components
-
-Manual workflow testing (with logs + screenshots)
+**Some Expected deliverables to include:**
+- Unit tests for backend services
+- Integration tests for API routes
+- Automated frontend tests for components
+- Manual workflow testing (with logs + screenshots)
 
 ## Deployment
 To be completed in CSC 191.
-Deployment targets may include:
-
-Frontend: React / Tailwind / Vite
-
-Backend: Node.js
-
-Database: AWS RDS (MySQL)
-
-Environment: CI/CD via GitHub Actions
+**Deployment targets may include:**
+- Frontend: React / Tailwind / Vite
+- Backend: Node.js
+- Database: AWS RDS (MySQL)
+- Environment: CI/CD via GitHub Actions
 
 ## Developer Instructions
-To be completed in CSC 191.
-This section will include:
+<details>
+    <summary><strong> To be completed in CSC 191.</strong></summary>
+  
+    <br>
+**This section will include:**
+- How to run the frontend & backend locally
+- API route documentation
+- Database setup instructions
+- Environment variable configuration
+- How to add new features or components
 
-How to run the frontend & backend locally
-
-API route documentation
-
-Database setup instructions
-
-Environment variable configuration
-
-How to add new features or components
+</details>
 
 ## Visuals 
 
