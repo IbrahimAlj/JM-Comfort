@@ -1,13 +1,13 @@
 ## JM-Comfort
 
 ## Table of Contents
--[Collaborators](#collaborators)
--[Synopsis](#synopsis)
--[Visuals](#visuals)
--[Project Timeline](#project-timeline)
--[Testing](#testing)
--[Development](#development)
--[Developer Instructions](#developer-instructions)
+- [Collaborators](#collaborators)
+- [Synopsis](#synopsis)
+- [Visuals](#visuals)
+- [Project Timeline](#project-timeline)
+- [Testing](#testing)
+- [Development](#development)
+- [Developer Instructions](#developer-instructions)
 
 
 ## Synopsis 
@@ -28,6 +28,9 @@ To be completed in CSC 191
 To be completed in CSC 191
 
 ## Visuals 
+
+### Software Logo 
+![](C:JM-Comfort\client\public\logo.png)
 
 ## Project Timeline
 
