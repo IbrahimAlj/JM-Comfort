@@ -29,18 +29,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} /> {/* ✅ ADD THIS */}
         </Routes>
         {/* Main content wrapper - grows to fill space */}
-        <div className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/request-quote" element={<RequestQuote />} />
-            <Route path="/*" element={<AdminRoutes />} />
-            
-          </Routes>
-        </div>
+
 
         {/* Floating CTA button */}
         <CTAFloatingButton />
