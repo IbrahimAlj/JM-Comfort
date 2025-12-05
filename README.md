@@ -113,7 +113,7 @@ It's our goal to have more finalized versions of most of our website pages by th
 ### ERD diagram 
 <img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
 
- To summarize the ERD a little, the only login we require is for the admin, and the admin is only ever needed to update or change pictures and some descriptions if its ever needed.  
+ To summarize the ERD breifly, the only login required is for the admin, and the admin is only ever needed to update pictures and some descriptions.  
 
 ## 📅 Project Timeline
 
@@ -127,7 +127,7 @@ This timeline outlines our current status of development for CSC 190 and future 
   | Sprint 1 |  Research |       9/22-10/05   | Complete✅  |
   | Sprint 2 |     Setting up the DB, server, and creating pages |  10/06-10/19    |  Complete✅  |
   | Sprint 3 |       Add companies about and main page  |      10/20-11/02   |      Complete✅  |
-  | Sprint 4 |    Implement services, reviews, and admin page for gallery images   |          11/03-11/16    |    Admin page under review ⏰       |
+  | Sprint 4 |    Implement services and reviews pages as well as the admin page for login and image updates  |          11/03-11/16    |    image updates still in progress ⏰       |
   | Sprint 5 | Service request, admin page gallery setup completion, & scheduling system | TBD         | ⏳ Upcoming  |
   | Sprint 6 | Full completion of admin page, that allows user full permissions, which allow the user to manage appointments, reviews, services, and projects without code. | TBD | ⏳ Upcoming                     |
   | Sprint 7 | Make sure website is near full completion, with hashing of passwords, correct email sends and recieves, deletion of user data upon request, and near completion of backened   | TBD    | ⏳ Upcoming       |
