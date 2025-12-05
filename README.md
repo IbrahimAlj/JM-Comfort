@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  This also serves as our software logo.
+  This also serves as our projects logo.
 </p>
 
 ## Table of Contents
@@ -46,7 +46,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
   <br>
 
-  **Some expected deliverables to include:**
+  **Expected deliverables may include:**
   - Unit tests for backend services
   - Integration tests for API routes
   - Automated frontend tests for components
@@ -90,7 +90,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 ## 🖼️ Visuals 
 
 ### Screen Shots and Demos
-It's our goal to have more finalized versions of most of our website pages by the end of the first sprint in CSC 191! 
+Our goal is to have more finalized versions of most of the website pages by the end of the first sprint in CSC 191.
 
 ### Home page 
 <img src="client/public/Home.png" alt="HVAC home page" width="500" />
@@ -113,7 +113,7 @@ It's our goal to have more finalized versions of most of our website pages by th
 ### ERD diagram 
 <img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
 
- To summarize the ERD breifly, the only login required is for the admin, and the admin is only ever needed to update pictures and some descriptions.  
+To summarize the ERD briefly: the only login required is for the admin, who is responsible for updating pictures and certain descriptions. 
 
 ## 📅 Project Timeline
 
@@ -127,10 +127,10 @@ This timeline outlines our current status of development for CSC 190 and future 
   | Sprint 1 |  Research |       9/22-10/05   | Complete✅  |
   | Sprint 2 |     Setting up the DB, server, and creating pages |  10/06-10/19    |  Complete✅  |
   | Sprint 3 |       Add companies about and main page  |      10/20-11/02   |      Complete✅  |
-  | Sprint 4 |    Implement services and reviews pages as well as the admin page for login and image updates  |          11/03-11/16    |    image updates still in progress ⏰       |
+  | Sprint 4 |    Implement services and reviews pages as well as the admin page for login and image updates  |          11/03-11/16    |    Image updates still in progress ⏰       |
   | Sprint 5 | Service request, admin page gallery setup completion, & scheduling system | TBD         | ⏳ Upcoming  |
   | Sprint 6 | Full completion of admin page, that allows user full permissions, which allow the user to manage appointments, reviews, services, and projects without code. | TBD | ⏳ Upcoming                     |
-  | Sprint 7 | Make sure website is near full completion, with hashing of passwords, correct email sends and recieves, deletion of user data upon request, and near completion of backened   | TBD    | ⏳ Upcoming       |
+  | Sprint 7 | Ensure the website is near full completion, including password hashing, correct email sending and receiving, deletion of user data upon request, and major backend completion.   | TBD    | ⏳ Upcoming       |
   | Sprint 8 | Finalize testing, optimize performance, and prepare for the process of deployment      | TBD      | ⏳ Upcoming       |
   | Sprint 9 | Testing and deployment | TBD | ⏳ Upcoming  |
 
