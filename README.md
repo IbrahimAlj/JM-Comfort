@@ -108,14 +108,12 @@ It's our goal to have more finalized versions of most of our website pages by th
 <img src="client/public/Inital Login Screen.png" alt="HVAC Login Page" width="500" />
 
 ### Successful login
-<img src="client/public/login successful.png" alt="HVAC successful login" width="500" />
-# note more 
+<img src="client/public/login successful.png" alt="HVAC successful login" width="500" /> 
 
 ### ERD diagram 
-<img src="client/public/ERD.png.png" alt="ERD diagram" width="500" />
+<img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
 
-Very basic ERD diagram; We need to better describe the relationships with the admins, since that's the only login account for our entire project, a more up to date ERD diagram will be pushed before the semester ends. 
- 
+ To summarize the ERD a little, the only login we require is for the admin, and the admin is only ever needed to update or change pictures and some descriptions if its ever needed.  
 
 ## 📅 Project Timeline
 
