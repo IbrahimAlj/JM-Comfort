@@ -27,10 +27,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/request-quote" element={<RequestQuote />} />
           <Route path="/gallery" element={<Gallery />} /> {/* ✅ ADD THIS */}
+          <Route path="/*" element={<AdminRoutes />} />
         </Routes>
         {/* Main content wrapper - grows to fill space */}
-
-
         {/* Floating CTA button */}
         <CTAFloatingButton />
 
