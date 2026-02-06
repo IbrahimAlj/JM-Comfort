@@ -6,7 +6,9 @@ const initialValues = { name: "", email: "", phone: "", address: "" };
 export default function RequestQuote() {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const validate = (v) => {
     const e = {};
@@ -31,19 +33,53 @@ export default function RequestQuote() {
         return updated;
       });
     }
+    if (serverError) setServerError("");
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const next = validate(values);
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
-    // No API call in this branch. Submit handler will be wired in JMHABIBI-151.
-    setSubmitted(true);
+    setLoading(true);
+    setServerError("");
+
+    try {
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim(),
+          phone: values.phone.trim(),
+          address: values.address.trim(),
+        }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        const message =
+          data && data.message
+            ? data.message
+            : "Something went wrong. Please try again.";
+        setServerError(message);
+        return;
+      }
+
+      setSubmitted(true);
+      setValues(initialValues);
+    } catch {
+      setServerError(
+        "Unable to reach the server. Please check your connection and try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const isDisabled = Object.keys(validate(values)).length > 0;
+  const isDisabled =
+    loading || Object.keys(validate(values)).length > 0;
 
   return (
     <>
@@ -72,6 +108,15 @@ export default function RequestQuote() {
             noValidate
             className="mt-8 space-y-6"
           >
+            {serverError && (
+              <div
+                className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800"
+                role="alert"
+              >
+                {serverError}
+              </div>
+            )}
+
             {/* Name */}
             <div>
               <label
@@ -87,6 +132,7 @@ export default function RequestQuote() {
                 autoComplete="name"
                 value={values.name}
                 onChange={onChange}
+                disabled={loading}
                 placeholder="John Doe"
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.name
@@ -114,6 +160,7 @@ export default function RequestQuote() {
                 autoComplete="email"
                 value={values.email}
                 onChange={onChange}
+                disabled={loading}
                 placeholder="john@example.com"
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.email
@@ -141,6 +188,7 @@ export default function RequestQuote() {
                 autoComplete="tel"
                 value={values.phone}
                 onChange={onChange}
+                disabled={loading}
                 placeholder="(555) 123-4567"
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.phone
@@ -168,6 +216,7 @@ export default function RequestQuote() {
                 autoComplete="street-address"
                 value={values.address}
                 onChange={onChange}
+                disabled={loading}
                 placeholder="1234 Elm St, Sacramento, CA 95819"
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.address
@@ -190,7 +239,7 @@ export default function RequestQuote() {
                   : "bg-black text-white hover:bg-gray-800"
               }`}
             >
-              Submit Quote Request
+              {loading ? "Submitting..." : "Submit Quote Request"}
             </button>
 
             <p className="text-xs text-gray-500">* Required fields</p>
