@@ -42,6 +42,12 @@ function makeRequest(app, method, path, body) {
   });
 }
 
+// Future dates for testing (far enough in the future to never be "in the past")
+const FUTURE_START = "2030-06-15T10:00:00";
+const FUTURE_END = "2030-06-15T11:00:00";
+const PAST_START = "2020-01-01T10:00:00";
+const PAST_END = "2020-01-01T11:00:00";
+
 describe("POST /api/appointments", () => {
   let app;
 
@@ -53,8 +59,8 @@ describe("POST /api/appointments", () => {
   describe("Validation", () => {
     test("returns 400 when customer_id is missing", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(400);
       expect(res.body.error).toBe("Validation failed");
@@ -64,7 +70,7 @@ describe("POST /api/appointments", () => {
     test("returns 400 when scheduled_at is missing", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        end_at: "2026-03-01T11:00:00",
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(400);
       expect(res.body.details).toContain("scheduled_at is required");
@@ -73,7 +79,7 @@ describe("POST /api/appointments", () => {
     test("returns 400 when end_at is missing", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T10:00:00",
+        scheduled_at: FUTURE_START,
       });
       expect(res.status).toBe(400);
       expect(res.body.details).toContain("end_at is required");
@@ -83,7 +89,7 @@ describe("POST /api/appointments", () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
         scheduled_at: "not-a-date",
-        end_at: "2026-03-01T11:00:00",
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(400);
       expect(res.body.details).toContain("scheduled_at must be a valid datetime");
@@ -92,8 +98,8 @@ describe("POST /api/appointments", () => {
     test("returns 400 when end_at is before scheduled_at", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T11:00:00",
-        end_at: "2026-03-01T10:00:00",
+        scheduled_at: "2030-06-15T11:00:00",
+        end_at: "2030-06-15T10:00:00",
       });
       expect(res.status).toBe(400);
       expect(res.body.details).toContain("end_at must be after scheduled_at");
@@ -102,8 +108,8 @@ describe("POST /api/appointments", () => {
     test("returns 400 when customer_id is not a positive integer", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: -5,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(400);
       expect(res.body.details).toContain("customer_id must be a positive integer");
@@ -112,8 +118,8 @@ describe("POST /api/appointments", () => {
     test("returns 400 when status is invalid", async () => {
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
         status: "invalid_status",
       });
       expect(res.status).toBe(400);
@@ -127,74 +133,198 @@ describe("POST /api/appointments", () => {
     });
   });
 
-  describe("Success", () => {
-    test("returns 201 with appointment_id on success", async () => {
-      pool.execute.mockResolvedValue([{ insertId: 42 }]);
+  describe("Availability validation", () => {
+    test("rejects appointments in the past", async () => {
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: PAST_START,
+        end_at: PAST_END,
+      });
+      expect(res.status).toBe(400);
+      expect(res.body.details).toContain("scheduled_at must not be in the past");
+    });
+
+    test("rejects appointments shorter than 15 minutes", async () => {
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: "2030-06-15T10:00:00",
+        end_at: "2030-06-15T10:10:00",
+      });
+      expect(res.status).toBe(400);
+      expect(res.body.details).toContain(
+        "Appointment must be at least 15 minutes long"
+      );
+    });
+
+    test("rejects appointments longer than 8 hours", async () => {
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: "2030-06-15T08:00:00",
+        end_at: "2030-06-15T17:00:00",
+      });
+      expect(res.status).toBe(400);
+      expect(res.body.details).toContain(
+        "Appointment must not exceed 8 hours"
+      );
+    });
+
+    test("accepts appointments exactly 15 minutes long", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 1 }]);
 
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: "2030-06-15T10:00:00",
+        end_at: "2030-06-15T10:15:00",
+      });
+      expect(res.status).toBe(201);
+    });
+
+    test("accepts appointments exactly 8 hours long", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 1 }]);
+
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: "2030-06-15T08:00:00",
+        end_at: "2030-06-15T16:00:00",
+      });
+      expect(res.status).toBe(201);
+    });
+  });
+
+  describe("Overlap detection", () => {
+    test("returns 409 when appointment overlaps with existing", async () => {
+      pool.execute.mockResolvedValueOnce([
+        [{ id: 10, scheduled_at: "2030-06-15T09:00:00", end_at: "2030-06-15T10:30:00" }],
+      ]);
+
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
+      });
+      expect(res.status).toBe(409);
+      expect(res.body.error).toBe("Scheduling conflict");
+      expect(res.body.details).toContain(
+        "This appointment overlaps with an existing appointment for this customer"
+      );
+      expect(res.body.conflicting_appointment_id).toBe(10);
+    });
+
+    test("allows appointment when no overlaps exist", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 55 }]);
+
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
+      });
+      expect(res.status).toBe(201);
+      expect(res.body.appointment_id).toBe(55);
+    });
+
+    test("overlap query uses correct parameters", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 1 }]);
+
+      await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 7,
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
+      });
+
+      // First call is the overlap check
+      expect(pool.execute).toHaveBeenCalledWith(
+        expect.stringContaining("SELECT id"),
+        [7, FUTURE_END, FUTURE_START]
+      );
+    });
+  });
+
+  describe("Success", () => {
+    test("returns 201 with appointment_id on success", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 42 }]);
+
+      const res = await makeRequest(app, "POST", "/api/appointments", {
+        customer_id: 1,
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(201);
       expect(res.body.message).toBe("Appointment created successfully");
       expect(res.body.appointment_id).toBe(42);
     });
 
-    test("passes correct parameters to database", async () => {
-      pool.execute.mockResolvedValue([{ insertId: 1 }]);
+    test("passes correct parameters to database insert", async () => {
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 1 }]);
 
       await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 5,
         project_id: 3,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
         status: "scheduled",
         notes: "Test note",
       });
 
+      // Second call is the insert
       expect(pool.execute).toHaveBeenCalledWith(
         expect.stringContaining("INSERT INTO appointments"),
-        [5, 3, "2026-03-01T10:00:00", "2026-03-01T11:00:00", "scheduled", "Test note"]
+        [5, 3, FUTURE_START, FUTURE_END, "scheduled", "Test note"]
       );
     });
 
     test("defaults status to scheduled and notes to null", async () => {
-      pool.execute.mockResolvedValue([{ insertId: 1 }]);
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockResolvedValueOnce([{ insertId: 1 }]);
 
       await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
 
-      expect(pool.execute).toHaveBeenCalledWith(
-        expect.any(String),
-        [1, null, "2026-03-01T10:00:00", "2026-03-01T11:00:00", "scheduled", null]
-      );
+      // Second call is the insert
+      const insertCall = pool.execute.mock.calls[1];
+      expect(insertCall[1]).toEqual([1, null, FUTURE_START, FUTURE_END, "scheduled", null]);
     });
   });
 
   describe("Database errors", () => {
     test("returns 400 for foreign key constraint violation", async () => {
-      pool.execute.mockRejectedValue({ code: "ER_NO_REFERENCED_ROW_2", message: "FK error" });
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockRejectedValueOnce({ code: "ER_NO_REFERENCED_ROW_2", message: "FK error" });
 
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 999,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(400);
       expect(res.body.error).toBe("Invalid reference");
     });
 
     test("returns 500 for unexpected database errors", async () => {
-      pool.execute.mockRejectedValue(new Error("Connection lost"));
+      pool.execute
+        .mockResolvedValueOnce([[]])
+        .mockRejectedValueOnce(new Error("Connection lost"));
 
       const res = await makeRequest(app, "POST", "/api/appointments", {
         customer_id: 1,
-        scheduled_at: "2026-03-01T10:00:00",
-        end_at: "2026-03-01T11:00:00",
+        scheduled_at: FUTURE_START,
+        end_at: FUTURE_END,
       });
       expect(res.status).toBe(500);
       expect(res.body.error).toBe("Internal server error");
