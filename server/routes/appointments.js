@@ -50,11 +50,53 @@ router.post("/", async (req, res) => {
     errors.push(`status must be one of: ${validStatuses.join(", ")}`);
   }
 
+  // Availability validation (only if dates are valid)
+  if (scheduled_at && end_at && !isNaN(Date.parse(scheduled_at)) && !isNaN(Date.parse(end_at))) {
+    const start = new Date(scheduled_at);
+    const end = new Date(end_at);
+
+    // Reject appointments in the past
+    if (start < new Date()) {
+      errors.push("scheduled_at must not be in the past");
+    }
+
+    // Minimum duration: 15 minutes
+    const durationMs = end - start;
+    const fifteenMinutes = 15 * 60 * 1000;
+    if (durationMs > 0 && durationMs < fifteenMinutes) {
+      errors.push("Appointment must be at least 15 minutes long");
+    }
+
+    // Maximum duration: 8 hours
+    const eightHours = 8 * 60 * 60 * 1000;
+    if (durationMs > eightHours) {
+      errors.push("Appointment must not exceed 8 hours");
+    }
+  }
+
   if (errors.length > 0) {
     return res.status(400).json({ error: "Validation failed", details: errors });
   }
 
   try {
+    // Check for overlapping appointments for the same customer
+    const [overlaps] = await pool.execute(
+      `SELECT id, scheduled_at, end_at FROM appointments
+       WHERE customer_id = ?
+         AND status NOT IN ('cancelled')
+         AND scheduled_at < ?
+         AND end_at > ?`,
+      [customer_id, end_at, scheduled_at]
+    );
+
+    if (overlaps.length > 0) {
+      return res.status(409).json({
+        error: "Scheduling conflict",
+        details: ["This appointment overlaps with an existing appointment for this customer"],
+        conflicting_appointment_id: overlaps[0].id,
+      });
+    }
+
     const [result] = await pool.execute(
       `INSERT INTO appointments (customer_id, project_id, scheduled_at, end_at, status, notes)
        VALUES (?, ?, ?, ?, ?, ?)`,
