@@ -19,6 +19,10 @@ if (process.env.NODE_ENV !== "production") {
   app.use("/api/email", emailTestRoutes);
 }
 
+// Appointment routes
+const appointmentRoutes = require("./routes/appointments");
+app.use("/api/appointments", appointmentRoutes);
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
