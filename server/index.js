@@ -23,6 +23,10 @@ if (process.env.NODE_ENV !== "production") {
 const appointmentRoutes = require("./routes/appointments");
 app.use("/api/appointments", appointmentRoutes);
 
+// Gallery routes
+const galleryRoutes = require("./routes/gallery");
+app.use("/api/projects/gallery", galleryRoutes);
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
