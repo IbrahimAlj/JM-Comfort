@@ -1,0 +1,32 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "jmcomfort-mysql.clmo042u2m5d.us-west-2.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "jm_comfort",
+            "database": "jm_comfort",
+            "username": "user_api"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "jmcomfort-mysql.clmo042u2m5d.us-west-2.rds.amazonaws.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "jm_comf_admin",
+            "database": "jm_comfort",
+            "username": "JMcomf_hab_admin"
+        }
+    ]
+}
