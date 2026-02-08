@@ -3,12 +3,14 @@ require("dotenv").config({ path: "../.env" });
 const express = require("express");
 const cors = require("cors");
 const { validateEmailConfig } = require("./config/mailer");
+const sanitizeInput = require("./middleware/validateinput");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(sanitizeInput);
 
 // Validate email config on startup
 validateEmailConfig();
