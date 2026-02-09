@@ -26,6 +26,9 @@ app.use("/api/appointments", appointmentRoutes);
 // Gallery routes
 const galleryRoutes = require("./routes/gallery");
 app.use("/api/projects/gallery", galleryRoutes);
+// Leads routes
+const leadsRoutes = require("./routes/leads");
+app.use("/api/leads", leadsRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
