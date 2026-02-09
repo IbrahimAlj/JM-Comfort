@@ -1,6 +1,6 @@
 // src/admin/AdminRoutes.jsx
 import { useState } from "react";
-import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
 import { getUser, logout } from "./Auth";
@@ -43,6 +43,7 @@ function validateFiles(files) {
 }
 
 function AdminUpload() {
+  const navigate = useNavigate();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState(null);
@@ -85,6 +86,8 @@ function AdminUpload() {
       } else {
         setResult(data);
         setSelectedFiles([]);
+        // Auto-navigate to gallery after successful upload so it shows fresh images
+        setTimeout(() => navigate("/gallery"), 1500);
       }
     } catch (err) {
       setError("Could not connect to server");
@@ -166,8 +169,9 @@ function AdminUpload() {
               </ul>
             </div>
           )}
+          <p className="text-gray-500 text-sm mt-1">Redirecting to gallery...</p>
           <Link to="/gallery" className="inline-block mt-2 text-blue-600 underline text-sm">
-            View Gallery
+            View Gallery Now
           </Link>
         </div>
       )}

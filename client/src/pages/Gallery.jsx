@@ -1,16 +1,33 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch images using built-in fetch()
-  useEffect(() => {
-    fetch("http://localhost:5000/api/projects/gallery") // adjust if needed
-      .then((res) => res.json())
-      .then((data) => setImages(data))
-      .catch((err) => console.error("Failed to load images:", err));
+  const fetchImages = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    fetch("http://localhost:5000/api/projects/gallery")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load images");
+        return res.json();
+      })
+      .then((data) => {
+        setImages(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to load images:", err);
+        setError("Unable to load gallery images. Please try again later.");
+        setLoading(false);
+      });
   }, []);
+
+  useEffect(() => {
+    fetchImages();
+  }, [fetchImages]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
@@ -18,22 +35,52 @@ const Gallery = () => {
         Our Project Gallery
       </h1>
 
-      {/* Image grid */}
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {images.map((img, idx) => (
-          <div
-            key={idx}
-            className="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
-            onClick={() => setSelectedImage(img.url)}
+      {/* Loading state */}
+      {loading && (
+        <p className="text-center text-gray-500">Loading gallery...</p>
+      )}
+
+      {/* Error state */}
+      {error && !loading && (
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={fetchImages}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            <img
-              src={img.url}
-              alt={img.title || "Project Image"}
-              className="w-full h-60 object-cover"
-            />
-          </div>
-        ))}
-      </div>
+            Retry
+          </button>
+        </div>
+      )}
+
+      {/* Empty state */}
+      {!loading && !error && images.length === 0 && (
+        <p className="text-center text-gray-500">
+          No images in the gallery yet.
+        </p>
+      )}
+
+      {/* Image grid */}
+      {!loading && !error && images.length > 0 && (
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {images.map((img, idx) => (
+            <div
+              key={idx}
+              className="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+              onClick={() => setSelectedImage(img.url)}
+            >
+              <img
+                src={img.url}
+                alt={img.title || "Project Image"}
+                className="w-full h-60 object-cover"
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Basic modal */}
       {selectedImage && (
