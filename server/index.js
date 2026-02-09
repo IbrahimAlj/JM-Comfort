@@ -23,6 +23,10 @@ if (process.env.NODE_ENV !== "production") {
 const appointmentRoutes = require("./routes/appointments");
 app.use("/api/appointments", appointmentRoutes);
 
+// Leads routes
+const leadsRoutes = require("./routes/leads");
+app.use("/api/leads", leadsRoutes);
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });

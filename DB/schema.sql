@@ -62,3 +62,30 @@ CREATE TABLE IF NOT EXISTS reviews (
   CONSTRAINT ftk_reviews_project FOREIGN KEY (project_id)
    REFERENCES projects(id) ON UPDATE CASCADE ON DELETE SET NULL
 );
+
+-- contact_leads table for storing contact & quote requests
+CREATE TABLE IF NOT EXISTS contact_leads (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  
+  first_name VARCHAR(50),
+  last_name  VARCHAR(50),
+  name       VARCHAR(120),
+  email      VARCHAR(100) NOT NULL,
+  phone      VARCHAR(50),
+  
+  lead_type  ENUM('contact','quote') NOT NULL DEFAULT 'contact',
+  service_type VARCHAR(80),
+  message    TEXT,
+
+  status     ENUM('new','reviewed','closed') NOT NULL DEFAULT 'new',
+
+  dedupe_hash CHAR(64) NOT NULL,
+
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  INDEX (email),
+  INDEX (status),
+  INDEX (created_at),
+  UNIQUE KEY ux_contact_leads_dedupe (dedupe_hash)
+);
