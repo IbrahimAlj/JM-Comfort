@@ -34,16 +34,17 @@ CREATE TABLE IF NOT EXISTS appointments (
   customer_id BIGINT NOT NULL,
   project_id BIGINT NULL,
   scheduled_at DATETIME NOT NULL,
+  end_at DATETIME NOT NULL,
   status ENUM('scheduled','completed','cancelled','no_show') NOT NULL DEFAULT 'scheduled',
-  -- if we want notes under appointments: notes TEXT,
+  notes TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  INDEX (customer_id), INDEX (project_id), INDEX (scheduled_at),
-  
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX (customer_id), INDEX (project_id), INDEX (scheduled_at), INDEX (end_at),
+
   CONSTRAINT ftk_appts_customer FOREIGN KEY (customer_id)
     REFERENCES customers(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT ftk_appts_project FOREIGN KEY (project_id)
     REFERENCES projects(id) ON UPDATE CASCADE ON DELETE SET NULL
-    -- if linked to an appointment can't delete.
 );
 
 CREATE TABLE IF NOT EXISTS reviews (

@@ -1,4 +1,4 @@
--- COMMANDS TO RUN TO VERIFY TABLES EXISTENCE WHEN NEW USER CONNECTS 
+-- COMMANDS TO RUN TO VERIFY TABLES EXISTENCE WHEN NEW USER CONNECTS
 
 USE jm_comfort;      
 SELECT DATABASE();
@@ -18,3 +18,8 @@ LIMIT 5;
 
 -- Confirm UNIQUE dedupe_hash index exists
 SHOW INDEX FROM contact_leads;
+SELECT DATABASE();
+SHOW TABLES;
+
+-- Verify appointments table structure
+DESCRIBE appointments;
