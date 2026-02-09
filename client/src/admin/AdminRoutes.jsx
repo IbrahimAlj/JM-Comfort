@@ -24,20 +24,47 @@ function AdminDashboard() {
   );
 }
 
+const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
+function validateFiles(files) {
+  const errors = [];
+  for (const file of files) {
+    const ext = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.includes(ext)) {
+      errors.push(`${file.name}: File type "${ext}" is not allowed. Use jpg, jpeg, png, or webp.`);
+    }
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      errors.push(`${file.name}: File size (${(file.size / (1024 * 1024)).toFixed(1)}MB) exceeds the ${MAX_FILE_SIZE_MB}MB limit.`);
+    }
+  }
+  return errors;
+}
+
 function AdminUpload() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [validationErrors, setValidationErrors] = useState([]);
 
   function handleFileChange(e) {
-    setSelectedFiles(Array.from(e.target.files));
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
     setResult(null);
     setError(null);
+    setValidationErrors(validateFiles(files));
   }
 
   async function handleUpload() {
     if (selectedFiles.length === 0) return;
+
+    const errors = validateFiles(selectedFiles);
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
 
     setUploading(true);
     setResult(null);
@@ -77,10 +104,25 @@ function AdminUpload() {
         <input
           type="file"
           multiple
+          accept=".jpg,.jpeg,.png,.webp"
           onChange={handleFileChange}
           className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white file:cursor-pointer"
         />
+        <p className="text-xs text-gray-400 mt-1">
+          Allowed: JPG, JPEG, PNG, WEBP. Max {MAX_FILE_SIZE_MB}MB per file.
+        </p>
       </div>
+
+      {validationErrors.length > 0 && (
+        <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded">
+          <p className="text-red-700 text-sm font-medium">Validation errors:</p>
+          <ul className="list-disc list-inside text-sm text-red-600 mt-1">
+            {validationErrors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {selectedFiles.length > 0 && (
         <div className="mt-3">
@@ -97,7 +139,7 @@ function AdminUpload() {
 
       <button
         onClick={handleUpload}
-        disabled={uploading || selectedFiles.length === 0}
+        disabled={uploading || selectedFiles.length === 0 || validationErrors.length > 0}
         className="mt-4 px-5 py-2 bg-blue-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {uploading ? "Uploading..." : "Upload"}

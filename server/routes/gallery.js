@@ -7,9 +7,18 @@ const { s3Client, PutObjectCommand, BUCKET_NAME } = require("../config/s3");
 
 const router = express.Router();
 
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 10 * 1024 * 1024 },
+  limits: { fileSize: MAX_FILE_SIZE },
+  fileFilter(req, file, cb) {
+    if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
+      return cb(new Error(`File type not allowed: ${file.originalname}. Only jpg, jpeg, png, and webp are accepted.`));
+    }
+    cb(null, true);
+  },
 });
 
 function generateS3Key(originalName) {
@@ -27,7 +36,23 @@ function generateS3Key(originalName) {
  * POST /api/projects/gallery
  * Upload one or multiple images to S3 and store metadata.
  */
-router.post("/", upload.array("images", 20), async (req, res) => {
+router.post("/", (req, res, next) => {
+  upload.array("images", 20)(req, res, (err) => {
+    if (err) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(400).json({
+          error: "Validation failed",
+          details: [`File exceeds the maximum size of ${MAX_FILE_SIZE / (1024 * 1024)}MB`],
+        });
+      }
+      return res.status(400).json({
+        error: "Validation failed",
+        details: [err.message],
+      });
+    }
+    next();
+  });
+}, async (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: "No files provided" });
   }
