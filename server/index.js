@@ -23,6 +23,9 @@ if (process.env.NODE_ENV !== "production") {
 const appointmentRoutes = require("./routes/appointments");
 app.use("/api/appointments", appointmentRoutes);
 
+// Gallery routes
+const galleryRoutes = require("./routes/gallery");
+app.use("/api/projects/gallery", galleryRoutes);
 // Leads routes
 const leadsRoutes = require("./routes/leads");
 app.use("/api/leads", leadsRoutes);
