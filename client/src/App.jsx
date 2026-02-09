@@ -8,7 +8,6 @@ import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import Gallery from './pages/Gallery';
-<Route path="/gallery" element={<Gallery />} />
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
