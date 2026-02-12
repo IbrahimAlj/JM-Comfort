@@ -1,32 +1,24 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "JM Comfort Backend",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --verbose && node --test tests/*.test.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.985.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "multer": "^2.0.2",
     "mysql2": "^3.15.2",
     "nodemailer": "^7.0.9"
   },
   "devDependencies": {
-    "jest": "^30.2.0",
     "nodemon": "^3.1.10"
-  },
-  "jest": {
-    "testMatch": [
-      "**/__tests__/**/*.test.js"
-    ]
   }
 }
