@@ -4,6 +4,10 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const appointmentRoutes = require('./routes/appointments');
+const express = require("express");
+const cors = require("cors");
+const { validateEmailConfig } = require("./config/mailer");
+const sanitizeInput = require("./middleware/validateinput");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,6 +16,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(sanitizeInput);
 
 // Routes
 app.use('/api/appointments', appointmentRoutes);
