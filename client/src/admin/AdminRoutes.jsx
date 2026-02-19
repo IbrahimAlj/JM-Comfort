@@ -4,6 +4,7 @@ import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
 import { getUser, logout } from "./Auth";
+import LeadsPage from "./LeadsPage"; // NEW
 
 function AdminDashboard() {
   const user = getUser();
@@ -13,6 +14,7 @@ function AdminDashboard() {
       <p className="mt-2 text-gray-600">Signed in as {user?.email}</p>
       <div className="mt-4 flex gap-3">
         <Link className="underline" to="/admin/upload">Change Pictures</Link>
+        <Link className="underline" to="/admin/leads">View Leads</Link> {/* NEW */}
         <button
           className="border rounded px-3 py-1"
           onClick={() => { logout(); window.location.href = "/admin/login"; }}
@@ -86,7 +88,6 @@ function AdminUpload() {
       } else {
         setResult(data);
         setSelectedFiles([]);
-        // Auto-navigate to gallery after successful upload so it shows fresh images
         setTimeout(() => navigate("/gallery"), 1500);
       }
     } catch (err) {
@@ -148,9 +149,7 @@ function AdminUpload() {
         {uploading ? "Uploading..." : "Upload"}
       </button>
 
-      {error && (
-        <p className="mt-3 text-red-600 text-sm">{error}</p>
-      )}
+      {error && <p className="mt-3 text-red-600 text-sm">{error}</p>}
 
       {result && (
         <div className="mt-3">
@@ -189,6 +188,7 @@ export default function AdminRoutes() {
       <Route element={<Protected />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/upload" element={<AdminUpload />} />
+        <Route path="/admin/leads" element={<LeadsPage />} /> {/* NEW */}
       </Route>
 
       {/* Optional fallback */}
