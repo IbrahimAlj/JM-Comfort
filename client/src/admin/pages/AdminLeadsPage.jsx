@@ -1,6 +1,6 @@
 // AdminLeadsPage.jsx
 import React from "react";
-import LeadsTable from "./LeadsTable";
+import LeadsTable from "../../components/LeadsTable";
 
 const sampleLeads = [
   { name: "Ibrahim AlJanabi", email: "Barhoomi@example.com", phone: "916-916-9167", date: "Feb 19, 2026" },
