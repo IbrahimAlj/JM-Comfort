@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -11,33 +11,35 @@ import Gallery from './pages/Gallery';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
-import AdminRoutes from "./admin/AdminRoutes"; 
+import AdminRoutes from "./admin/AdminRoutes";
 
+function AppShell() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  return (
+    <div className={isAdmin ? "" : "flex flex-col min-h-screen"}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/request-quote" element={<RequestQuote />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/*" element={<AdminRoutes />} />
+      </Routes>
+      {!isAdmin && <CTAFloatingButton />}
+      {!isAdmin && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        {/* Routes - Different pages */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/reviews" element={<Reviews />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/request-quote" element={<RequestQuote />} />
-          <Route path="/gallery" element={<Gallery />} /> {/* ✅ ADD THIS */}
-          <Route path="/*" element={<AdminRoutes />} />
-        </Routes>
-        {/* Main content wrapper - grows to fill space */}
-        {/* Floating CTA button */}
-        <CTAFloatingButton />
-
-        {/* Footer - Shows on all pages */}
-        {/* Footer - Sticks to bottom */}
-        <Footer />
-      </div>
+      <AppShell />
     </Router>
   );
 }

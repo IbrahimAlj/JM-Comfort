@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const navigate = useNavigate();
-  const from = useLocation().state?.from?.pathname || "/admin";
+  const from = useLocation().state?.from?.pathname || "/admin/dashboard";
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -25,24 +25,153 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center bg-gray-50 p-12"> 
+    <div style={{
+      minHeight: "100vh",
+      backgroundColor: "white",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "24px",
+    }}>
+      {/* Logo */}
+      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+        <img
+          src="/logo.png"
+          alt="JM Comfort"
+          style={{ height: "72px", width: "auto" }}
+          onError={(e) => { e.target.style.display = "none"; }}
+        />
+      </div>
 
-
-      <form onSubmit={onSubmit} className="w-full max-w-sm bg-white p-6 rounded-xl shadow">
-        <h1 className="text-xl font-semibold mb-4">Admin Login</h1>
-        {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
-        <label className="block text-sm mb-1">Email</label>
-        <input className="w-full mb-3 border rounded px-3 py-2" type="email"
-               value={email} onChange={e=>setEmail(e.target.value)} required />
-        <label className="block text-sm mb-1">Password</label>
-        <input className="w-full mb-4 border rounded px-3 py-2" type="password"
-               value={password} onChange={e=>setPassword(e.target.value)} required />
-        <button disabled={busy} className="w-full bg-indigo-600 text-white py-2 rounded">
-          {busy ? "Signing in…" : "Sign In"}
-        </button>
-        <p className="mt-3 text-xs text-gray-500">
+      {/* Card */}
+      <div style={{
+        width: "100%",
+        maxWidth: "400px",
+        backgroundColor: "white",
+        border: "1px solid #E5E7EB",
+        borderRadius: "8px",
+        padding: "40px 32px",
+      }}>
+        <h1 style={{
+          fontSize: "22px",
+          fontWeight: "600",
+          color: "#1F2937",
+          margin: "0 0 8px 0",
+        }}>
+          Admin Login
+        </h1>
+        <p style={{
+          fontSize: "14px",
+          color: "#6B7280",
+          margin: "0 0 28px 0",
+        }}>
+          Sign in to the JM Comfort admin panel.
         </p>
-      </form>
+
+        {error && (
+          <div style={{
+            backgroundColor: "#FEF2F2",
+            border: "1px solid #FECACA",
+            borderRadius: "6px",
+            padding: "10px 14px",
+            marginBottom: "20px",
+            fontSize: "14px",
+            color: "#DC2626",
+          }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={onSubmit}>
+          <label style={{
+            display: "block",
+            fontSize: "14px",
+            fontWeight: "500",
+            color: "#374151",
+            marginBottom: "6px",
+          }}>
+            Email
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "10px 12px",
+              fontSize: "14px",
+              color: "#1F2937",
+              backgroundColor: "white",
+              border: "1px solid #D1D5DB",
+              borderRadius: "6px",
+              marginBottom: "16px",
+              outline: "none",
+              boxSizing: "border-box",
+              transition: "border-color 0.2s",
+            }}
+            onFocus={(e) => { e.target.style.borderColor = "#1F2937"; }}
+            onBlur={(e) => { e.target.style.borderColor = "#D1D5DB"; }}
+          />
+
+          <label style={{
+            display: "block",
+            fontSize: "14px",
+            fontWeight: "500",
+            color: "#374151",
+            marginBottom: "6px",
+          }}>
+            Password
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "10px 12px",
+              fontSize: "14px",
+              color: "#1F2937",
+              backgroundColor: "white",
+              border: "1px solid #D1D5DB",
+              borderRadius: "6px",
+              marginBottom: "24px",
+              outline: "none",
+              boxSizing: "border-box",
+              transition: "border-color 0.2s",
+            }}
+            onFocus={(e) => { e.target.style.borderColor = "#1F2937"; }}
+            onBlur={(e) => { e.target.style.borderColor = "#D1D5DB"; }}
+          />
+
+          <button
+            type="submit"
+            disabled={busy}
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "12px 24px",
+              fontSize: "15px",
+              fontWeight: "500",
+              color: "white",
+              backgroundColor: busy ? "#374151" : "#000000",
+              border: "none",
+              borderRadius: "8px",
+              cursor: busy ? "not-allowed" : "pointer",
+              transition: "background-color 0.2s",
+              opacity: busy ? 0.7 : 1,
+            }}
+            onMouseOver={(e) => { if (!busy) e.target.style.backgroundColor = "#374151"; }}
+            onMouseOut={(e) => { if (!busy) e.target.style.backgroundColor = "#000000"; }}
+          >
+            {busy ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
