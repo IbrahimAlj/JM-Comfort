@@ -13,6 +13,11 @@ const servicesRoutes = require('./routes/services');
 // Other imports
 const { validateEmailConfig } = require('./config/mailer');
 const sanitizeInput = require('./middleware/validateInput');
+const serviceRoutes = require('./routes/services');
+const express = require("express");
+const cors = require("cors");
+const { validateEmailConfig } = require("./config/mailer");
+const sanitizeInput = require("./middleware/validateinput");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +35,7 @@ app.use(sanitizeInput);
 -------------------- */
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/services', serviceRoutes);
 
 // NEW: mount services API
 app.use('/api/services', servicesRoutes);

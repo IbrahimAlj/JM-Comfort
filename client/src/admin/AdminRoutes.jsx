@@ -8,6 +8,7 @@ import AdminNotFound from "./pages/AdminNotFound";
 import AdminLayout from "./AdminLayout";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
 import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
+import AdminServicesPage from "./pages/AdminServicesPage";
 import { getUser, logout } from "./Auth";
 
 function AdminDashboard() {
@@ -88,6 +89,24 @@ function AdminDashboard() {
         >
           <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
           <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Appointments</p>
+        </Link>
+        <Link
+          to="/admin/services"
+          style={{
+            display: "block",
+            backgroundColor: "white",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            padding: "24px",
+            minWidth: "160px",
+            textDecoration: "none",
+            transition: "border-color 0.2s",
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
+        >
+          <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
+          <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Services</p>
         </Link>
       </div>
     </div>
@@ -270,6 +289,7 @@ export default function AdminRoutes() {
           <Route path="/admin/leads" element={<AdminLeadsPage />} />
           <Route path="/admin/projects" element={<AdminProjectsPage />} />
           <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
+          <Route path="/admin/services" element={<AdminServicesPage />} />
           {/* Unknown admin routes */}
           <Route path="*" element={<AdminNotFound />} />
         </Route>
