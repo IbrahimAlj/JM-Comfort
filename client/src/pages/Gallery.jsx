@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import Navbar from "../components/Navbar";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -30,6 +31,8 @@ const Gallery = () => {
   }, [fetchImages]);
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen bg-gray-50 py-10 px-6">
       <h1 className="text-3xl font-semibold text-center mb-8 text-gray-800">
         Our Project Gallery
@@ -104,6 +107,7 @@ const Gallery = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
