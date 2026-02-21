@@ -1,17 +1,14 @@
 // src/admin/AdminRoutes.jsx
 import { useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminNotFound from "./pages/AdminNotFound";
 import AdminLayout from "./AdminLayout";
-import { getUser, logout } from "./Auth";
-import AdminLayout from "./AdminLayout";
-import { getUser, logout } from "./Auth";
-import LeadsPage from "./pages/AdminLeadsPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
 import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
+import { getUser, logout } from "./Auth";
 
 function AdminDashboard() {
   const user = getUser();
@@ -34,16 +31,6 @@ function AdminDashboard() {
           }}
           onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
           onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
-      <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
-      <p className="mt-2 text-gray-600">Signed in as {user?.email}</p>
-      <div className="mt-4 flex gap-3">
-        <Link className="underline" to="/admin/upload">Change Pictures</Link>
-        <Link className="underline" to="/admin/leads">View Leads</Link>
-        <Link className="underline" to="/admin/projects">Projects</Link>
-        <Link className="underline" to="/admin/appointments">Appointments</Link>
-        <button
-          className="border rounded px-3 py-1"
-          onClick={() => { logout(); window.location.href = "/admin/login"; }}
         >
           <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
           <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Leads</p>
@@ -65,6 +52,42 @@ function AdminDashboard() {
         >
           <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
           <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Gallery Upload</p>
+        </Link>
+        <Link
+          to="/admin/projects"
+          style={{
+            display: "block",
+            backgroundColor: "white",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            padding: "24px",
+            minWidth: "160px",
+            textDecoration: "none",
+            transition: "border-color 0.2s",
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
+        >
+          <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
+          <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Projects</p>
+        </Link>
+        <Link
+          to="/admin/appointments"
+          style={{
+            display: "block",
+            backgroundColor: "white",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            padding: "24px",
+            minWidth: "160px",
+            textDecoration: "none",
+            transition: "border-color 0.2s",
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
+        >
+          <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
+          <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Appointments</p>
         </Link>
       </div>
     </div>
@@ -145,9 +168,6 @@ function AdminUpload() {
     <div style={{ maxWidth: "640px" }}>
       <h1 style={{ fontSize: "22px", fontWeight: "600", color: "#1F2937", margin: "0 0 4px 0" }}>Upload Pictures</h1>
       <p style={{ fontSize: "13px", color: "#6B7280", margin: "0 0 24px 0" }}>
-    <div className="max-w-2xl">
-      <h1 className="text-2xl font-semibold">Upload / Change Pictures</h1>
-      <p className="text-gray-600 mt-2">
         Select one or more images to upload to the gallery.
       </p>
 
@@ -192,18 +212,18 @@ function AdminUpload() {
         onClick={handleUpload}
         disabled={uploading || selectedFiles.length === 0 || validationErrors.length > 0}
         style={{
-            marginTop: "16px",
-            padding: "10px 24px",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "white",
-            backgroundColor: "#000000",
-            border: "none",
-            borderRadius: "8px",
-            cursor: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? "not-allowed" : "pointer",
-            opacity: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? 0.5 : 1,
-            transition: "background-color 0.2s",
-          }}
+          marginTop: "16px",
+          padding: "10px 24px",
+          fontSize: "14px",
+          fontWeight: "500",
+          color: "white",
+          backgroundColor: "#000000",
+          border: "none",
+          borderRadius: "8px",
+          cursor: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? "not-allowed" : "pointer",
+          opacity: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? 0.5 : 1,
+          transition: "background-color 0.2s",
+        }}
       >
         {uploading ? "Uploading..." : "Upload"}
       </button>
@@ -227,7 +247,6 @@ function AdminUpload() {
               </ul>
             </div>
           )}
-          <p className="text-gray-500 text-sm mt-1">Redirecting to gallery...</p>
         </div>
       )}
     </div>
@@ -249,26 +268,12 @@ export default function AdminRoutes() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/upload" element={<AdminUpload />} />
           <Route path="/admin/leads" element={<AdminLeadsPage />} />
+          <Route path="/admin/projects" element={<AdminProjectsPage />} />
+          <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
           {/* Unknown admin routes */}
           <Route path="*" element={<AdminNotFound />} />
         </Route>
       </Route>
-      {/* Protected admin section wrapped in AdminLayout */}
-      <Route element={<Protected />}>
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/upload" element={<AdminUpload />} />
-          <Route path="/admin/leads" element={<AdminLeadsPage />} />
-        </Route>
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/upload" element={<AdminUpload />} />
-        <Route path="/admin/leads" element={<LeadsPage />} />
-        <Route path="/admin/projects" element={<AdminProjectsPage />} />
-        <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
-      </Route>
-
-      {/* Fallback for unknown admin routes */}
-      <Route path="*" element={<Navigate to="/admin/login" replace />} />
     </Routes>
   );
 }
