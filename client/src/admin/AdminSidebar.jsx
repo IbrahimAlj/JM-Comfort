@@ -3,6 +3,7 @@ import { logout } from "./Auth";
 
 const navItems = [
   { label: "Dashboard", to: "/admin/dashboard" },
+  { label: "Dashboard", to: "/admin" },
   { label: "Leads", to: "/admin/leads" },
   { label: "Upload Pictures", to: "/admin/upload" },
 ];
@@ -37,12 +38,17 @@ export default function AdminSidebar() {
       </div>
 
       {/* Nav */}
+        <span style={{ fontSize: "16px", fontWeight: "600" }}>JM Comfort</span>
+        <p style={{ fontSize: "11px", color: "#6B7280", margin: "4px 0 0 0" }}>Admin Panel</p>
+      </div>
+
       <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto" }}>
         {navItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             end
+            end={item.to === "/admin"}
             style={({ isActive }) => ({
               display: "block",
               padding: "9px 12px",
