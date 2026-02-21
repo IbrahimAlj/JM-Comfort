@@ -1,27 +1,18 @@
 // src/admin/AdminRoutes.jsx
 import { useState } from "react";
-import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
+import AdminLeadsPage from "./pages/AdminLeadsPage";
+import AdminLayout from "./AdminLayout";
 import { getUser, logout } from "./Auth";
-import LeadsPage from "./LeadsPage"; // NEW
 
 function AdminDashboard() {
   const user = getUser();
   return (
-    <div className="p-6">
+    <div>
       <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
       <p className="mt-2 text-gray-600">Signed in as {user?.email}</p>
-      <div className="mt-4 flex gap-3">
-        <Link className="underline" to="/admin/upload">Change Pictures</Link>
-        <Link className="underline" to="/admin/leads">View Leads</Link> {/* NEW */}
-        <button
-          className="border rounded px-3 py-1"
-          onClick={() => { logout(); window.location.href = "/admin/login"; }}
-        >
-          Logout
-        </button>
-      </div>
     </div>
   );
 }
@@ -98,7 +89,7 @@ function AdminUpload() {
   }
 
   return (
-    <div className="p-6 max-w-2xl">
+    <div className="max-w-2xl">
       <h1 className="text-2xl font-semibold">Upload / Change Pictures</h1>
       <p className="text-gray-600 mt-2">
         Select one or more images to upload to the gallery.
@@ -169,9 +160,6 @@ function AdminUpload() {
             </div>
           )}
           <p className="text-gray-500 text-sm mt-1">Redirecting to gallery...</p>
-          <Link to="/gallery" className="inline-block mt-2 text-blue-600 underline text-sm">
-            View Gallery Now
-          </Link>
         </div>
       )}
     </div>
@@ -184,14 +172,16 @@ export default function AdminRoutes() {
       {/* Public admin route */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* Protected admin section */}
+      {/* Protected admin section wrapped in AdminLayout */}
       <Route element={<Protected />}>
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/upload" element={<AdminUpload />} />
-        <Route path="/admin/leads" element={<LeadsPage />} /> {/* NEW */}
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/upload" element={<AdminUpload />} />
+          <Route path="/admin/leads" element={<AdminLeadsPage />} />
+        </Route>
       </Route>
 
-      {/* Optional fallback */}
+      {/* Fallback for unknown admin routes */}
       <Route path="*" element={<Navigate to="/admin/login" replace />} />
     </Routes>
   );
