@@ -6,6 +6,7 @@ import AdminLogin from "./pages/AdminLogin";
 import { getUser, logout } from "./Auth";
 import LeadsPage from "./pages/AdminLeadsPage";
 import AdminProjectsPage from "./pages/AdminProjectsPage";
+import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
 
 function AdminDashboard() {
   const user = getUser();
@@ -17,6 +18,7 @@ function AdminDashboard() {
         <Link className="underline" to="/admin/upload">Change Pictures</Link>
         <Link className="underline" to="/admin/leads">View Leads</Link>
         <Link className="underline" to="/admin/projects">Projects</Link>
+        <Link className="underline" to="/admin/appointments">Appointments</Link>
         <button
           className="border rounded px-3 py-1"
           onClick={() => { logout(); window.location.href = "/admin/login"; }}
@@ -192,6 +194,7 @@ export default function AdminRoutes() {
         <Route path="/admin/upload" element={<AdminUpload />} />
         <Route path="/admin/leads" element={<LeadsPage />} />
         <Route path="/admin/projects" element={<AdminProjectsPage />} />
+        <Route path="/admin/appointments" element={<AdminAppointmentsPage />} />
       </Route>
 
       {/* Optional fallback */}
