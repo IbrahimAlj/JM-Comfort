@@ -6,6 +6,7 @@ const navItems = [
   { label: "Leads", to: "/admin/leads" },
   { label: "Projects", to: "/admin/projects" },
   { label: "Appointments", to: "/admin/appointments" },
+  { label: "Services", to: "/admin/services" },
   { label: "Upload Pictures", to: "/admin/upload" },
 ];
 
