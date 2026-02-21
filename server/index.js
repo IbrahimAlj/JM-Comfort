@@ -3,13 +3,13 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
+const sanitizeInput = require('./middleware/validateinput');
+
 const appointmentRoutes = require('./routes/appointments');
 const projectRoutes = require('./routes/projects');
 const serviceRoutes = require('./routes/services');
-const express = require("express");
-const cors = require("cors");
-const { validateEmailConfig } = require("./config/mailer");
-const sanitizeInput = require("./middleware/validateinput");
+const leadsRoutes = require('./routes/leads');
+const galleryRoutes = require('./routes/gallery');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,6 +24,8 @@ app.use(sanitizeInput);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/services', serviceRoutes);
+app.use('/api/leads', leadsRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
