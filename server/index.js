@@ -4,6 +4,7 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const appointmentRoutes = require('./routes/appointments');
+const projectRoutes = require('./routes/projects');
 const express = require("express");
 const cors = require("cors");
 const { validateEmailConfig } = require("./config/mailer");
@@ -20,6 +21,7 @@ app.use(sanitizeInput);
 
 // Routes
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/projects', projectRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
