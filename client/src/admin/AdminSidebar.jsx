@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "./Auth";
 
 const navItems = [
+  { label: "Dashboard", to: "/admin/dashboard" },
   { label: "Dashboard", to: "/admin" },
   { label: "Leads", to: "/admin/leads" },
   { label: "Upload Pictures", to: "/admin/upload" },
@@ -25,10 +26,18 @@ export default function AdminSidebar() {
       color: "white",
       flexShrink: 0,
     }}>
+      {/* Header */}
       <div style={{
         padding: "20px 24px",
         borderBottom: "1px solid #1F2937",
       }}>
+        <span style={{ fontSize: "16px", fontWeight: "600" }}>
+          JM Comfort
+        </span>
+        <p style={{ fontSize: "11px", color: "#6B7280", margin: "4px 0 0 0" }}>Admin Panel</p>
+      </div>
+
+      {/* Nav */}
         <span style={{ fontSize: "16px", fontWeight: "600" }}>JM Comfort</span>
         <p style={{ fontSize: "11px", color: "#6B7280", margin: "4px 0 0 0" }}>Admin Panel</p>
       </div>
@@ -38,6 +47,7 @@ export default function AdminSidebar() {
           <NavLink
             key={item.to}
             to={item.to}
+            end
             end={item.to === "/admin"}
             style={({ isActive }) => ({
               display: "block",
@@ -57,6 +67,7 @@ export default function AdminSidebar() {
         ))}
       </nav>
 
+      {/* Logout */}
       <div style={{ padding: "16px 12px", borderTop: "1px solid #1F2937" }}>
         <button
           onClick={handleLogout}

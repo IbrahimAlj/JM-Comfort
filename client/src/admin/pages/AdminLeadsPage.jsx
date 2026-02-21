@@ -10,7 +10,7 @@ const sampleLeads = [
 const AdminLeadsPage = () => {
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Leads</h1>
+      <h1 style={{ fontSize: "22px", fontWeight: "600", color: "#1F2937", margin: "0 0 20px 0" }}>Leads</h1>
       <LeadsTable leads={sampleLeads} />
     </div>
   );

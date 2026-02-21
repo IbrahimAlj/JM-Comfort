@@ -4,6 +4,9 @@ import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
+import AdminNotFound from "./pages/AdminNotFound";
+import AdminLayout from "./AdminLayout";
+import { getUser, logout } from "./Auth";
 import AdminLayout from "./AdminLayout";
 import { getUser, logout } from "./Auth";
 import LeadsPage from "./pages/AdminLeadsPage";
@@ -14,6 +17,23 @@ function AdminDashboard() {
   const user = getUser();
   return (
     <div>
+      <h1 style={{ fontSize: "22px", fontWeight: "600", color: "#1F2937", margin: "0 0 4px 0" }}>Dashboard</h1>
+      <p style={{ fontSize: "13px", color: "#6B7280", margin: "0 0 28px 0" }}>Signed in as {user?.email}</p>
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+        <Link
+          to="/admin/leads"
+          style={{
+            display: "block",
+            backgroundColor: "white",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            padding: "24px",
+            minWidth: "160px",
+            textDecoration: "none",
+            transition: "border-color 0.2s",
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
       <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
       <p className="mt-2 text-gray-600">Signed in as {user?.email}</p>
       <div className="mt-4 flex gap-3">
@@ -25,8 +45,27 @@ function AdminDashboard() {
           className="border rounded px-3 py-1"
           onClick={() => { logout(); window.location.href = "/admin/login"; }}
         >
-          Logout
-        </button>
+          <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
+          <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Leads</p>
+        </Link>
+        <Link
+          to="/admin/upload"
+          style={{
+            display: "block",
+            backgroundColor: "white",
+            border: "1px solid #E5E7EB",
+            borderRadius: "8px",
+            padding: "24px",
+            minWidth: "160px",
+            textDecoration: "none",
+            transition: "border-color 0.2s",
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = "#9CA3AF"; }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = "#E5E7EB"; }}
+        >
+          <p style={{ fontSize: "12px", fontWeight: "500", color: "#6B7280", margin: "0 0 6px 0", textTransform: "uppercase", letterSpacing: "0.05em" }}>Manage</p>
+          <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F2937", margin: 0 }}>Gallery Upload</p>
+        </Link>
       </div>
     </div>
   );
@@ -94,7 +133,6 @@ function AdminUpload() {
       } else {
         setResult(data);
         setSelectedFiles([]);
-        setTimeout(() => navigate("/gallery"), 1500);
       }
     } catch (err) {
       setError("Could not connect to server");
@@ -104,29 +142,32 @@ function AdminUpload() {
   }
 
   return (
+    <div style={{ maxWidth: "640px" }}>
+      <h1 style={{ fontSize: "22px", fontWeight: "600", color: "#1F2937", margin: "0 0 4px 0" }}>Upload Pictures</h1>
+      <p style={{ fontSize: "13px", color: "#6B7280", margin: "0 0 24px 0" }}>
     <div className="max-w-2xl">
       <h1 className="text-2xl font-semibold">Upload / Change Pictures</h1>
       <p className="text-gray-600 mt-2">
         Select one or more images to upload to the gallery.
       </p>
 
-      <div className="mt-4">
+      <div style={{ marginBottom: "16px" }}>
         <input
           type="file"
           multiple
           accept=".jpg,.jpeg,.png,.webp"
           onChange={handleFileChange}
-          className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white file:cursor-pointer"
+          style={{ display: "block", width: "100%", fontSize: "14px", color: "#374151" }}
         />
-        <p className="text-xs text-gray-400 mt-1">
+        <p style={{ fontSize: "12px", color: "#9CA3AF", marginTop: "4px" }}>
           Allowed: JPG, JPEG, PNG, WEBP. Max {MAX_FILE_SIZE_MB}MB per file.
         </p>
       </div>
 
       {validationErrors.length > 0 && (
-        <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded">
-          <p className="text-red-700 text-sm font-medium">Validation errors:</p>
-          <ul className="list-disc list-inside text-sm text-red-600 mt-1">
+        <div style={{ backgroundColor: "#FEF2F2", border: "1px solid #FECACA", borderRadius: "6px", padding: "12px", marginBottom: "12px" }}>
+          <p style={{ fontSize: "13px", fontWeight: "500", color: "#DC2626", margin: "0 0 6px 0" }}>Validation errors:</p>
+          <ul style={{ margin: 0, paddingLeft: "20px", fontSize: "13px", color: "#DC2626" }}>
             {validationErrors.map((err, i) => (
               <li key={i}>{err}</li>
             ))}
@@ -135,11 +176,11 @@ function AdminUpload() {
       )}
 
       {selectedFiles.length > 0 && (
-        <div className="mt-3">
-          <p className="text-sm text-gray-600">
+        <div style={{ marginBottom: "8px" }}>
+          <p style={{ fontSize: "13px", color: "#374151", margin: "0 0 4px 0" }}>
             {selectedFiles.length} file{selectedFiles.length > 1 ? "s" : ""} selected:
           </p>
-          <ul className="list-disc list-inside text-sm text-gray-500 mt-1">
+          <ul style={{ margin: 0, paddingLeft: "20px", fontSize: "13px", color: "#6B7280" }}>
             {selectedFiles.map((f, i) => (
               <li key={i}>{f.name}</li>
             ))}
@@ -150,24 +191,36 @@ function AdminUpload() {
       <button
         onClick={handleUpload}
         disabled={uploading || selectedFiles.length === 0 || validationErrors.length > 0}
-        className="mt-4 px-5 py-2 bg-blue-600 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed"
+        style={{
+            marginTop: "16px",
+            padding: "10px 24px",
+            fontSize: "14px",
+            fontWeight: "500",
+            color: "white",
+            backgroundColor: "#000000",
+            border: "none",
+            borderRadius: "8px",
+            cursor: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? "not-allowed" : "pointer",
+            opacity: uploading || selectedFiles.length === 0 || validationErrors.length > 0 ? 0.5 : 1,
+            transition: "background-color 0.2s",
+          }}
       >
         {uploading ? "Uploading..." : "Upload"}
       </button>
 
-      {error && <p className="mt-3 text-red-600 text-sm">{error}</p>}
+      {error && <p style={{ fontSize: "13px", color: "#DC2626", marginTop: "12px" }}>{error}</p>}
 
       {result && (
-        <div className="mt-3">
+        <div style={{ marginTop: "12px" }}>
           {result.uploaded && result.uploaded.length > 0 && (
-            <p className="text-green-600 text-sm">
+            <p style={{ fontSize: "13px", color: "#16A34A", margin: "0 0 6px 0" }}>
               {result.uploaded.length} image{result.uploaded.length > 1 ? "s" : ""} uploaded successfully.
             </p>
           )}
           {result.failed && result.failed.length > 0 && (
-            <div className="mt-1">
-              <p className="text-red-600 text-sm">Some files failed:</p>
-              <ul className="list-disc list-inside text-sm text-red-500">
+            <div style={{ marginTop: "4px" }}>
+              <p style={{ fontSize: "13px", color: "#DC2626", margin: "0 0 4px 0" }}>Some files failed:</p>
+              <ul style={{ margin: 0, paddingLeft: "20px", fontSize: "13px", color: "#DC2626" }}>
                 {result.failed.map((f, i) => (
                   <li key={i}>{f.name}: {f.error}</li>
                 ))}
@@ -187,6 +240,19 @@ export default function AdminRoutes() {
       {/* Public admin route */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
+      {/* Redirect /admin to /admin/dashboard */}
+      <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
+      {/* Protected admin section wrapped in AdminLayout */}
+      <Route element={<Protected />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/upload" element={<AdminUpload />} />
+          <Route path="/admin/leads" element={<AdminLeadsPage />} />
+          {/* Unknown admin routes */}
+          <Route path="*" element={<AdminNotFound />} />
+        </Route>
+      </Route>
       {/* Protected admin section wrapped in AdminLayout */}
       <Route element={<Protected />}>
         <Route element={<AdminLayout />}>
