@@ -1,6 +1,7 @@
 import HeroBanner from '../components/HeroBanner';
 import Navbar from '../components/Navbar';
 import WhyChooseUs from '../components/WhyChooseUsCard';
+import WhyChooseUs from '../components/WhyChooseUs';
 
 export default function Home() {
   return (
@@ -9,8 +10,8 @@ export default function Home() {
       <HeroBanner />
       <WhyChooseUs />
 
-      {/* Add other homepage sections below /}
-      {/ Services preview, testimonials, etc. */}
+      {/* Add other homepage sections below */}
+      {/* Services preview, testimonials, etc. */}
     </>
   );
 }
