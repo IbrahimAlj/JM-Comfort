@@ -1,6 +1,5 @@
 import HeroBanner from '../components/HeroBanner';
 import Navbar from '../components/Navbar';
-import WhyChooseUs from '../components/WhyChooseUsCard';
 import WhyChooseUs from '../components/WhyChooseUs';
 
 export default function Home() {
