@@ -53,7 +53,7 @@ export default function Services() {
   return (
     <>
       <Navbar />
-      
+      <main>
       <section style={{
         maxWidth: '1280px',
         margin: '0 auto',
@@ -193,6 +193,7 @@ export default function Services() {
           ))}
         </div>
       </section>
+      </main>
     </>
   );
 }

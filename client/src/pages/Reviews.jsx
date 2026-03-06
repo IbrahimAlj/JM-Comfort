@@ -5,7 +5,9 @@ export default function Reviews() {
   return (
     <>
       <Navbar />
-      <CustomerReviews />
+      <main>
+        <CustomerReviews />
+      </main>
     </>
   );
 }

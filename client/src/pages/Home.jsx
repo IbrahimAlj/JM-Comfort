@@ -6,11 +6,13 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <HeroBanner />
-      <WhyChooseUs />
+      <main>
+        <HeroBanner />
+        <WhyChooseUs />
 
-      {/* Add other homepage sections below */}
-      {/* Services preview, testimonials, etc. */}
+        {/* Add other homepage sections below */}
+        {/* Services preview, testimonials, etc. */}
+      </main>
     </>
   );
 }
