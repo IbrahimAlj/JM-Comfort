@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Navbar from "../components/Navbar";
+import PageMeta from "../components/PageMeta";
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -32,6 +33,10 @@ const Gallery = () => {
 
   return (
     <>
+    <PageMeta
+      title="HVAC Project Gallery | JM Comfort Sacramento"
+      description="Browse JM Comfort's completed HVAC installation and repair projects in Sacramento, CA. Quality craftsmanship you can see from a trusted local team."
+    />
     <Navbar />
     <div className="min-h-screen bg-gray-50 py-10 px-6">
       <h1 className="text-3xl font-semibold text-center mb-8 text-gray-800">

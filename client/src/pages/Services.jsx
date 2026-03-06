@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import PageMeta from '../components/PageMeta';
 
 export default function Services() {
   const services = [
@@ -52,8 +53,12 @@ export default function Services() {
 
   return (
     <>
+      <PageMeta
+        title="HVAC Services | Installation, Repairs & Maintenance | JM Comfort"
+        description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
+      />
       <Navbar />
-      
+
       <section style={{
         maxWidth: '1280px',
         margin: '0 auto',
