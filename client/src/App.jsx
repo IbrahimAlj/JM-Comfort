@@ -8,6 +8,7 @@ import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import Gallery from './pages/Gallery';
+import SentryTestPage from './pages/SentryTestPage';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
@@ -28,6 +29,7 @@ function AppShell() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/request-quote" element={<RequestQuote />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/sentry-test" element={<SentryTestPage />} />
         <Route path="/*" element={<AdminRoutes />} />
       </Routes>
       {!isAdmin && <CTAFloatingButton />}
