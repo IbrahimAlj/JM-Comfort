@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Routes, Route, Navigate, Link, useNavigate } from "react-router-dom";
 import Protected from "./Protected";
 import AdminLogin from "./pages/AdminLogin";
+import { captureError } from "../utils/captureError";
 import AdminLeadsPage from "./pages/AdminLeadsPage";
 import AdminNotFound from "./pages/AdminNotFound";
 import AdminLayout from "./AdminLayout";
@@ -177,6 +178,7 @@ function AdminUpload() {
         setSelectedFiles([]);
       }
     } catch (err) {
+      captureError(err, { page: 'AdminUpload', action: 'uploadFiles' });
       setError("Could not connect to server");
     } finally {
       setUploading(false);
