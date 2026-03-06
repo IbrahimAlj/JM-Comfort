@@ -39,7 +39,7 @@ export default function AdminSidebar() {
         <p style={{ fontSize: "11px", color: "#6B7280", margin: "4px 0 0 0" }}>Admin Panel</p>
       </div>
 
-      <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto" }}>
+      <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto" }} aria-label="Admin navigation">
         {navItems.map((item) => (
           <NavLink
             key={item.to}
