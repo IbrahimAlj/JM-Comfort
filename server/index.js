@@ -11,6 +11,7 @@ const projectRoutes = require('./routes/projects');
 const serviceRoutes = require('./routes/services');
 const leadsRoutes = require('./routes/leads');
 const galleryRoutes = require('./routes/gallery');
+const sentryTestRoutes = require('./routes/sentryTest');
 const { validateEmailConfig } = require('./config/mailer');
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/sentry', sentryTestRoutes);
 
 /* --------------------
    Health Check
