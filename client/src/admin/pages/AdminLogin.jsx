@@ -70,7 +70,7 @@ export default function AdminLogin() {
         </p>
 
         {error && (
-          <div style={{
+          <div role="alert" style={{
             backgroundColor: "#FEF2F2",
             border: "1px solid #FECACA",
             borderRadius: "6px",
@@ -84,7 +84,7 @@ export default function AdminLogin() {
         )}
 
         <form onSubmit={onSubmit}>
-          <label style={{
+          <label htmlFor="admin-email" style={{
             display: "block",
             fontSize: "14px",
             fontWeight: "500",
@@ -94,6 +94,7 @@ export default function AdminLogin() {
             Email
           </label>
           <input
+            id="admin-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -116,7 +117,7 @@ export default function AdminLogin() {
             onBlur={(e) => { e.target.style.borderColor = "#D1D5DB"; }}
           />
 
-          <label style={{
+          <label htmlFor="admin-password" style={{
             display: "block",
             fontSize: "14px",
             fontWeight: "500",
@@ -126,6 +127,7 @@ export default function AdminLogin() {
             Password
           </label>
           <input
+            id="admin-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
