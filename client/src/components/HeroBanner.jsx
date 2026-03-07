@@ -87,7 +87,6 @@ const HeroBanner = () => {
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div aria-label="Rated 4 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
               <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="4 out of 5 stars">
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
@@ -143,7 +142,6 @@ const HeroBanner = () => {
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div aria-label="Rated 5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
               <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="5 out of 5 stars">
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
@@ -199,7 +197,6 @@ const HeroBanner = () => {
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div aria-label="Rated 5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
               <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="5 out of 5 stars">
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
                 <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
