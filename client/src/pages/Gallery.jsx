@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import Navbar from "../components/Navbar";
+import { captureError } from "../utils/captureError";
 import PageMeta from "../components/PageMeta";
 
 const Gallery = () => {
@@ -21,7 +22,7 @@ const Gallery = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to load images:", err);
+        captureError(err, { page: 'Gallery', action: 'fetchImages' });
         setError("Unable to load gallery images. Please try again later.");
         setLoading(false);
       });

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import { captureError } from "../utils/captureError";
 import PageMeta from "../components/PageMeta";
 
 const initialValues = { name: "", email: "", phone: "", address: "" };
@@ -70,7 +71,8 @@ export default function RequestQuote() {
 
       setSubmitted(true);
       setValues(initialValues);
-    } catch {
+    } catch (err) {
+      captureError(err, { page: 'RequestQuote', action: 'submitForm' });
       setServerError(
         "Unable to reach the server. Please check your connection and try again."
       );
