@@ -13,7 +13,8 @@ export default function About() {
       <Navbar />
 
       {/* Main About Section */}
-      <section 
+      <main>
+      <section
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
@@ -56,7 +57,7 @@ export default function About() {
             margin: '0 0 24px 0',
             lineHeight: '1.2'
           }}>
-            About
+            About JM Comfort
           </h1>
 
           {/* Tagline */}
@@ -127,6 +128,7 @@ export default function About() {
           </ul>
         </div>
       </section>
+      </main>
     </>
   );
 }

@@ -38,7 +38,7 @@ const Gallery = () => {
       description="Browse JM Comfort's completed HVAC installation and repair projects in Sacramento, CA. Quality craftsmanship you can see from a trusted local team."
     />
     <Navbar />
-    <div className="min-h-screen bg-gray-50 py-10 px-6">
+    <main className="min-h-screen bg-gray-50 py-10 px-6">
       <h1 className="text-3xl font-semibold text-center mb-8 text-gray-800">
         Our Project Gallery
       </h1>
@@ -79,7 +79,7 @@ const Gallery = () => {
             >
               <img
                 src={img.url}
-                alt={img.title || "Project Image"}
+                alt={img.title || "JM Comfort HVAC project"}
                 className="w-full h-60 object-cover"
                 onError={(e) => {
                   e.target.style.display = "none";
@@ -99,7 +99,7 @@ const Gallery = () => {
           <div className="relative">
             <img
               src={selectedImage}
-              alt="Enlarged project"
+              alt="Enlarged view of HVAC project"
               className="max-h-[80vh] max-w-[90vw] rounded-lg"
             />
             <button
@@ -111,7 +111,7 @@ const Gallery = () => {
           </div>
         </div>
       )}
-    </div>
+    </main>
     </>
   );
 };

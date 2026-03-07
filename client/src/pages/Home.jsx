@@ -11,11 +11,13 @@ export default function Home() {
         description="Reliable, energy-efficient heating and cooling for Sacramento homes and businesses. Family-owned JM Comfort—trusted service, honest pricing, comfort and care."
       />
       <Navbar />
-      <HeroBanner />
-      <WhyChooseUs />
+      <main>
+        <HeroBanner />
+        <WhyChooseUs />
 
-      {/* Add other homepage sections below */}
-      {/* Services preview, testimonials, etc. */}
+        {/* Add other homepage sections below */}
+        {/* Services preview, testimonials, etc. */}
+      </main>
     </>
   );
 }

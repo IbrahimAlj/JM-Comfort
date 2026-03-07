@@ -58,6 +58,7 @@ export default function Services() {
         description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
       />
       <Navbar />
+      <main>
 
       <section style={{
         maxWidth: '1280px',
@@ -198,6 +199,7 @@ export default function Services() {
           ))}
         </div>
       </section>
+      </main>
     </>
   );
 }

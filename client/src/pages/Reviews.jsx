@@ -10,7 +10,9 @@ export default function Reviews() {
         description="Read verified customer reviews for JM Comfort HVAC services in Sacramento. Rated 4.9 stars by local homeowners and businesses. See why neighbors trust us."
       />
       <Navbar />
-      <CustomerReviews />
+      <main>
+        <CustomerReviews />
+      </main>
     </>
   );
 }
