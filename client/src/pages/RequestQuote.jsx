@@ -142,7 +142,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.name
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.name && (
@@ -170,7 +170,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.email
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.email && (
@@ -198,7 +198,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.phone
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.phone && (
@@ -226,7 +226,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.address
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.address && (
@@ -240,14 +240,14 @@ export default function RequestQuote() {
               disabled={isDisabled}
               className={`w-full rounded-lg px-6 py-3 text-base font-semibold transition ${
                 isDisabled
-                  ? "cursor-not-allowed bg-gray-300 text-gray-500"
+                  ? "cursor-not-allowed bg-gray-300 text-gray-700"
                   : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               {loading ? "Submitting..." : "Submit Quote Request"}
             </button>
 
-            <p className="text-xs text-gray-500">* Required fields</p>
+            <p className="text-xs text-gray-600">* Required fields</p>
           </form>
         )}
       </main>

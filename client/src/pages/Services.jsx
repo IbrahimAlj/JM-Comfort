@@ -139,7 +139,7 @@ export default function Services() {
 
                 <p style={{
                   fontSize: '16px',
-                  color: '#6B7280',
+                  color: '#4B5563',
                   lineHeight: '1.6',
                   marginBottom: '24px'
                 }}>
@@ -179,7 +179,7 @@ export default function Services() {
                       borderRadius: '6px',
                       backgroundColor: 'white',
                       color: '#374151',
-                      border: '2px solid #D1D5DB',
+                      border: '2px solid #9CA3AF',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
                       textDecoration: 'none',
