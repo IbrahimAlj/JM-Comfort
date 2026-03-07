@@ -147,9 +147,8 @@ export default function Services() {
 
                 {/* Buttons Container */}
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  {/* Learn More Button - Goes to Service Detail */}
-                  <Link to={`/services/${service.id}`}>
-                    <button style={{
+                  {/* Learn More - Styled Link */}
+                  <Link to={`/services/${service.id}`} style={{
                       padding: '10px 24px',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -158,7 +157,9 @@ export default function Services() {
                       color: 'white',
                       border: 'none',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
                     }}
                     onMouseOver={(e) => {
                       e.target.style.backgroundColor = '#374151';
@@ -167,12 +168,10 @@ export default function Services() {
                       e.target.style.backgroundColor = '#000000';
                     }}>
                       Learn More
-                    </button>
                   </Link>
 
-                  {/* Request Button */}
-                  <Link to="/request-quote">
-                    <button style={{
+                  {/* Request Quote - Styled Link */}
+                  <Link to="/request-quote" style={{
                       padding: '10px 24px',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -181,7 +180,9 @@ export default function Services() {
                       color: '#374151',
                       border: '2px solid #D1D5DB',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
                     }}
                     onMouseOver={(e) => {
                       e.target.style.backgroundColor = '#F3F4F6';
@@ -190,7 +191,6 @@ export default function Services() {
                       e.target.style.backgroundColor = 'white';
                     }}>
                       Request Quote
-                    </button>
                   </Link>
                 </div>
               </div>
