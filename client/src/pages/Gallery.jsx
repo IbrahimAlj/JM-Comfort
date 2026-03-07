@@ -30,6 +30,16 @@ const Gallery = () => {
     fetchImages();
   }, [fetchImages]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedImage(null);
+    };
+    if (selectedImage) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage]);
+
   return (
     <>
     <Navbar />
@@ -40,7 +50,7 @@ const Gallery = () => {
 
       {/* Loading state */}
       {loading && (
-        <p className="text-center text-gray-500">Loading gallery...</p>
+        <p className="text-center text-gray-600">Loading gallery...</p>
       )}
 
       {/* Error state */}
@@ -58,7 +68,7 @@ const Gallery = () => {
 
       {/* Empty state */}
       {!loading && !error && images.length === 0 && (
-        <p className="text-center text-gray-500">
+        <p className="text-center text-gray-600">
           No images in the gallery yet.
         </p>
       )}
@@ -88,6 +98,8 @@ const Gallery = () => {
       {/* Basic modal */}
       {selectedImage && (
         <div
+          role="dialog"
+          aria-label="Enlarged project image"
           className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
           onClick={() => setSelectedImage(null)}
         >
@@ -99,6 +111,7 @@ const Gallery = () => {
             />
             <button
               onClick={() => setSelectedImage(null)}
+              aria-label="Close image"
               className="absolute top-2 right-2 bg-white text-black rounded-full px-3 py-1 text-sm font-bold"
             >
               ✕
