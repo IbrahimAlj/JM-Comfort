@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import PageMeta from '../components/PageMeta';
 
 export default function Services() {
   const services = [
@@ -52,8 +53,13 @@ export default function Services() {
 
   return (
     <>
+      <PageMeta
+        title="HVAC Services | Installation, Repairs & Maintenance | JM Comfort"
+        description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
+      />
       <Navbar />
-      
+      <main>
+
       <section style={{
         maxWidth: '1280px',
         margin: '0 auto',
@@ -133,7 +139,7 @@ export default function Services() {
 
                 <p style={{
                   fontSize: '16px',
-                  color: '#6B7280',
+                  color: '#4B5563',
                   lineHeight: '1.6',
                   marginBottom: '24px'
                 }}>
@@ -142,9 +148,8 @@ export default function Services() {
 
                 {/* Buttons Container */}
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  {/* Learn More Button - Goes to Service Detail */}
-                  <Link to={`/services/${service.id}`}>
-                    <button style={{
+                  {/* Learn More - Styled Link */}
+                  <Link to={`/services/${service.id}`} style={{
                       padding: '10px 24px',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -153,7 +158,9 @@ export default function Services() {
                       color: 'white',
                       border: 'none',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
                     }}
                     onMouseOver={(e) => {
                       e.target.style.backgroundColor = '#374151';
@@ -162,21 +169,21 @@ export default function Services() {
                       e.target.style.backgroundColor = '#000000';
                     }}>
                       Learn More
-                    </button>
                   </Link>
 
-                  {/* Request Button */}
-                  <Link to="/request-quote">
-                    <button style={{
+                  {/* Request Quote - Styled Link */}
+                  <Link to="/request-quote" style={{
                       padding: '10px 24px',
                       fontSize: '16px',
                       fontWeight: '500',
                       borderRadius: '6px',
                       backgroundColor: 'white',
                       color: '#374151',
-                      border: '2px solid #D1D5DB',
+                      border: '2px solid #9CA3AF',
                       cursor: 'pointer',
-                      transition: 'all 0.2s'
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
                     }}
                     onMouseOver={(e) => {
                       e.target.style.backgroundColor = '#F3F4F6';
@@ -185,7 +192,6 @@ export default function Services() {
                       e.target.style.backgroundColor = 'white';
                     }}>
                       Request Quote
-                    </button>
                   </Link>
                 </div>
               </div>
@@ -193,6 +199,7 @@ export default function Services() {
           ))}
         </div>
       </section>
+      </main>
     </>
   );
 }

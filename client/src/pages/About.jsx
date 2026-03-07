@@ -1,14 +1,20 @@
 import Navbar from '../components/Navbar';
 import JMcomfort1 from '../assets/JMcomfort1.jpeg';
 import JMcomfort2 from '../assets/JMcomfort2.jpeg';
+import PageMeta from '../components/PageMeta';
 
 export default function About() {
   return (
     <>
+      <PageMeta
+        title="About JM Comfort | Sacramento HVAC Experts"
+        description="Learn about JM Comfort, Sacramento's trusted HVAC company. Licensed, insured, with 500+ local jobs completed and a 4.9-star customer rating. Honest work, fair prices."
+      />
       <Navbar />
 
       {/* Main About Section */}
-      <section 
+      <main>
+      <section
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
@@ -51,7 +57,7 @@ export default function About() {
             margin: '0 0 24px 0',
             lineHeight: '1.2'
           }}>
-            About
+            About JM Comfort
           </h1>
 
           {/* Tagline */}
@@ -122,6 +128,7 @@ export default function About() {
           </ul>
         </div>
       </section>
+      </main>
     </>
   );
 }

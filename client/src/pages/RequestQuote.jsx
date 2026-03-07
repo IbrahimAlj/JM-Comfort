@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { captureError } from "../utils/captureError";
+import PageMeta from "../components/PageMeta";
 
 const initialValues = { name: "", email: "", phone: "", address: "" };
 
@@ -85,6 +86,10 @@ export default function RequestQuote() {
 
   return (
     <>
+      <PageMeta
+        title="Request a Free HVAC Quote | JM Comfort Sacramento"
+        description="Request a free HVAC estimate from JM Comfort. Fill out our quick form and a certified technician will contact you with honest, transparent pricing."
+      />
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
@@ -139,7 +144,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.name
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.name && (
@@ -167,7 +172,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.email
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.email && (
@@ -195,7 +200,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.phone
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.phone && (
@@ -223,7 +228,7 @@ export default function RequestQuote() {
                 className={`mt-1 block w-full rounded-lg border px-4 py-2.5 text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.address
                     ? "border-red-400 focus:ring-red-400"
-                    : "border-gray-300 focus:border-black"
+                    : "border-gray-400 focus:border-black"
                 }`}
               />
               {errors.address && (
@@ -237,14 +242,14 @@ export default function RequestQuote() {
               disabled={isDisabled}
               className={`w-full rounded-lg px-6 py-3 text-base font-semibold transition ${
                 isDisabled
-                  ? "cursor-not-allowed bg-gray-300 text-gray-500"
+                  ? "cursor-not-allowed bg-gray-300 text-gray-700"
                   : "bg-black text-white hover:bg-gray-800"
               }`}
             >
               {loading ? "Submitting..." : "Submit Quote Request"}
             </button>
 
-            <p className="text-xs text-gray-500">* Required fields</p>
+            <p className="text-xs text-gray-600">* Required fields</p>
           </form>
         )}
       </main>
