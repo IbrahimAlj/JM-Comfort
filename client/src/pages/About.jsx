@@ -1,10 +1,15 @@
 import Navbar from '../components/Navbar';
 import JMcomfort1 from '../assets/JMcomfort1.jpeg';
 import JMcomfort2 from '../assets/JMcomfort2.jpeg';
+import PageMeta from '../components/PageMeta';
 
 export default function About() {
   return (
     <>
+      <PageMeta
+        title="About JM Comfort | Sacramento HVAC Experts"
+        description="Learn about JM Comfort, Sacramento's trusted HVAC company. Licensed, insured, with 500+ local jobs completed and a 4.9-star customer rating. Honest work, fair prices."
+      />
       <Navbar />
 
       {/* Main About Section */}
