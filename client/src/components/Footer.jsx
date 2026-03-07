@@ -35,24 +35,24 @@ export default function Footer() {
         }}>
           <div>
             <h3 style={{ fontSize: '24px', fontWeight: '600', margin: 0, color: 'white' }}>JM Comfort</h3>
-            <p style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#9CA3AF' }}>
+            <p style={{ margin: '8px 0 0 0', fontSize: '14px', color: '#B0B5BD' }}>
               Heating • Cooling • Comfort
             </p>
           </div>
 
           {/* Social Links */}
           <div style={{ display: 'flex', gap: '16px', fontSize: '20px' }}>
-            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }} 
+            <a href="#" aria-label="Facebook" style={{ color: '#E5E7EB', transition: 'color 0.2s' }} 
                onMouseOver={(e) => e.target.style.color = 'white'}
                onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
               <FaFacebook />
             </a>
-            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
+            <a href="#" aria-label="Instagram" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
                onMouseOver={(e) => e.target.style.color = 'white'}
                onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
               <FaInstagram />
             </a>
-            <a href="#" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
+            <a href="#" aria-label="Twitter" style={{ color: '#E5E7EB', transition: 'color 0.2s' }}
                onMouseOver={(e) => e.target.style.color = 'white'}
                onMouseOut={(e) => e.target.style.color = '#E5E7EB'}>
               <FaTwitter />
@@ -131,7 +131,7 @@ export default function Footer() {
           justifyContent: 'space-between',
           alignItems: 'center',
           fontSize: '12px',
-          color: '#9CA3AF',
+          color: '#B0B5BD',
           flexWrap: 'wrap',
           gap: '12px'
         }}>
@@ -139,14 +139,14 @@ export default function Footer() {
           <div style={{ display: 'flex', gap: '8px' }}>
           
           {/* Privacy (placeholder - add page ref once created) */}
-            <span style={{ color: '#9CA3AF' }}>
+            <span style={{ color: '#B0B5BD' }}>
               Privacy
             
             </span>
             <span>•</span>
             
           {/* Terms (placeholder - add page ref once created) */}
-            <span style={{ color: '#9CA3AF' }}>
+            <span style={{ color: '#B0B5BD' }}>
             
               Terms
             </span>
@@ -155,9 +155,9 @@ export default function Footer() {
           {/* Admin Login Link */}
           {/* We'll do this for Privacy and Terms, same format just once they have a working link */}
             <Link to="/admin/login"
-                  style={{ color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s' }}
+                  style={{ color: '#B0B5BD', textDecoration: 'none', transition: 'color 0.2s' }}
                   onMouseOver={(e) => e.target.style.color = 'white'}
-                  onMouseOut={(e) => e.target.style.color = '#9CA3AF'}>
+                  onMouseOut={(e) => e.target.style.color = '#B0B5BD'}>
               Login
           </Link>
 

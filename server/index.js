@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
+const { initSentry } = require('./config/sentry');
 const sanitizeInput = require('./middleware/validateInput');
 
 const appointmentRoutes = require('./routes/appointments');
@@ -40,6 +41,11 @@ app.use('/api/sentry', sentryTestRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
+
+/* --------------------
+   Sentry Error Handler
+-------------------- */
+initSentry(app);
 
 /* --------------------
    Global Error Handler
