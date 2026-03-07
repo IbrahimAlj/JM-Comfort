@@ -56,10 +56,14 @@ const CustomerReviews = () => {
   // Star rating component
   const StarRating = ({ rating }) => {
     return (
-      <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
+      <div
+        style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}
+        aria-label={`Rated ${rating} out of 5 stars`}
+      >
         {[1, 2, 3, 4, 5].map((star) => (
           <span
             key={star}
+            aria-hidden="true"
             style={{
               color: star <= rating ? '#FBBF24' : '#E5E7EB',
               fontSize: '16px'
@@ -137,7 +141,9 @@ const CustomerReviews = () => {
               {/* Reviewer Info */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 {/* Avatar */}
-                <div style={{
+                <div
+                  aria-hidden="true"
+                  style={{
                   width: '40px',
                   height: '40px',
                   borderRadius: '50%',
