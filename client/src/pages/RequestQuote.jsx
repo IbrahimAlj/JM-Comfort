@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
+import PageMeta from "../components/PageMeta";
 
 const initialValues = { name: "", email: "", phone: "", address: "" };
 
@@ -83,6 +84,10 @@ export default function RequestQuote() {
 
   return (
     <>
+      <PageMeta
+        title="Request a Free HVAC Quote | JM Comfort Sacramento"
+        description="Request a free HVAC estimate from JM Comfort. Fill out our quick form and a certified technician will contact you with honest, transparent pricing."
+      />
       <Navbar />
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
