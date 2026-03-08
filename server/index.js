@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
+const { initSentry } = require('./config/sentry');
 const sanitizeInput = require('./middleware/validateInput');
 
 const appointmentRoutes = require('./routes/appointments');
@@ -10,6 +11,7 @@ const projectRoutes = require('./routes/projects');
 const serviceRoutes = require('./routes/services');
 const leadsRoutes = require('./routes/leads');
 const galleryRoutes = require('./routes/gallery');
+const sentryTestRoutes = require('./routes/sentryTest');
 const { validateEmailConfig } = require('./config/mailer');
 
 const app = express();
@@ -31,6 +33,7 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/sentry', sentryTestRoutes);
 
 /* --------------------
    Health Check
@@ -38,6 +41,11 @@ app.use('/api/gallery', galleryRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
+
+/* --------------------
+   Sentry Error Handler
+-------------------- */
+initSentry(app);
 
 /* --------------------
    Global Error Handler

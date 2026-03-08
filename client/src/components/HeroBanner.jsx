@@ -81,18 +81,19 @@ const HeroBanner = () => {
             maxWidth: '1200px'
           }}>
             {/* Review 1 */}
-            <div style={{
+            <article style={{
               backgroundColor: 'white',
               border: '1px solid #E5E7EB',
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#E5E7EB' }}>★</span>
+              <div aria-label="Rated 4 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="4 out of 5 stars">
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#E5E7EB' }}>★</span>
               </div>
 
               <h3 style={{
@@ -114,7 +115,7 @@ const HeroBanner = () => {
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{
+                <div aria-hidden="true" style={{
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
@@ -133,21 +134,22 @@ const HeroBanner = () => {
                   <p style={{ fontSize: '11px', color: '#9CA3AF', margin: 0 }}>10/03/2023</p>
                 </div>
               </div>
-            </div>
+            </article>
 
             {/* Review 2 */}
-            <div style={{
+            <article style={{
               backgroundColor: 'white',
               border: '1px solid #E5E7EB',
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
+              <div aria-label="Rated 5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="5 out of 5 stars">
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
               </div>
 
               <h3 style={{
@@ -169,7 +171,7 @@ const HeroBanner = () => {
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{
+                <div aria-hidden="true" style={{
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
@@ -188,21 +190,22 @@ const HeroBanner = () => {
                   <p style={{ fontSize: '11px', color: '#9CA3AF', margin: 0 }}>04/02/2019</p>
                 </div>
               </div>
-            </div>
+            </article>
 
             {/* Review 3 */}
-            <div style={{
+            <article style={{
               backgroundColor: 'white',
               border: '1px solid #E5E7EB',
               borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
+              <div aria-label="Rated 5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+              <div style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }} role="img" aria-label="5 out of 5 stars">
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
               </div>
 
               <h3 style={{
@@ -224,7 +227,7 @@ const HeroBanner = () => {
               </p>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{
+                <div aria-hidden="true" style={{
                   width: '36px',
                   height: '36px',
                   borderRadius: '50%',
@@ -243,7 +246,7 @@ const HeroBanner = () => {
                   <p style={{ fontSize: '11px', color: '#9CA3AF', margin: 0 }}>19/11/2001</p>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         </div>
       </div>

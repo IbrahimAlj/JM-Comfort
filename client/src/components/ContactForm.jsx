@@ -67,8 +67,13 @@ export default function ContactForm() {
             Name<span className="text-red-600">*</span>
           </label>
           <input
-            id="name" name="name" value={values.name} onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${errors.name ? "border-red-400" : "border-gray-300"}`}
+            id="name"
+            name="name"
+            value={values.name}
+            onChange={onChange}
+            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
+              errors.name ? "border-red-400" : "border-gray-400"
+            }`}
             placeholder="Jane Doe"
           />
           {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
@@ -79,8 +84,14 @@ export default function ContactForm() {
             Email<span className="text-red-600">*</span>
           </label>
           <input
-            id="email" name="email" type="email" value={values.email} onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${errors.email ? "border-red-400" : "border-gray-300"}`}
+            id="email"
+            name="email"
+            type="email"
+            value={values.email}
+            onChange={onChange}
+            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
+              errors.email ? "border-red-400" : "border-gray-400"
+            }`}
             placeholder="jane@example.com"
           />
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
@@ -91,8 +102,13 @@ export default function ContactForm() {
             Phone (optional)
           </label>
           <input
-            id="phone" name="phone" value={values.phone} onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${errors.phone ? "border-red-400" : "border-gray-300"}`}
+            id="phone"
+            name="phone"
+            value={values.phone}
+            onChange={onChange}
+            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
+              errors.phone ? "border-red-400" : "border-gray-400"
+            }`}
             placeholder="(555) 123-4567"
           />
           {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
@@ -103,21 +119,30 @@ export default function ContactForm() {
             Message<span className="text-red-600">*</span>
           </label>
           <textarea
-            id="message" name="message" rows={5} value={values.message} onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${errors.message ? "border-red-400" : "border-gray-300"}`}
+            id="message"
+            name="message"
+            rows={5}
+            value={values.message}
+            onChange={onChange}
+            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
+              errors.message ? "border-red-400" : "border-gray-400"
+            }`}
             placeholder="How can we help?"
           />
           {errors.message && <p className="mt-1 text-xs text-red-600">{errors.message}</p>}
         </div>
 
         <button
-          type="submit" disabled={disabled}
-          className={`w-full rounded-lg px-4 py-2 font-medium ${disabled ? "bg-gray-300 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"}`}
+          type="submit"
+          disabled={disabled}
+          className={`w-full rounded-lg px-4 py-2 font-medium ${
+            disabled ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+          }`}
         >
           {sending ? "Sending..." : "Send message"}
         </button>
 
-        <p className="text-xs text-gray-500">* Required fields</p>
+        <p className="text-xs text-gray-600">* Required fields</p>
       </form>
     </section>
   );
