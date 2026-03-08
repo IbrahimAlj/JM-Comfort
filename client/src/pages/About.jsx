@@ -35,7 +35,7 @@ export default function About() {
             boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
           }}>
             <img 
-              src={JMcomfort2}
+              src={JMcomfort2} // huge image 
               alt="JM Comfort HVAC technician installing heating and cooling system"
               style={{
                 width: '100%',
@@ -43,7 +43,8 @@ export default function About() {
                 display: 'block'
               }}
               // loading="lazy"
-              loading="eager"
+              // instead of loading lazily, the following below loads immdiately. 
+              loading="eager" 
               decoding="async"
               fetchpriority="high"
             />
