@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar';
-import JMcomfort1 from '../assets/JMcomfort1.jpeg';
-import JMcomfort2 from '../assets/JMcomfort2.jpeg';
+// import JMcomfort1 from '../assets/JMcomfort1.jpeg';
+import JMcomfort2 from '../assets/JMcomfort2.webp';
 import PageMeta from '../components/PageMeta';
 
 export default function About() {
@@ -35,14 +35,18 @@ export default function About() {
             boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
           }}>
             <img 
-              src={JMcomfort2}
+              src={JMcomfort2} // huge image 
               alt="JM Comfort HVAC technician installing heating and cooling system"
               style={{
                 width: '100%',
                 height: 'auto',
                 display: 'block'
               }}
-              loading="lazy"
+              // loading="lazy"
+              // instead of loading lazily, the following below loads immdiately. 
+              loading="eager" 
+              decoding="async"
+              fetchpriority="high"
             />
           </div>
         </div>
