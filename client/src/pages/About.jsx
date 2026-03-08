@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar';
-import JMcomfort1 from '../assets/JMcomfort1.jpeg';
-import JMcomfort2 from '../assets/JMcomfort2.jpeg';
+// import JMcomfort1 from '../assets/JMcomfort1.jpeg';
+import JMcomfort2 from '../assets/JMcomfort2.webp';
 import PageMeta from '../components/PageMeta';
 
 export default function About() {
@@ -42,7 +42,10 @@ export default function About() {
                 height: 'auto',
                 display: 'block'
               }}
-              loading="lazy"
+              // loading="lazy"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
             />
           </div>
         </div>
