@@ -15,7 +15,6 @@ const HeroBanner = () => {
       role="banner"
       aria-label="Homepage hero section"
     >
-      {/* Background */}
       <div 
         style={{
           position: 'absolute',
@@ -27,43 +26,35 @@ const HeroBanner = () => {
         aria-hidden="true"
       />
 
-      {/* Content */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          width: '100%',
-          paddingLeft: '80px',
-          paddingTop: '180px',
-          paddingRight: '80px'
-        }}
-      >
+      <div style={{
+        position: 'relative',
+        zIndex: 10,
+        width: '100%',
+        paddingLeft: '80px',
+        paddingTop: '180px',
+        paddingRight: '80px'
+      }}>
         <div style={{ maxWidth: '600px' }}>
-          <h1
-            style={{
-              color: 'black',
-              fontWeight: 'bold',
-              fontSize: '48px',
-              lineHeight: '1.2',
-              marginBottom: '24px'
-            }}
-          >
+          <h1 style={{
+            color: 'black',
+            fontWeight: 'bold',
+            fontSize: '48px',
+            lineHeight: '1.2',
+            marginBottom: '24px'
+          }}>
             Your Trusted Partner in Home Comfort Solutions
           </h1>
 
-          <p
-            style={{
-              color: 'black',
-              fontSize: '18px',
-              lineHeight: '1.7',
-              marginBottom: '60px'
-            }}
-          >
+          <p style={{
+            color: 'black',
+            fontSize: '18px',
+            lineHeight: '1.7',
+            marginBottom: '60px'
+          }}>
             At JM Comfort, we deliver reliable heating, cooling, and ventilation services for homes and businesses. Experience year-round comfort with certified technicians and transparent pricing.
           </p>
         </div>
 
-        {/* Reviews */}
         <div style={{ marginTop: '80px', maxWidth: '100%' }}>
           <h2
             style={{
@@ -85,71 +76,25 @@ const HeroBanner = () => {
             }}
           >
             {/* Review 1 */}
-            <article
-              style={{
-                backgroundColor: 'white',
-                border: '1px solid #E5E7EB',
-                borderRadius: '8px',
-                padding: '24px'
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '4px',
-                  marginBottom: '12px',
-                  fontSize: '18px'
-                }}
-                role="img"
-                aria-label="4 out of 5 stars"
-              >
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#E5E7EB' }}>★</span>
+            <article style={{
+              backgroundColor: 'white',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <div role="img" aria-label="4 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#E5E7EB' }}>★</span>
               </div>
-
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: '#1F2937',
-                  marginBottom: '8px'
-                }}
-              >
-                Excellent Service!
-              </h3>
-
-              <p
-                style={{
-                  fontSize: '14px',
-                  color: '#6B7280',
-                  lineHeight: '1.5',
-                  marginBottom: '16px'
-                }}
-              >
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1F2937', marginBottom: '8px' }}>Excellent Service!</h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.5', marginBottom: '16px' }}>
                 They installed my new AC quickly and left everything spotless. Highly recommend.
               </p>
-
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  aria-hidden="true"
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    backgroundColor: '#3B82F6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: '600',
-                    fontSize: '12px'
-                  }}
-                >
-                  FO
-                </div>
+                <div aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: '12px' }}>FO</div>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', margin: 0, color: '#1F2937' }}>
                     Frank ocean
@@ -160,71 +105,25 @@ const HeroBanner = () => {
             </article>
 
             {/* Review 2 */}
-            <article
-              style={{
-                backgroundColor: 'white',
-                border: '1px solid #E5E7EB',
-                borderRadius: '8px',
-                padding: '24px'
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '4px',
-                  marginBottom: '12px',
-                  fontSize: '18px'
-                }}
-                role="img"
-                aria-label="5 out of 5 stars"
-              >
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
+            <article style={{
+              backgroundColor: 'white',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <div role="img" aria-label="5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
               </div>
-
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: '#1F2937',
-                  marginBottom: '8px'
-                }}
-              >
-                Fast & Fair
-              </h3>
-
-              <p
-                style={{
-                  fontSize: '14px',
-                  color: '#6B7280',
-                  lineHeight: '1.5',
-                  marginBottom: '16px'
-                }}
-              >
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1F2937', marginBottom: '8px' }}>Fast & Fair</h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.5', marginBottom: '16px' }}>
                 Diagnosed the issue in minutes and had cool air back the same day.
               </p>
-
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  aria-hidden="true"
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    backgroundColor: '#3B82F6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: '600',
-                    fontSize: '12px'
-                  }}
-                >
-                  D
-                </div>
+                <div aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: '12px' }}>D</div>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', margin: 0, color: '#1F2937' }}>
                     Drake
@@ -235,71 +134,25 @@ const HeroBanner = () => {
             </article>
             
             {/* Review 3 */}
-            <article
-              style={{
-                backgroundColor: 'white',
-                border: '1px solid #E5E7EB',
-                borderRadius: '8px',
-                padding: '24px'
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  gap: '4px',
-                  marginBottom: '12px',
-                  fontSize: '18px'
-                }}
-                role="img"
-                aria-label="5 out of 5 stars"
-              >
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
-                <span style={{ color: '#FBBF24' }}>★</span>
+            <article style={{
+              backgroundColor: 'white',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <div role="img" aria-label="5 out of 5 stars" style={{ display: 'flex', gap: '4px', marginBottom: '12px', fontSize: '18px' }}>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
+                <span aria-hidden="true" style={{ color: '#FBBF24' }}>★</span>
               </div>
-
-              <h3
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: '#1F2937',
-                  marginBottom: '8px'
-                }}
-              >
-                Very Helpful
-              </h3>
-
-              <p
-                style={{
-                  fontSize: '14px',
-                  color: '#6B7280',
-                  lineHeight: '1.5',
-                  marginBottom: '16px'
-                }}
-              >
+              <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1F2937', marginBottom: '8px' }}>Very Helpful</h3>
+              <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.5', marginBottom: '16px' }}>
                 Explained maintenance tips and saved us money on our bill.
               </p>
-
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div
-                  aria-hidden="true"
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '50%',
-                    backgroundColor: '#3B82F6',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'white',
-                    fontWeight: '600',
-                    fontSize: '12px'
-                  }}
-                >
-                  Y
-                </div>
+                <div aria-hidden="true" style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: '12px' }}>Y</div>
                 <div>
                   <p style={{ fontSize: '13px', fontWeight: '600', margin: 0, color: '#1F2937' }}>
                     Yaet
@@ -308,6 +161,7 @@ const HeroBanner = () => {
                 </div>
               </div>
             </article>
+
           </div>
         </div>
       </div>
