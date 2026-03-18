@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+const { validateEnv } = require('./config/validateEnv');
+validateEnv();
 
 const { initSentry } = require('./config/sentry');
 const sanitizeInput = require('./middleware/validateInput');
