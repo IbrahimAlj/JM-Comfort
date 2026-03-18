@@ -3,7 +3,7 @@ function validateEnv() {
     'DB_HOST',
     'DB_PORT',
     'DB_USER',
-    'DB_PASSWORD',
+    'DB_PASS',
     'DB_NAME',
     'SMTP_HOST',
     'SMTP_PORT',
@@ -14,7 +14,6 @@ function validateEnv() {
     'AWS_ACCESS_KEY_ID',
     'AWS_SECRET_ACCESS_KEY',
     'S3_BUCKET_NAME',
-    'ADMIN_API_KEY',
   ];
 
   const missing = requiredVars.filter((key) => !process.env[key]);
