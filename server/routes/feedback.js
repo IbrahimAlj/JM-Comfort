@@ -1,7 +1,13 @@
 const express = require('express');
-const { createFeedback } = require('../controllers/feedbackController');
+const { createFeedback, getAllFeedback } = require('../controllers/feedbackController');
 
 const router = express.Router();
+
+/**
+ * GET /api/feedback
+ * Retrieve all UAT feedback entries.
+ */
+router.get('/', getAllFeedback);
 
 /**
  * POST /api/feedback
