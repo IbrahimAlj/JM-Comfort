@@ -1,6 +1,22 @@
 const pool = require('../config/db');
 
 /**
+ * GET /api/feedback
+ * Retrieve all UAT feedback entries, newest first.
+ */
+exports.getAllFeedback = async (req, res) => {
+  try {
+    const [rows] = await pool.execute(
+      'SELECT id, feedback_text, created_at FROM uat_feedback ORDER BY created_at DESC'
+    );
+    return res.json({ ok: true, feedback: rows });
+  } catch (err) {
+    console.error('[feedback] Failed to fetch feedback:', err.message);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+};
+
+/**
  * POST /api/feedback
  * Store a UAT feedback submission.
  */
