@@ -18,29 +18,33 @@ export default function About() {
         style={{
           maxWidth: '1280px',
           margin: '0 auto',
-          padding: '80px 64px',
+          padding: '80px 24px',
           display: 'flex',
-          gap: '64px',
-          alignItems: 'flex-start'
+          flexWrap: 'wrap',
+          gap: '48px',
+          alignItems: 'flex-start',
+          boxSizing: 'border-box',
         }}
         role="region"
         aria-label="About JM Comfort"
       >
-        {/* Left Column - Single Large Image */}
-        <div style={{ flex: '0 0 500px' }}>
+        {/* Left Column - Image */}
+        <div style={{ flex: '1 1 400px', maxWidth: '500px' }}>
           <div style={{
             backgroundColor: '#E5E7EB',
             borderRadius: '8px',
             overflow: 'hidden',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
           }}>
+            <img
+              src={JMcomfort2}
             <img 
               src={JMcomfort2} // huge image 
               alt="JM Comfort HVAC technician installing heating and cooling system"
               style={{
                 width: '100%',
                 height: 'auto',
-                display: 'block'
+                display: 'block',
               }}
               // loading="lazy"
               // instead of loading lazily, the following below loads immdiately. 
@@ -51,84 +55,58 @@ export default function About() {
           </div>
         </div>
 
-        {/* Right Column - All Content */}
-        <div style={{ flex: '1' }}>
-          {/* Heading */}
+        {/* Right Column - Content */}
+        <div style={{ flex: '1 1 400px' }}>
           <h1 style={{
-            fontSize: '56px',
+            fontSize: 'clamp(36px, 5vw, 56px)',
             fontWeight: 'bold',
             color: '#1F2937',
             margin: '0 0 24px 0',
-            lineHeight: '1.2'
+            lineHeight: '1.2',
           }}>
             About JM Comfort
           </h1>
 
-          {/* Tagline */}
           <p style={{
-            fontSize: '20px',
+            fontSize: 'clamp(16px, 2vw, 20px)',
             color: '#6B7280',
             marginBottom: '32px',
-            lineHeight: '1.6'
+            lineHeight: '1.6',
           }}>
             Your home's comfort team for heating, cooling, and clean air.
           </p>
 
-          {/* Main Description */}
           <p style={{
             fontSize: '16px',
             color: '#4B5563',
             lineHeight: '1.7',
-            marginBottom: '32px'
+            marginBottom: '32px',
           }}>
             JM Comfort is a Sacramento-based HVAC company focused on honest work and year-round comfort. We install, repair, and maintain heating and cooling systems for homes and small businesses—no upsells, just the right fix at a fair price. Our certified techs show up on time, explain options in plain language, and leave your space cleaner than we found it. From emergency AC repairs to seasonal tune-ups and smart thermostat upgrades, we deliver efficient, long-lasting results backed by clear communication and transparent pricing.
           </p>
 
-          {/* Key Points List */}
           <ul style={{
             listStyle: 'none',
             padding: 0,
-            margin: 0
+            margin: 0,
           }}>
-            <li style={{
-              fontSize: '16px',
-              color: '#4B5563',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'flex-start'
-            }}>
-              <span style={{ marginRight: '8px' }}>•</span>
-              <span>Licensed & Insured • CSLB #123456</span>
-            </li>
-            <li style={{
-              fontSize: '16px',
-              color: '#4B5563',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'flex-start'
-            }}>
-              <span style={{ marginRight: '8px' }}>•</span>
-              <span>Same-Day Service Available</span>
-            </li>
-            <li style={{
-              fontSize: '16px',
-              color: '#4B5563',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'flex-start'
-            }}>
-              <span style={{ marginRight: '8px' }}>•</span>
-              <span>500+ Local Jobs Completed</span>
-            </li>
-            <li style={{
-              fontSize: '16px',
-              color: '#4B5563',
-              display: 'flex',
-              alignItems: 'flex-start'
-            }}>
-              <span style={{ marginRight: '8px' }}>•</span>
-              <span>4.9★ Customer Rating</span>
-            </li>
+            {[
+              'Licensed & Insured • CSLB #123456',
+              'Same-Day Service Available',
+              '500+ Local Jobs Completed',
+              '4.9★ Customer Rating',
+            ].map((item, i) => (
+              <li key={i} style={{
+                fontSize: '16px',
+                color: '#4B5563',
+                marginBottom: i < 3 ? '12px' : 0,
+                display: 'flex',
+                alignItems: 'flex-start',
+              }}>
+                <span style={{ marginRight: '8px' }}>•</span>
+                <span>{item}</span>
+              </li>
+            ))}
           </ul>
         </div>
       </section>
