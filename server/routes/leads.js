@@ -71,10 +71,61 @@ function computeDedupeHash(lead) {
 router.post("/", async (req, res) => {
   try {
     const lead = normalizeLead(req.body);
+    const errors = [];
 
-    // Minimal validation
+    // Validation
+    const validLeadTypes = ["contact", "quote"];
+
     if (!lead.email) {
-      return res.status(400).json({ error: "email is required" });
+      errors.push("email is required");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) {
+      errors.push("email must be valid");
+    } else if (lead.email.length > 100) {
+      errors.push("email must not exceed 100 characters");
+    }
+
+    if (lead.name && lead.name.length > 120) {
+      errors.push("name must not exceed 120 characters");
+    }
+
+    if (lead.first_name && lead.first_name.length > 50) {
+      errors.push("first_name must not exceed 50 characters");
+    }
+
+    if (lead.last_name && lead.last_name.length > 50) {
+      errors.push("last_name must not exceed 50 characters");
+    }
+
+    if (lead.phone && lead.phone.length > 50) {
+      errors.push("phone must not exceed 50 characters");
+    }
+
+    if (lead.service_type && lead.service_type.length > 80) {
+      errors.push("service_type must not exceed 80 characters");
+    }
+
+    if (lead.source && lead.source.length > 100) {
+      errors.push("source must not exceed 100 characters");
+    }
+
+    if (lead.message && lead.message.length > 5000) {
+      errors.push("message must not exceed 5000 characters");
+    }
+
+    if (!validLeadTypes.includes(lead.lead_type)) {
+      errors.push("lead_type must be one of: contact, quote");
+    }
+
+    // Optional rule: require at least one identifying name field
+    if (!lead.name && !lead.first_name && !lead.last_name) {
+      errors.push("name or first_name/last_name is required");
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        error: "Validation failed",
+        details: errors,
+      });
     }
 
     const dedupe_hash = computeDedupeHash(lead);
@@ -100,7 +151,6 @@ router.post("/", async (req, res) => {
 
     const [result] = await pool.execute(sql, params);
 
-    // Insert created
     if (result.insertId && result.insertId > 0) {
       return res.status(201).json({
         message: "Lead created successfully",
@@ -108,7 +158,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Duplicate case -> idempotent
     return res.status(200).json({ ok: true, deduped: true });
   } catch (err) {
     console.error("[leads] Failed to create lead:", err.message);

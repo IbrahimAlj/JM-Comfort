@@ -6,7 +6,7 @@ const { validateEnv } = require('./config/validateEnv');
 validateEnv();
 
 const { initSentry } = require('./config/sentry');
-const sanitizeInput = require('./middleware/validateInput');
+const sanitizeInput = require('./middleware/validateinput');
 
 const appointmentRoutes = require('./routes/appointments');
 const projectRoutes = require('./routes/projects');
@@ -52,17 +52,6 @@ app.get('/health', (req, res) => {
    Sentry Error Handler
 -------------------- */
 initSentry(app);
-
-/* --------------------
-   Global Error Handler
--------------------- */
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-
-  res.status(500).json({
-    message: 'Something went wrong',
-  });
-});
 
 /* --------------------
    Start Server
