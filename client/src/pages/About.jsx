@@ -38,8 +38,6 @@ export default function About() {
           }}>
             <img
               src={JMcomfort2}
-            <img 
-              src={JMcomfort2} // huge image 
               alt="JM Comfort HVAC technician installing heating and cooling system"
               style={{
                 width: '100%',

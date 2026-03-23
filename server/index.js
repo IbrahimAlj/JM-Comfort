@@ -9,7 +9,6 @@ const { initSentry } = require('./config/sentry');
 const logger = require('./config/logger');
 const requestLogger = require('./middleware/requestLogger');
 const sanitizeInput = require('./middleware/validateInput');
-const sanitizeInput = require('./middleware/validateinput');
 
 const appointmentRoutes = require('./routes/appointments');
 const projectRoutes = require('./routes/projects');

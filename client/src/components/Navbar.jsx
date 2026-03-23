@@ -56,14 +56,6 @@ export default function Navbar() {
     <header style={{ width: '100%', backgroundColor: 'white' }}>
       <nav style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '96px' }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <img
-              src="/logo.png"
-              alt="JM Comfort Logo"
-    <header className="w-full bg-white">
-      <nav className="mx-auto max-w-7xl px-6 lg:px-16" aria-label="Main navigation">
-        <div className="flex items-center justify-between h-24">
-          {/* Logo - Left Side with proper sizing */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', marginLeft: '60px' }}>
             <img 
               src="/logo.png" 
