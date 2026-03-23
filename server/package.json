@@ -19,9 +19,12 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-validator": "^7.3.1",
+    "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "mysql2": "^3.17.4",
     "nodemailer": "^7.0.9",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0",
     "xss": "^1.0.15"
   },
   "devDependencies": {

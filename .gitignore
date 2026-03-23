@@ -44,3 +44,6 @@ nul
 
 # database backups (keep directory structure, ignore actual backup files)
 server/scripts/backups/*.sql
+
+# Log files
+logs/*.log
