@@ -1,3 +1,4 @@
+cat > client/src/pages/Services.jsx << 'EOF'
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 import PageMeta from '../components/PageMeta';
@@ -58,6 +59,8 @@ export default function Services() {
         description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
       />
       <Navbar />
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 py-12 md:py-20">
       <main>
 
       <section style={{
@@ -66,86 +69,39 @@ export default function Services() {
         padding: '80px 64px'
       }}>
         {/* Page Title */}
-        <h1 style={{
-          fontSize: '48px',
-          fontWeight: 'bold',
-          color: '#000000',
-          marginBottom: '64px'
-        }}>
+        <h1 className="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16">
           Our Services
         </h1>
 
         {/* Services List */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '32px'
-        }}>
+        <div className="flex flex-col gap-8">
           {services.map((service) => (
             <div
               key={service.id}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '32px',
-                padding: '32px',
-                border: '1px solid #E5E7EB',
-                borderRadius: '8px',
-                backgroundColor: 'white'
-              }}
+              className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white"
             >
-              {/* Service Image - Now clickable */}
-              <Link to={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
-                <div style={{
-                  width: '150px',
-                  height: '150px',
-                  flexShrink: 0,
-                  backgroundColor: '#D1D5DB',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  transition: 'opacity 0.2s'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.opacity = '0.8';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.opacity = '1';
-                }}>
-                  {/* Placeholder for service image */}
-                </div>
+              {/* Service Image */}
+              <Link to={`/services/${service.id}`} className="no-underline">
+                <div className="w-full sm:w-[150px] h-40 sm:h-[150px] flex-shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity duration-200 hover:opacity-80" />
               </Link>
 
               {/* Service Content */}
-              <div style={{ flex: 1 }}>
-                {/* Title - Now clickable */}
-                <Link to={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
-                  <h2 style={{
-                    fontSize: '28px',
-                    fontWeight: '600',
-                    color: '#000000',
-                    marginBottom: '12px',
-                    cursor: 'pointer',
-                    transition: 'color 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.color = '#374151';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.color = '#000000';
-                  }}>
+              <div className="flex-1">
+                {/* Title */}
+                <Link to={`/services/${service.id}`} className="no-underline">
+                  <h2 className="text-xl md:text-2xl font-semibold text-black mb-3 cursor-pointer transition-colors duration-200 hover:text-gray-700">
                     {service.title}
                   </h2>
                 </Link>
 
-                <p style={{
-                  fontSize: '16px',
-                  color: '#4B5563',
-                  lineHeight: '1.6',
-                  marginBottom: '24px'
-                }}>
+                <p className="text-base text-gray-600 leading-relaxed mb-6">
                   {service.description}
                 </p>
 
+                {/* Buttons */}
+                <div className="flex flex-wrap gap-3">
+                  <Link to={`/services/${service.id}`}>
+                    <button className="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white border-none cursor-pointer transition-all duration-200 hover:bg-gray-700">
                 {/* Buttons Container */}
                 <div style={{ display: 'flex', gap: '12px' }}>
                   {/* Learn More - Styled Link */}
@@ -171,6 +127,8 @@ export default function Services() {
                       Learn More
                   </Link>
 
+                  <Link to="/request-quote">
+                    <button className="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 cursor-pointer transition-all duration-200 hover:bg-gray-100">
                   {/* Request Quote - Styled Link */}
                   <Link to="/request-quote" style={{
                       padding: '10px 24px',
@@ -203,3 +161,4 @@ export default function Services() {
     </>
   );
 }
+EOF
