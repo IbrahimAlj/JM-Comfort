@@ -20,16 +20,26 @@ exports.getAllFeedback = async (req, res) => {
  * POST /api/feedback
  * Store a UAT feedback submission.
  */
+
 exports.createFeedback = async (req, res) => {
   try {
     const feedbackText = (req.body.feedback_text ?? '').toString().trim();
+    const errors = []; // empty array to catch errors (say if ones unkown)
 
     if (!feedbackText) {
-      return res.status(400).json({ error: 'Feedback text is required.' });
+      errors.push('Feedback text is required.');
     }
 
     if (feedbackText.length > 5000) {
-      return res.status(400).json({ error: 'Feedback must be 5000 characters or fewer.' });
+      errors.push('Feedback must be 5000 characters or fewer.');
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).
+      json({
+        error: 'Validation failed',
+        details: errors,
+      });
     }
 
     const [result] = await pool.execute(
@@ -37,11 +47,14 @@ exports.createFeedback = async (req, res) => {
       [feedbackText]
     );
 
-    return res.status(201).json({
+    return res.status(201).
+    json({
       message: 'Feedback submitted successfully.',
       feedback_id: result.insertId,
     });
-  } catch (err) {
+  
+  } 
+  catch (err) {
     console.error('[feedback] Failed to create feedback:', err.message);
     return res.status(500).json({ error: 'Internal server error.' });
   }
