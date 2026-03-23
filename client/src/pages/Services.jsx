@@ -1,6 +1,7 @@
 cat > client/src/pages/Services.jsx << 'EOF'
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import PageMeta from '../components/PageMeta';
 
 export default function Services() {
   const services = [
@@ -53,9 +54,20 @@ export default function Services() {
 
   return (
     <>
+      <PageMeta
+        title="HVAC Services | Installation, Repairs & Maintenance | JM Comfort"
+        description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
+      />
       <Navbar />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 py-12 md:py-20">
+      <main>
+
+      <section style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '80px 64px'
+      }}>
         {/* Page Title */}
         <h1 className="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16">
           Our Services
@@ -90,14 +102,54 @@ export default function Services() {
                 <div className="flex flex-wrap gap-3">
                   <Link to={`/services/${service.id}`}>
                     <button className="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white border-none cursor-pointer transition-all duration-200 hover:bg-gray-700">
+                {/* Buttons Container */}
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  {/* Learn More - Styled Link */}
+                  <Link to={`/services/${service.id}`} style={{
+                      padding: '10px 24px',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      borderRadius: '6px',
+                      backgroundColor: '#000000',
+                      color: 'white',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.backgroundColor = '#374151';
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.backgroundColor = '#000000';
+                    }}>
                       Learn More
-                    </button>
                   </Link>
 
                   <Link to="/request-quote">
                     <button className="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 cursor-pointer transition-all duration-200 hover:bg-gray-100">
+                  {/* Request Quote - Styled Link */}
+                  <Link to="/request-quote" style={{
+                      padding: '10px 24px',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      borderRadius: '6px',
+                      backgroundColor: 'white',
+                      color: '#374151',
+                      border: '2px solid #9CA3AF',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      textDecoration: 'none',
+                      display: 'inline-block'
+                    }}
+                    onMouseOver={(e) => {
+                      e.target.style.backgroundColor = '#F3F4F6';
+                    }}
+                    onMouseOut={(e) => {
+                      e.target.style.backgroundColor = 'white';
+                    }}>
                       Request Quote
-                    </button>
                   </Link>
                 </div>
               </div>
@@ -105,6 +157,7 @@ export default function Services() {
           ))}
         </div>
       </section>
+      </main>
     </>
   );
 }

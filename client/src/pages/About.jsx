@@ -1,12 +1,19 @@
 import Navbar from '../components/Navbar';
-import JMcomfort1 from '../assets/JMcomfort1.jpeg';
-import JMcomfort2 from '../assets/JMcomfort2.jpeg';
+// import JMcomfort1 from '../assets/JMcomfort1.jpeg';
+import JMcomfort2 from '../assets/JMcomfort2.webp';
+import PageMeta from '../components/PageMeta';
 
 export default function About() {
   return (
     <>
+      <PageMeta
+        title="About JM Comfort | Sacramento HVAC Experts"
+        description="Learn about JM Comfort, Sacramento's trusted HVAC company. Licensed, insured, with 500+ local jobs completed and a 4.9-star customer rating. Honest work, fair prices."
+      />
       <Navbar />
 
+      {/* Main About Section */}
+      <main>
       <section
         style={{
           maxWidth: '1280px',
@@ -31,13 +38,19 @@ export default function About() {
           }}>
             <img
               src={JMcomfort2}
+            <img 
+              src={JMcomfort2} // huge image 
               alt="JM Comfort HVAC technician installing heating and cooling system"
               style={{
                 width: '100%',
                 height: 'auto',
                 display: 'block',
               }}
-              loading="lazy"
+              // loading="lazy"
+              // instead of loading lazily, the following below loads immdiately. 
+              loading="eager" 
+              decoding="async"
+              fetchpriority="high"
             />
           </div>
         </div>
@@ -51,7 +64,7 @@ export default function About() {
             margin: '0 0 24px 0',
             lineHeight: '1.2',
           }}>
-            About
+            About JM Comfort
           </h1>
 
           <p style={{
@@ -97,6 +110,7 @@ export default function About() {
           </ul>
         </div>
       </section>
+      </main>
     </>
   );
 }

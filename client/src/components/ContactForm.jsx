@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackEvent } from "../utils/analytics";
 
 const initial = { name: "", email: "", phone: "", message: "" };
 
@@ -35,6 +36,12 @@ export default function ContactForm() {
       // ---- Placeholder for future backend wiring ----
       await new Promise((r) => setTimeout(r, 500));
       // -----------------------------------------------
+
+      // Track successful form submission
+      trackEvent("contact_form_submit", {
+        form_name: "contact_us",
+      });
+
       setSent(true);
       setValues(initial);
     } finally {
@@ -55,7 +62,6 @@ export default function ContactForm() {
       )}
 
       <form onSubmit={onSubmit} noValidate className="space-y-4">
-        {/* Name */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-1">
             Name<span className="text-red-600">*</span>
@@ -73,7 +79,6 @@ export default function ContactForm() {
           {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
         </div>
 
-        {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium mb-1">
             Email<span className="text-red-600">*</span>
@@ -92,7 +97,6 @@ export default function ContactForm() {
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
 
-        {/* Phone (optional) */}
         <div>
           <label htmlFor="phone" className="block text-sm font-medium mb-1">
             Phone (optional)
@@ -110,7 +114,6 @@ export default function ContactForm() {
           {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
         </div>
 
-        {/* Message */}
         <div>
           <label htmlFor="message" className="block text-sm font-medium mb-1">
             Message<span className="text-red-600">*</span>

@@ -10,13 +10,28 @@ const CustomerReviews = () => {
     { id: 6, quote: "The team went above and beyond to ensure quality work.", name: "Daniel K.", role: "Description", avatar: "DK", rating: 5 },
   ];
 
-  const StarRating = ({ rating }) => (
-    <div style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <span key={star} style={{ color: star <= rating ? '#FBBF24' : '#E5E7EB', fontSize: '16px' }}>★</span>
-      ))}
-    </div>
-  );
+  // Star rating component
+  const StarRating = ({ rating }) => {
+    return (
+      <div
+        style={{ display: 'flex', gap: '4px', marginBottom: '12px' }}
+        aria-label={`Rated ${rating} out of 5 stars`}
+      >
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            aria-hidden="true"
+            style={{
+              color: star <= rating ? '#FBBF24' : '#E5E7EB',
+              fontSize: '16px'
+            }}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <section

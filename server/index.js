@@ -2,7 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+const { validateEnv } = require('./config/validateEnv');
+validateEnv();
 
+const { initSentry } = require('./config/sentry');
 const sanitizeInput = require('./middleware/validateInput');
 
 const appointmentRoutes = require('./routes/appointments');
@@ -10,10 +13,13 @@ const projectRoutes = require('./routes/projects');
 const serviceRoutes = require('./routes/services');
 const leadsRoutes = require('./routes/leads');
 const galleryRoutes = require('./routes/gallery');
+const sentryTestRoutes = require('./routes/sentryTest');
+const analyticsRoutes = require('./routes/analytics');
+const feedbackRoutes = require('./routes/feedback');
 const { validateEmailConfig } = require('./config/mailer');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 /* --------------------
    Middleware
@@ -31,6 +37,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/leads', leadsRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/sentry', sentryTestRoutes);
+app.use('/api/admin/analytics', analyticsRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 /* --------------------
    Health Check
@@ -38,6 +47,11 @@ app.use('/api/gallery', galleryRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
 });
+
+/* --------------------
+   Sentry Error Handler
+-------------------- */
+initSentry(app);
 
 /* --------------------
    Global Error Handler
