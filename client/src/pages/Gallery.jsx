@@ -12,7 +12,7 @@ const Gallery = () => {
   const fetchImages = useCallback(() => {
     setLoading(true);
     setError(null);
-    fetch("http://localhost:5000/api/projects/gallery")
+    fetch("/api/gallery")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load images");
         return res.json();
