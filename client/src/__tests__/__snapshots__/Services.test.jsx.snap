@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Services page renders and matches snapshot 1`] = `
+<div>
+  <nav
+    data-testid="navbar"
+  >
+    Navbar
+  </nav>
+  <main>
+    <section
+      class="max-w-screen-xl mx-auto px-4 py-12 md:px-16 md:py-20"
+    >
+      <h1
+        class="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16"
+      >
+        Our Services
+      </h1>
+      <div
+        class="flex flex-col gap-8"
+      >
+        <div
+          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+        >
+          <a
+            class="no-underline w-full md:w-auto"
+            data-discover="true"
+            href="/services/1"
+          >
+            <div
+              class="w-full md:w-[150px] h-[150px] shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity hover:opacity-80"
+            />
+          </a>
+          <div
+            class="flex-1 min-w-0"
+          >
+            <a
+              class="no-underline"
+              data-discover="true"
+              href="/services/1"
+            >
+              <h2
+                class="text-xl md:text-[28px] font-semibold text-black mb-3 cursor-pointer transition-colors hover:text-gray-700"
+              >
+                Installation
+              </h2>
+            </a>
+            <p
+              class="text-base text-gray-600 leading-relaxed mb-6"
+            >
+              Professional AC and heating installs sized and tuned for your space.
+            </p>
+            <div
+              class="flex flex-wrap gap-3"
+            >
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white no-underline inline-block transition-colors hover:bg-gray-700"
+                data-discover="true"
+                href="/services/1"
+              >
+                Learn More
+              </a>
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
+                data-discover="true"
+                href="/request-quote"
+              >
+                Request Quote
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+        >
+          <a
+            class="no-underline w-full md:w-auto"
+            data-discover="true"
+            href="/services/2"
+          >
+            <div
+              class="w-full md:w-[150px] h-[150px] shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity hover:opacity-80"
+            />
+          </a>
+          <div
+            class="flex-1 min-w-0"
+          >
+            <a
+              class="no-underline"
+              data-discover="true"
+              href="/services/2"
+            >
+              <h2
+                class="text-xl md:text-[28px] font-semibold text-black mb-3 cursor-pointer transition-colors hover:text-gray-700"
+              >
+                Repairs
+              </h2>
+            </a>
+            <p
+              class="text-base text-gray-600 leading-relaxed mb-6"
+            >
+              Fast diagnostics and fixes for leaks, no-cool, airflow, and more.
+            </p>
+            <div
+              class="flex flex-wrap gap-3"
+            >
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white no-underline inline-block transition-colors hover:bg-gray-700"
+                data-discover="true"
+                href="/services/2"
+              >
+                Learn More
+              </a>
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
+                data-discover="true"
+                href="/request-quote"
+              >
+                Request Quote
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+        >
+          <a
+            class="no-underline w-full md:w-auto"
+            data-discover="true"
+            href="/services/3"
+          >
+            <div
+              class="w-full md:w-[150px] h-[150px] shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity hover:opacity-80"
+            />
+          </a>
+          <div
+            class="flex-1 min-w-0"
+          >
+            <a
+              class="no-underline"
+              data-discover="true"
+              href="/services/3"
+            >
+              <h2
+                class="text-xl md:text-[28px] font-semibold text-black mb-3 cursor-pointer transition-colors hover:text-gray-700"
+              >
+                Maintenance
+              </h2>
+            </a>
+            <p
+              class="text-base text-gray-600 leading-relaxed mb-6"
+            >
+              Seasonal tune-ups to improve efficiency and extend equipment life.
+            </p>
+            <div
+              class="flex flex-wrap gap-3"
+            >
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white no-underline inline-block transition-colors hover:bg-gray-700"
+                data-discover="true"
+                href="/services/3"
+              >
+                Learn More
+              </a>
+              <a
+                class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
+                data-discover="true"
+                href="/request-quote"
+              >
+                Request Quote
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+`;
