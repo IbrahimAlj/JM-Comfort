@@ -9,7 +9,7 @@ exports[`Services page renders and matches snapshot 1`] = `
   </nav>
   <main>
     <section
-      class="max-w-screen-xl mx-auto px-4 py-12 md:px-16 md:py-20"
+      class="w-full max-w-screen-xl mx-auto px-4 py-12 md:px-16 md:py-20"
     >
       <h1
         class="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16"
