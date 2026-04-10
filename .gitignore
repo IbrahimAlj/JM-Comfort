@@ -47,3 +47,7 @@ server/scripts/backups/*.sql
 
 # Log files
 logs/*.log
+
+# runtime logs
+server/logs/*
+!server/logs/.gitkeep

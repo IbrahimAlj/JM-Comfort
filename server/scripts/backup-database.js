@@ -3,7 +3,8 @@
 /**
  * Database Backup Script for JM Comfort
  *
- * Creates a mysqldump backup of the configured database.
+ * Creates a SQL backup of the configured database using mysql2.
+ * No external MySQL CLI tools required.
  * Backup files are stored in server/scripts/backups/ with timestamp naming.
  *
  * Usage:
@@ -20,7 +21,7 @@
  *   BACKUP_RETENTION_DAYS - Days to keep old backups (optional, default: 30)
  */
 
-const { execFile } = require("child_process");
+const mysql = require("mysql2/promise");
 const fs = require("fs");
 const path = require("path");
 
@@ -83,38 +84,85 @@ function generateBackupFilename() {
   return `${DB_NAME}_backup_${timestamp}.sql`;
 }
 
-function runMysqldump(outputPath) {
-  return new Promise((resolve, reject) => {
-    const args = [
-      `--host=${DB_HOST}`,
-      `--port=${DB_PORT}`,
-      `--user=${DB_USER}`,
-      "--single-transaction",
-      "--routines",
-      "--triggers",
-      `--result-file=${outputPath}`,
-      DB_NAME,
-    ];
+function escapeValue(val) {
+  if (val === null || val === undefined) return "NULL";
+  if (typeof val === "number") return String(val);
+  if (typeof val === "boolean") return val ? "1" : "0";
+  if (val instanceof Date) {
+    return `'${val.toISOString().slice(0, 19).replace("T", " ")}'`;
+  }
+  if (Buffer.isBuffer(val)) {
+    return `X'${val.toString("hex")}'`;
+  }
+  const escaped = String(val)
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t");
+  return `'${escaped}'`;
+}
 
-    const env = { ...process.env, MYSQL_PWD: DB_PASS };
+async function dumpDatabase(connection, outputPath) {
+  const lines = [];
 
-    log(`Starting mysqldump for database: ${DB_NAME}`);
-    log(`Host: ${DB_HOST}:${DB_PORT}`);
-    log(`Output: ${outputPath}`);
+  lines.push(`-- JM Comfort Database Backup`);
+  lines.push(`-- Generated: ${new Date().toISOString()}`);
+  lines.push(`-- Database: ${DB_NAME}`);
+  lines.push(`-- Host: ${DB_HOST}:${DB_PORT}`);
+  lines.push("");
+  lines.push(`SET FOREIGN_KEY_CHECKS = 0;`);
+  lines.push("");
 
-    execFile("mysqldump", args, { env }, (error, stdout, stderr) => {
-      if (error) {
-        reject(
-          new Error(`mysqldump failed: ${error.message}\nStderr: ${stderr}`)
+  // Get all tables
+  const [tables] = await connection.query("SHOW TABLES");
+  const tableKey = Object.keys(tables[0])[0];
+  const tableNames = tables.map((row) => row[tableKey]);
+
+  log(`Found ${tableNames.length} table(s) to back up`);
+
+  for (const tableName of tableNames) {
+    log(`  Backing up table: ${tableName}`);
+
+    // Get CREATE TABLE statement
+    const [createResult] = await connection.query(
+      `SHOW CREATE TABLE \`${tableName}\``
+    );
+    const createStatement = createResult[0]["Create Table"];
+
+    lines.push(`-- -------------------------------------------`);
+    lines.push(`-- Table: ${tableName}`);
+    lines.push(`-- -------------------------------------------`);
+    lines.push(`DROP TABLE IF EXISTS \`${tableName}\`;`);
+    lines.push(`${createStatement};`);
+    lines.push("");
+
+    // Get row data
+    const [rows] = await connection.query(`SELECT * FROM \`${tableName}\``);
+
+    if (rows.length > 0) {
+      const columns = Object.keys(rows[0]);
+      const columnList = columns.map((c) => `\`${c}\``).join(", ");
+
+      for (const row of rows) {
+        const values = columns.map((col) => escapeValue(row[col])).join(", ");
+        lines.push(
+          `INSERT INTO \`${tableName}\` (${columnList}) VALUES (${values});`
         );
-        return;
       }
-      if (stderr && !stderr.includes("Warning")) {
-        log(`mysqldump stderr: ${stderr}`);
-      }
-      resolve(outputPath);
-    });
-  });
+      lines.push("");
+      log(`    ${rows.length} row(s) exported`);
+    } else {
+      lines.push(`-- (empty table)`);
+      lines.push("");
+      log(`    0 rows (empty table)`);
+    }
+  }
+
+  lines.push(`SET FOREIGN_KEY_CHECKS = 1;`);
+  lines.push("");
+
+  fs.writeFileSync(outputPath, lines.join("\n"), "utf8");
 }
 
 function cleanOldBackups() {
@@ -143,7 +191,9 @@ function cleanOldBackups() {
   }
 
   if (removed > 0) {
-    log(`Cleaned up ${removed} backup(s) older than ${BACKUP_RETENTION_DAYS} days`);
+    log(
+      `Cleaned up ${removed} backup(s) older than ${BACKUP_RETENTION_DAYS} days`
+    );
   } else {
     log("No old backups to clean up");
   }
@@ -152,6 +202,7 @@ function cleanOldBackups() {
 async function main() {
   log("=== JM Comfort Database Backup ===");
 
+  let connection;
   try {
     validateConfig();
     ensureBackupDir();
@@ -159,12 +210,26 @@ async function main() {
     const filename = generateBackupFilename();
     const outputPath = path.join(BACKUP_DIR, filename);
 
-    await runMysqldump(outputPath);
+    log(`Connecting to database: ${DB_NAME}`);
+    log(`Host: ${DB_HOST}:${DB_PORT}`);
+
+    connection = await mysql.createConnection({
+      host: DB_HOST,
+      port: parseInt(DB_PORT, 10),
+      database: DB_NAME,
+      user: DB_USER,
+      password: DB_PASS,
+      ssl: { rejectUnauthorized: false },
+    });
+
+    log("Connected successfully");
+
+    await dumpDatabase(connection, outputPath);
 
     // Verify the backup file was created and has content
     const stats = fs.statSync(outputPath);
     if (stats.size === 0) {
-      throw new Error("Backup file is empty — mysqldump may have failed silently");
+      throw new Error("Backup file is empty — export may have failed");
     }
 
     log(`Backup completed successfully: ${filename}`);
@@ -174,11 +239,14 @@ async function main() {
     cleanOldBackups();
 
     log("=== Backup finished ===");
-    process.exit(0);
   } catch (error) {
     logError(error.message);
     log("=== Backup FAILED ===");
     process.exit(1);
+  } finally {
+    if (connection) {
+      await connection.end();
+    }
   }
 }
 

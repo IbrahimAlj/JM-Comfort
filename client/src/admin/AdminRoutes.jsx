@@ -184,7 +184,7 @@ function AdminUpload() {
     selectedFiles.forEach((file) => formData.append("images", file));
 
     try {
-      const res = await fetch("http://localhost:5000/api/projects/gallery", {
+      const res = await fetch("/api/gallery", {
         method: "POST",
         body: formData,
       });

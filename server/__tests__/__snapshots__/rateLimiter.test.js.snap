@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`POST /api/admin/login Rate limiting allows 5 requests then returns 429 on the 6th 1`] = `
+{
+  "message": "Too many login attempts please try again later",
+}
+`;
