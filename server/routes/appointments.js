@@ -17,4 +17,7 @@ router.patch('/:id/reject', appointmentController.rejectAppointment);
 // Update appointment status (general)
 router.patch('/:id/status', appointmentController.updateAppointmentStatus);
 
+// Delete appointment
+router.delete('/:id', appointmentController.deleteAppointment);
+
 module.exports = router;
