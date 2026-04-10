@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Gallery page renders images in responsive grid and matches snapshot 1`] = `
+<div>
+  <nav
+    data-testid="navbar"
+  >
+    Navbar
+  </nav>
+  <main
+    class="min-h-screen bg-gray-50 py-10 px-6"
+  >
+    <h1
+      class="text-3xl font-semibold text-center mb-8 text-gray-800"
+    >
+      Our Project Gallery
+    </h1>
+    <div
+      class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+    >
+      <div
+        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+      >
+        <img
+          alt="HVAC Install 1"
+          class="w-full h-60 object-cover"
+          src="https://example.com/img1.jpg"
+        />
+      </div>
+      <div
+        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+      >
+        <img
+          alt="HVAC Install 2"
+          class="w-full h-60 object-cover"
+          src="https://example.com/img2.jpg"
+        />
+      </div>
+      <div
+        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+      >
+        <img
+          alt="HVAC Install 3"
+          class="w-full h-60 object-cover"
+          src="https://example.com/img3.jpg"
+        />
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
+exports[`Gallery page renders loading state and matches snapshot 1`] = `
+<div>
+  <nav
+    data-testid="navbar"
+  >
+    Navbar
+  </nav>
+  <main
+    class="min-h-screen bg-gray-50 py-10 px-6"
+  >
+    <h1
+      class="text-3xl font-semibold text-center mb-8 text-gray-800"
+    >
+      Our Project Gallery
+    </h1>
+    <p
+      class="text-center text-gray-600"
+    >
+      Loading gallery...
+    </p>
+  </main>
+</div>
+`;
