@@ -2,30 +2,9 @@
 const express = require("express");
 const crypto = require("crypto");
 const pool = require("../config/db");
+const requireAdmin = require("../middleware/requireAdmin");
 
 const router = express.Router();
-
-/**
- * Basic admin guard.
- * If ADMIN_API_KEY not set, admin endpoints are disabled (403).
- * Admin may supply header: x-admin-key: <key> OR Authorization: Bearer <key>
- */
-function requireAdmin(req, res, next) {
-  const adminKey = process.env.ADMIN_API_KEY;
-  if (!adminKey) {
-    return res.status(403).json({ error: "admin access not configured" });
-  }
-
-  const headerKey =
-    (req.headers["x-admin-key"] || "").toString() ||
-    ((req.headers.authorization || "").toString().startsWith("Bearer ")
-      ? req.headers.authorization.split(" ")[1]
-      : "");
-
-  if (headerKey === adminKey) return next();
-
-  return res.status(403).json({ error: "forbidden" });
-}
 
 /** Normalizers */
 function normStr(v) {
