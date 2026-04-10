@@ -24,6 +24,7 @@ const sentryTestRoutes = require('./routes/sentryTest');
 const analyticsRoutes = require('./routes/analytics');
 const feedbackRoutes = require('./routes/feedback');
 const adminLoginRoutes = require('./routes/adminLogin');
+const analyticsSummaryRoutes = require('./routes/analyticsSummary');
 
 const app = express();
 const startTime = Date.now();
@@ -49,6 +50,7 @@ app.use('/api/sentry', sentryTestRoutes);
 app.use('/api/admin/analytics', analyticsRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/admin', adminLoginRoutes);
+app.use('/api/analytics/summary', analyticsSummaryRoutes);
 
 /* --------------------
    Health & Uptime Check
