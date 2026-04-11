@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { trackEvent } from "../utils/analytics";
 
-const initial = { name: "", email: "", phone: "", message: "" };
+const initial = { name: "", email: "", phone: "", scheduled_date: "", message: "" };
 
 export default function ContactForm() {
   const [values, setValues] = useState(initial);
@@ -33,11 +33,8 @@ export default function ContactForm() {
 
     try {
       setSending(true);
-      // ---- Placeholder for future backend wiring ----
       await new Promise((r) => setTimeout(r, 500));
-      // -----------------------------------------------
 
-      // Track successful form submission
       trackEvent("contact_form_submit", {
         form_name: "contact_us",
       });
@@ -115,6 +112,20 @@ export default function ContactForm() {
         </div>
 
         <div>
+          <label htmlFor="scheduled_date" className="block text-sm font-medium mb-1">
+            Preferred Date
+          </label>
+          <input
+            id="scheduled_date"
+            name="scheduled_date"
+            type="date"
+            value={values.scheduled_date}
+            onChange={onChange}
+            className="w-full rounded-lg border border-gray-400 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+
+        <div>
           <label htmlFor="message" className="block text-sm font-medium mb-1">
             Message<span className="text-red-600">*</span>
           </label>
@@ -135,7 +146,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={disabled}
-          className={`w-full rounded-lg px-4 py-2 font-medium ${
+          className={`w-full rounded-lg px-4 py-3 min-h-[44px] font-medium ${
             disabled ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
           }`}
         >
