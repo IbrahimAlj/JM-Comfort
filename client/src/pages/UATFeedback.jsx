@@ -11,8 +11,8 @@ export default function UATFeedback() {
       />
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 py-16">
-        <h1 className="text-4xl font-bold mb-2">Client Feedback</h1>
-        <p className="text-gray-600 mb-10">
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">Client Feedback</h1>
+        <p className="text-gray-500 text-lg mb-10">
           Thank you for helping us test the JM Comfort website. Please share your observations below.
         </p>
         <UATFeedbackForm />
