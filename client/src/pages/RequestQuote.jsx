@@ -240,7 +240,7 @@ export default function RequestQuote() {
             <button
               type="submit"
               disabled={isDisabled}
-              className={`w-full rounded-lg px-6 py-3 text-base font-semibold transition ${
+              className={`w-full rounded-lg px-6 py-3 min-h-[44px] text-base font-semibold transition ${
                 isDisabled
                   ? "cursor-not-allowed bg-gray-300 text-gray-700"
                   : "bg-black text-white hover:bg-gray-800"
