@@ -28,34 +28,35 @@ export default function Navbar() {
     padding: '12px 32px',
     fontSize: '16px',
     fontWeight: '500',
-    border: '2px solid #000000',
+    border: isActive(path) ? '2px solid #000000' : '2px solid transparent',
     borderRadius: '8px',
-    backgroundColor: 'white',
+    backgroundColor: isActive(path) ? '#f3f4f6' : 'white',
     color: '#000000',
     textDecoration: 'none',
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s, border-color 0.2s',
     display: 'inline-block',
-  };
+  });
 
   const darkButtonStyle = {
     padding: '12px 32px',
     fontSize: '16px',
     fontWeight: '500',
     borderRadius: '8px',
+    border: '2px solid #000000',
     backgroundColor: '#000000',
     color: 'white',
     textDecoration: 'none',
-    transition: 'all 0.2s',
+    transition: 'background-color 0.2s',
     display: 'inline-block',
   };
 
-  const mobileButtonStyle = {
-    ...buttonStyle,
+  const getMobileLinkStyle = (path) => ({
+    ...getLinkStyle(path),
     display: 'block',
     textAlign: 'center',
     width: '100%',
     boxSizing: 'border-box',
-  };
+  });
 
   const mobileDarkButtonStyle = {
     ...darkButtonStyle,
@@ -128,11 +129,9 @@ export default function Navbar() {
             </button>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <Link to="/" style={buttonStyle}>Home</Link>
-              <Link to="/services" style={buttonStyle}>Services</Link>
-              <Link to="/reviews" style={buttonStyle}>Reviews</Link>
-              <Link to="/about" style={buttonStyle}>About</Link>
-              <Link to="/gallery" style={buttonStyle}>Gallery</Link>
+              {navLinks.map(({ to, label }) => (
+                <Link key={to} to={to} style={getLinkStyle(to)}>{label}</Link>
+              ))}
               <Link to="/request-quote" style={darkButtonStyle}>Request Quote</Link>
             </div>
           )}

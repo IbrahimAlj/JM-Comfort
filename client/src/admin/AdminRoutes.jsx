@@ -12,6 +12,7 @@ import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
 import AdminServicesPage from "./pages/AdminServicesPage";
 import AdminFeedbackPage from "./pages/AdminFeedbackPage";
 import { getUser, logout } from "./Auth";
+import AnalyticsSummaryCards from "./components/AnalyticsSummaryCards";
 
 function AdminDashboard() {
   const user = getUser();
@@ -19,6 +20,7 @@ function AdminDashboard() {
     <div>
       <h1 style={{ fontSize: "22px", fontWeight: "600", color: "#1F2937", margin: "0 0 4px 0" }}>Dashboard</h1>
       <p style={{ fontSize: "13px", color: "#6B7280", margin: "0 0 28px 0" }}>Signed in as {user?.email}</p>
+      <AnalyticsSummaryCards />
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
         <Link
           to="/admin/leads"
