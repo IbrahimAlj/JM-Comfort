@@ -1,5 +1,5 @@
 const express = require("express");
-const adminLoginRoutes = require("../routes/adminLogin");
+const bcrypt = require("bcrypt");
 
 const VALID_ADMIN_KEY = "test-admin-key-12345";
 
@@ -60,7 +60,7 @@ async function fetchJson(port, method, path, body) {
 describe("POST /api/admin/login", () => {
   let app;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // Re-require to get a fresh rate limiter instance per test
     jest.resetModules();
     const freshRoutes = require("../routes/adminLogin");
@@ -69,6 +69,9 @@ describe("POST /api/admin/login", () => {
     app.use("/api/admin", freshRoutes);
     jest.clearAllMocks();
     process.env.ADMIN_API_KEY = VALID_ADMIN_KEY;
+    // Pre-seed the bcrypt hash so login works immediately
+    const hash = await bcrypt.hash(VALID_ADMIN_KEY, 10);
+    freshRoutes._setHash(hash);
   });
 
   describe("Login functionality", () => {
@@ -96,6 +99,13 @@ describe("POST /api/admin/login", () => {
 
     test("returns 403 when ADMIN_API_KEY is not configured", async () => {
       delete process.env.ADMIN_API_KEY;
+      // Clear the pre-seeded hash so the route hits the !adminHash guard
+      jest.resetModules();
+      const freshRoutes = require("../routes/adminLogin");
+      freshRoutes._setHash(null);
+      app = express();
+      app.use(express.json());
+      app.use("/api/admin", freshRoutes);
       const res = await makeRequest(app, "POST", "/api/admin/login", {
         key: "anything",
       });
