@@ -6,25 +6,17 @@ export default function Navbar() {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const location = useLocation();
 
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/services', label: 'Services' },
+    { to: '/reviews', label: 'Reviews' },
+    { to: '/about', label: 'About' },
+    { to: '/gallery', label: 'Gallery' },
+  ];
 
-      if (!mobile) {
-        setIsOpen(false);
-      }
-    };
+  const isActive = (path) => location.pathname === path;
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
-
-  const buttonStyle = {
+  const getLinkStyle = (path) => ({
     padding: '12px 32px',
     fontSize: '16px',
     fontWeight: '500',
@@ -37,6 +29,13 @@ export default function Navbar() {
     display: 'inline-block',
   });
 
+  const mobileButtonStyle = {
+    display: 'block',
+    textAlign: 'center',
+    width: '100%',
+    boxSizing: 'border-box',
+  };
+
   const darkButtonStyle = {
     padding: '12px 32px',
     fontSize: '16px',
@@ -46,68 +45,39 @@ export default function Navbar() {
     backgroundColor: '#000000',
     color: 'white',
     textDecoration: 'none',
-    transition: 'background-color 0.2s',
     display: 'inline-block',
   };
 
-  const getMobileLinkStyle = (path) => ({
-    ...getLinkStyle(path),
-    display: 'block',
-    textAlign: 'center',
-    width: '100%',
-    boxSizing: 'border-box',
-  });
-
   const mobileDarkButtonStyle = {
     ...darkButtonStyle,
-    display: 'block',
-    textAlign: 'center',
     width: '100%',
-    boxSizing: 'border-box',
+    textAlign: 'center',
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (!mobile) setIsOpen(false);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const closeMenu = () => setIsOpen(false);
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   return (
-    <header
-      style={{
-        width: '100%',
-        backgroundColor: 'white',
-        position: 'relative',
-        zIndex: 1000,
-      }}
-    >
-      <nav
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 16px',
-          position: 'relative',
-          overflow: 'visible',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '96px',
-          }}
-        >
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', marginLeft: '60px' }} onClick={closeMenu}>
-            <img
-              src="/logo.png"
-              alt="JM Comfort Logo"
-              style={{ height: '90px', width: 'auto' }}
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextElementSibling.style.display = 'block';
-              }}
-            />
-            <span style={{ display: 'none', fontSize: '24px', fontWeight: 'bold', color: '#111827' }}>
-              JM Comfort
-            </span>
+    <header style={{ width: '100%', backgroundColor: 'white', position: 'relative', zIndex: 1000 }}>
+      <nav style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '96px' }}>
+          <Link to="/" onClick={closeMenu}>
+            JM Comfort
           </Link>
 
           {isMobile ? (
@@ -115,51 +85,30 @@ export default function Navbar() {
               onClick={toggleMenu}
               aria-label="Toggle navigation menu"
               aria-expanded={isOpen}
-              aria-controls="mobile-navigation-menu"
-              style={{
-                padding: '8px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '28px',
-                zIndex: 1101,
-              }}
             >
               {isOpen ? '✕' : '☰'}
             </button>
           ) : (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '12px' }}>
               {navLinks.map(({ to, label }) => (
-                <Link key={to} to={to} style={getLinkStyle(to)}>{label}</Link>
+                <Link key={to} to={to} style={getLinkStyle(to)}>
+                  {label}
+                </Link>
               ))}
-              <Link to="/request-quote" style={darkButtonStyle}>Request Quote</Link>
+              <Link to="/request-quote" style={darkButtonStyle}>
+                Request Quote
+              </Link>
             </div>
           )}
         </div>
 
         {isOpen && isMobile && (
-          <div
-            id="mobile-navigation-menu"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-              padding: '16px',
-              position: 'absolute',
-              top: '96px',
-              left: '16px',
-              right: '16px',
-              backgroundColor: 'white',
-              zIndex: 1100,
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
-              borderRadius: '12px',
-            }}
-          >
-            <Link to="/" style={mobileButtonStyle} onClick={closeMenu}>Home</Link>
-            <Link to="/services" style={mobileButtonStyle} onClick={closeMenu}>Services</Link>
-            <Link to="/reviews" style={mobileButtonStyle} onClick={closeMenu}>Reviews</Link>
-            <Link to="/about" style={mobileButtonStyle} onClick={closeMenu}>About</Link>
-            <Link to="/gallery" style={mobileButtonStyle} onClick={closeMenu}>Gallery</Link>
+          <div>
+            {navLinks.map(({ to, label }) => (
+              <Link key={to} to={to} style={{ ...getLinkStyle(to), ...mobileButtonStyle }} onClick={closeMenu}>
+                {label}
+              </Link>
+            ))}
             <Link to="/request-quote" style={mobileDarkButtonStyle} onClick={closeMenu}>
               Request Quote
             </Link>
