@@ -61,12 +61,12 @@ export default function UATFeedbackForm() {
   if (submitted) {
     return (
       <div className="w-full max-w-2xl mx-auto p-6">
-        <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-center">
-          <h2 className="text-xl font-semibold text-green-800 mb-2">Thank You</h2>
-          <p className="text-green-700">Your feedback has been submitted. We appreciate your input.</p>
+        <div className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center shadow-sm">
+          <h2 className="text-2xl font-bold text-green-800 mb-2">Thank You</h2>
+          <p className="text-green-700 text-base">Your feedback has been submitted. We appreciate your input.</p>
           <button
             onClick={() => setSubmitted(false)}
-            className="mt-4 rounded-lg border border-green-600 px-4 py-2 text-sm text-green-700 hover:bg-green-100"
+            className="mt-6 rounded-xl border border-green-600 px-5 py-2.5 text-sm font-semibold text-green-700 hover:bg-green-100 transition-colors"
           >
             Submit another response
           </button>
@@ -76,36 +76,36 @@ export default function UATFeedbackForm() {
   }
 
   return (
-    <section className="w-full max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-2">UAT Feedback</h2>
-      <p className="text-gray-600 text-sm mb-6">
+    <section className="w-full max-w-2xl mx-auto rounded-2xl border border-gray-200 bg-white p-8 shadow-sm overflow-hidden">
+      <h2 className="text-2xl font-bold text-gray-900 mb-1">UAT Feedback</h2>
+      <p className="text-gray-500 text-sm mb-7">
         Use this form to share your comments and observations while testing the JM Comfort website.
       </p>
 
-      <form onSubmit={onSubmit} noValidate className="space-y-4">
-        <div>
-          <label htmlFor="feedback_text" className="block text-sm font-medium mb-1">
-            Your Feedback<span className="text-red-600">*</span>
+      <form onSubmit={onSubmit} noValidate className="w-full space-y-5">
+        <div className="w-full">
+          <label htmlFor="feedback_text" className="block text-base font-semibold text-gray-800 mb-2">
+            Your Feedback:
           </label>
           <textarea
             id="feedback_text"
             name="feedback_text"
-            rows={6}
+            rows={5}
             value={values.feedback_text}
             onChange={onChange}
             disabled={submitting}
             placeholder="Describe what you observed, any issues you encountered, or suggestions for improvement."
-            className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-400 resize-vertical disabled:bg-gray-50 ${
-              error ? 'border-red-400' : 'border-gray-400'
+            className={`w-full max-w-full rounded-xl border px-4 py-3 text-xl outline-none focus:ring-2 focus:ring-indigo-400 resize-vertical disabled:bg-gray-50 disabled:cursor-not-allowed transition ${
+              error ? 'border-red-400 bg-red-50' : 'border-gray-300 bg-white'
             }`}
           />
-          <div className="flex justify-between mt-1">
+          <div className="flex justify-between mt-2">
             {error ? (
-              <p className="text-xs text-red-600">{error}</p>
+              <p className="text-sm font-medium text-red-600">{error}</p>
             ) : (
               <span />
             )}
-            <p className={`text-xs ml-auto ${charCount > 5000 ? 'text-red-600' : 'text-gray-500'}`}>
+            <p className={`text-xs ml-auto ${charCount > 5000 ? 'text-red-600 font-semibold' : 'text-gray-400'}`}>
               {charCount} / 5000
             </p>
           </div>
@@ -114,16 +114,15 @@ export default function UATFeedbackForm() {
         <button
           type="submit"
           disabled={isDisabled}
-          className={`w-full rounded-lg px-4 py-2 font-medium text-sm transition-colors ${
+          className={`w-full rounded-xl px-4 py-3 font-semibold text-base transition-all ${
             isDisabled
-              ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              : 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white shadow-md hover:shadow-lg'
           }`}
         >
           {submitting ? 'Submitting...' : 'Submit Feedback'}
         </button>
 
-        <p className="text-xs text-gray-500">* Required field</p>
       </form>
     </section>
   );
