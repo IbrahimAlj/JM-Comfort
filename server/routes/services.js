@@ -7,6 +7,15 @@ const router = express.Router();
 // GET all services
 router.get('/', servicesController.getAllServices);
 
+// GET service by id, for service details 
+router.get(
+  '/:id',
+  // assuming that the ID is an INT otherwise change param('id').isInt()
+  [ param('id').isInt().withMessage('ID must be number') ], 
+
+  servicesController.getServiceById
+);
+
 // CREATE service (validation)
 router.post(
   '/',

@@ -1,5 +1,6 @@
 import ProtectedRoute from './ProtectedRoute';
 import PublicRoute from './PublicRoute';
+import ServiceDetail from './ServiceDetail';
 
 
 <Routes>
@@ -7,6 +8,7 @@ import PublicRoute from './PublicRoute';
   <Route path="/" element={<Home />} />
   <Route path="/about" element={<About />} />
   <Route path="/services" element={<Services />} />
+  <Route path="/services/:id" element={<ServiceDetail />} /> 
   <Route path="/reviews" element={<Reviews />} />
   <Route path="/contact" element={<Contact />} />
   
