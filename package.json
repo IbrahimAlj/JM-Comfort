@@ -1,7 +1,14 @@
 {
+  "scripts": {
+    "test": "jest scripts/ && npm --prefix client test"
+  },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^17.2.4",
     "mysql2": "^3.16.3",
     "react-router-dom": "^7.9.6"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
