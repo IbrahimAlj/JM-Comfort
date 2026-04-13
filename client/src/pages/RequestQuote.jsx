@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { captureError } from "../utils/captureError";
 import PageMeta from "../components/PageMeta";
@@ -6,6 +7,8 @@ import PageMeta from "../components/PageMeta";
 const initialValues = { name: "", email: "", phone: "", address: "" };
 
 export default function RequestQuote() {
+  const [searchParams] = useSearchParams();
+  const preselectedService = searchParams.get("service");
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -99,6 +102,12 @@ export default function RequestQuote() {
           Fill out the form below and we will get back to you with a free
           estimate.
         </p>
+
+        {preselectedService && (
+          <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+            Service requested: <span className="font-semibold text-gray-900">{preselectedService}</span>
+          </div>
+        )}
 
         {submitted && (
           <div

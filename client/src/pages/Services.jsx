@@ -84,9 +84,8 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.id}
+              className="flex flex-col sm:flex-row items-start"
               style={{
-                display: 'flex',
-                alignItems: 'flex-start',
                 gap: '32px',
                 padding: '32px',
                 border: '1px solid #E5E7EB',
@@ -171,8 +170,10 @@ export default function Services() {
                       Learn More
                   </Link>
 
-                  {/* Request Quote - Styled Link */}
-                  <Link to="/request-quote" style={{
+                  {/* Request a Quote - CTA with service name query param */}
+                  <Link
+                    to={`/quote?service=${encodeURIComponent(service.title)}`}
+                    style={{
                       padding: '10px 24px',
                       fontSize: '16px',
                       fontWeight: '500',
@@ -191,7 +192,7 @@ export default function Services() {
                     onMouseOut={(e) => {
                       e.target.style.backgroundColor = 'white';
                     }}>
-                      Request Quote
+                      Request a Quote
                   </Link>
                 </div>
               </div>

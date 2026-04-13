@@ -51,6 +51,7 @@ function AppShell() {
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/request-quote" element={<RequestQuote />} />
+        <Route path="/quote" element={<RequestQuote />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/sentry-test" element={<SentryTestPage />} />
         <Route path="/*" element={<AdminRoutes />} />
