@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 import ContactForm from "../components/ContactForm";
 import RequestQuote from "../pages/RequestQuote";
@@ -41,7 +42,7 @@ describe("ContactForm", () => {
 
 describe("RequestQuote", () => {
   test("renders all form fields", () => {
-    render(<RequestQuote />);
+    render(<MemoryRouter><RequestQuote /></MemoryRouter>);
     expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/phone/i)).toBeInTheDocument();
@@ -49,7 +50,7 @@ describe("RequestQuote", () => {
   });
 
   test("renders submit button", () => {
-    render(<RequestQuote />);
+    render(<MemoryRouter><RequestQuote /></MemoryRouter>);
     expect(
       screen.getByRole("button", { name: /submit quote request/i })
     ).toBeInTheDocument();

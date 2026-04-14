@@ -10,6 +10,7 @@ import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import Gallery from './pages/Gallery';
+import ServiceDetail from './components/ServiceDetail';
 import SentryTestPage from './pages/SentryTestPage';
 import UATFeedback from './pages/UATFeedback';
 import { Helmet } from 'react-helmet-async';
@@ -49,9 +50,11 @@ function AppShell() {
         <Route path="/about" element={<About />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/services/:id" element={<ServiceDetail />} />
         <Route path="/reviews" element={<Reviews />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/request-quote" element={<RequestQuote />} />
+        <Route path="/quote" element={<RequestQuote />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/sentry-test" element={<SentryTestPage />} />
         <Route path="/uat-feedback" element={<UATFeedback />} />

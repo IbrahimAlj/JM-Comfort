@@ -72,7 +72,7 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+              className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
             >
               {/* Service Image - Now clickable */}
               <Link to={`/services/${service.id}`} className="no-underline w-full md:w-auto">
@@ -104,12 +104,12 @@ export default function Services() {
                     Learn More
                   </Link>
 
-                  {/* Request Quote - Styled Link */}
+                  {/* Request a Quote - CTA with service name query param */}
                   <Link
-                    to="/request-quote"
+                    to={`/quote?service=${encodeURIComponent(service.title)}`}
                     className="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
                   >
-                    Request Quote
+                    Request a Quote
                   </Link>
                 </div>
               </div>
