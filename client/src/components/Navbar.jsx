@@ -52,13 +52,17 @@ export default function Navbar() {
     ...darkButtonStyle,
     width: '100%',
     textAlign: 'center',
+    boxSizing: 'border-box',
   };
 
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      if (!mobile) setIsOpen(false);
+
+      if (!mobile) {
+        setIsOpen(false);
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -73,11 +77,59 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen((prev) => !prev);
 
   return (
-    <header style={{ width: '100%', backgroundColor: 'white', position: 'relative', zIndex: 1000 }}>
-      <nav style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '96px' }}>
-          <Link to="/" onClick={closeMenu}>
-            JM Comfort
+    <header
+      style={{
+        width: '100%',
+        backgroundColor: 'white',
+        position: 'relative',
+        zIndex: 1000,
+      }}
+    >
+      <nav
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 16px',
+          position: 'relative',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '96px',
+          }}
+        >
+          <Link
+            to="/"
+            onClick={closeMenu}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+            }}
+          >
+            <img
+              src="/logo.png"
+              alt="JM Comfort Logo"
+              style={{ height: '72px', width: 'auto' }}
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                const fallback = e.currentTarget.nextElementSibling;
+                if (fallback) fallback.style.display = 'block';
+              }}
+            />
+            <span
+              style={{
+                display: 'none',
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: '#111827',
+              }}
+            >
+              JM Comfort
+            </span>
           </Link>
 
           {isMobile ? (
@@ -85,11 +137,19 @@ export default function Navbar() {
               onClick={toggleMenu}
               aria-label="Toggle navigation menu"
               aria-expanded={isOpen}
+              aria-controls="mobile-navigation-menu"
+              style={{
+                padding: '8px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '28px',
+              }}
             >
               {isOpen ? '✕' : '☰'}
             </button>
           ) : (
-            <div style={{ display: 'flex', gap: '12px' }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
               {navLinks.map(({ to, label }) => (
                 <Link key={to} to={to} style={getLinkStyle(to)}>
                   {label}
@@ -103,9 +163,30 @@ export default function Navbar() {
         </div>
 
         {isOpen && isMobile && (
-          <div>
+          <div
+            id="mobile-navigation-menu"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              padding: '16px',
+              position: 'absolute',
+              top: '96px',
+              left: '16px',
+              right: '16px',
+              backgroundColor: 'white',
+              zIndex: 1100,
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
+              borderRadius: '12px',
+            }}
+          >
             {navLinks.map(({ to, label }) => (
-              <Link key={to} to={to} style={{ ...getLinkStyle(to), ...mobileButtonStyle }} onClick={closeMenu}>
+              <Link
+                key={to}
+                to={to}
+                style={{ ...getLinkStyle(to), ...mobileButtonStyle }}
+                onClick={closeMenu}
+              >
                 {label}
               </Link>
             ))}
