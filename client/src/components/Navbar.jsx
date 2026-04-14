@@ -76,8 +76,13 @@ export default function Navbar() {
     <header style={{ width: '100%', backgroundColor: 'white', position: 'relative', zIndex: 1000 }}>
       <nav style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '96px' }}>
-          <Link to="/" onClick={closeMenu}>
-            JM Comfort
+          <Link to="/" onClick={closeMenu} style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              src="/logo.png"
+              alt="JM Comfort"
+              style={{ height: '48px', width: 'auto' }}
+              onError={(e) => { e.target.style.display = 'none'; e.target.insertAdjacentText('afterend', 'JM Comfort'); }}
+            />
           </Link>
 
           {isMobile ? (
