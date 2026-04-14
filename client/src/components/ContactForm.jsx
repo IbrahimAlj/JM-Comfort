@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { trackEvent } from "../utils/analytics";
 
-const initial = { name: "", email: "", phone: "", message: "" };
+const initial = { name: "", email: "", phone: "", scheduled_date: "", message: "" };
 
 export default function ContactForm() {
   const [values, setValues] = useState(initial);
@@ -32,9 +33,12 @@ export default function ContactForm() {
 
     try {
       setSending(true);
-      // ---- Placeholder for future backend wiring ----
       await new Promise((r) => setTimeout(r, 500));
-      // -----------------------------------------------
+
+      trackEvent("contact_form_submit", {
+        form_name: "contact_us",
+      });
+
       setSent(true);
       setValues(initial);
     } finally {
@@ -55,7 +59,6 @@ export default function ContactForm() {
       )}
 
       <form onSubmit={onSubmit} noValidate className="space-y-4">
-        {/* Name */}
         <div>
           <label htmlFor="name" className="block text-sm font-medium mb-1">
             Name<span className="text-red-600">*</span>
@@ -73,7 +76,6 @@ export default function ContactForm() {
           {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
         </div>
 
-        {/* Email */}
         <div>
           <label htmlFor="email" className="block text-sm font-medium mb-1">
             Email<span className="text-red-600">*</span>
@@ -92,7 +94,6 @@ export default function ContactForm() {
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
         </div>
 
-        {/* Phone (optional) */}
         <div>
           <label htmlFor="phone" className="block text-sm font-medium mb-1">
             Phone (optional)
@@ -110,7 +111,20 @@ export default function ContactForm() {
           {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
         </div>
 
-        {/* Message */}
+        <div>
+          <label htmlFor="scheduled_date" className="block text-sm font-medium mb-1">
+            Preferred Date
+          </label>
+          <input
+            id="scheduled_date"
+            name="scheduled_date"
+            type="date"
+            value={values.scheduled_date}
+            onChange={onChange}
+            className="w-full rounded-lg border border-gray-400 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+
         <div>
           <label htmlFor="message" className="block text-sm font-medium mb-1">
             Message<span className="text-red-600">*</span>
@@ -132,7 +146,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={disabled}
-          className={`w-full rounded-lg px-4 py-2 font-medium ${
+          className={`w-full rounded-lg px-4 py-3 min-h-[44px] font-medium ${
             disabled ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
           }`}
         >

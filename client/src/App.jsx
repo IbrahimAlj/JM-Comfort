@@ -11,6 +11,7 @@ import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import Gallery from './pages/Gallery';
 import SentryTestPage from './pages/SentryTestPage';
+import UATFeedback from './pages/UATFeedback';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
@@ -54,6 +55,7 @@ function AppShell() {
         <Route path="/quote" element={<RequestQuote />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/sentry-test" element={<SentryTestPage />} />
+        <Route path="/uat-feedback" element={<UATFeedback />} />
         <Route path="/*" element={<AdminRoutes />} />
       </Routes>
       {!isAdmin && <CTAFloatingButton />}

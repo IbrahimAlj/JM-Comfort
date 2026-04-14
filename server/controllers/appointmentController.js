@@ -215,6 +215,21 @@ exports.rejectAppointment = async (req, res) => {
   }
 };
 
+// Delete appointment
+exports.deleteAppointment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await db.query('DELETE FROM appointments WHERE id = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+    res.json({ message: 'Appointment deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting appointment:', error);
+    res.status(500).json({ error: 'Failed to delete appointment' });
+  }
+};
+
 // Update appointment status (general)
 exports.updateAppointmentStatus = async (req, res) => {
   try {
