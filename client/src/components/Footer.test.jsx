@@ -1,5 +1,9 @@
 /**
  * Footer snapshot test — JMHABIBI-236
+ *
+ * Renders the Footer inside a MemoryRouter (required for the <Link> component)
+ * and captures a snapshot. Any unintended structural change to the Footer will
+ * cause this test to fail, alerting the developer to review the diff.
  */
 
 import { render } from '@testing-library/react';
