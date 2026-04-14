@@ -2,21 +2,22 @@ const TOKEN_KEY = "auth_token";
 const USER_KEY = "auth_user";
 // Constants for keys 
 
-export async function login({ email, password }) { 
-// Fake check for demo (replace with a real API like axios library later)
-  await new Promise(r => setTimeout(r, 250)); // delay to simulate network test, can REMOVE when backend is setup
-  
-  if (email === "admin@example.com" && password === "password123") {
-    const fakeJwt = btoa(JSON.stringify({ sub: "admin", exp: Date.now() + 60*60*1000 }));
-    localStorage.setItem(TOKEN_KEY, fakeJwt);
-    localStorage.setItem(USER_KEY, JSON.stringify({ email }));
-    return { token: fakeJwt, user: { email } };
+export async function login({ email, password }) {
+  const res = await fetch("/api/admin/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ key: password }),
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const err = new Error(data.message || data.error || "Login failed");
+    err.status = res.status;
+    throw err;
   }
-  
-  const err = new Error("Invalid email or password");
-  err.status = 401;
-  throw err;
-  
+  const token = btoa(JSON.stringify({ sub: "admin", exp: Date.now() + 60*60*1000 }));
+  localStorage.setItem("auth_token", token);
+  localStorage.setItem("auth_user", JSON.stringify({ email }));
+  return { token, user: { email } };
 }
 
 export function getToken() {
