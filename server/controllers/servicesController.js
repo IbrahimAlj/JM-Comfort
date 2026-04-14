@@ -62,6 +62,49 @@ exports.createService = async (req, res) => {
   }
 };
 
+// adds services component for services detail page
+exports.getServiceById = async (req, res, next) => {
+  // reuse your validation helper
+  const validationResponse = sendValidationErrors(req, res);
+  if (validationResponse) return;
+
+  try {
+    const id = Number(req.params.id);
+    if (Number.isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid id' });
+    }
+
+    // Select the fields you want to expose to the frontend
+    const [rows] = await pool.query(
+      `SELECT id, name, short_description, full_description, image_url
+       FROM services
+       WHERE id = ? AND is_active = TRUE
+       LIMIT 1`,
+      [id]
+    );
+
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ message: 'Service not found' });
+    }
+
+    const row = rows[0];
+
+    // Map DB fields to the shape frontend expects.
+    // Frontend suppose to expect: { id, name, description, image of service }
+    const service = {
+      id: row.id,
+      name: row.name,
+      description: row.full_description || row.short_description || null,
+      image: row.image_url || null,
+    };
+
+    return res.json(service);
+  } catch (err) {
+    console.error('getServiceById error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 exports.updateService = async (req, res) => {
   const validationResponse = sendValidationErrors(req, res);
   if (validationResponse) return;

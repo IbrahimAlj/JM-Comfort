@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Gallery API DELETE /api/gallery/:id Success returns 200 on successful delete 1`] = `
+{
+  "message": "Image deleted successfully",
+}
+`;
+
+exports[`Gallery API POST /api/gallery/upload Success returns 201 with uploaded file data 1`] = `
+{
+  "failed": [],
+  "uploaded": [
+    {
+      "s3_key": StringMatching /\\^gallery\\\\//,
+      "title": "test-photo.jpg",
+      "url": StringContaining "test-bucket",
+    },
+  ],
+}
+`;

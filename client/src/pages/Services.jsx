@@ -58,140 +58,58 @@ export default function Services() {
         description="JM Comfort offers professional HVAC installation, repairs, and seasonal maintenance in Sacramento, CA. Certified technicians, transparent pricing, and same-day service available."
       />
       <Navbar />
+
       <main>
 
-      <section style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        padding: '80px 64px'
-      }}>
+      <section className="w-full max-w-screen-xl mx-auto px-4 py-12 md:px-16 md:py-20">
         {/* Page Title */}
-        <h1 style={{
-          fontSize: '48px',
-          fontWeight: 'bold',
-          color: '#000000',
-          marginBottom: '64px'
-        }}>
+        <h1 className="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16">
           Our Services
         </h1>
 
         {/* Services List */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '32px'
-        }}>
+        <div className="flex flex-col gap-8">
           {services.map((service) => (
             <div
               key={service.id}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '32px',
-                padding: '32px',
-                border: '1px solid #E5E7EB',
-                borderRadius: '8px',
-                backgroundColor: 'white'
-              }}
+              className="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
             >
               {/* Service Image - Now clickable */}
-              <Link to={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
-                <div style={{
-                  width: '150px',
-                  height: '150px',
-                  flexShrink: 0,
-                  backgroundColor: '#D1D5DB',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  transition: 'opacity 0.2s'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.opacity = '0.8';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.opacity = '1';
-                }}>
+              <Link to={`/services/${service.id}`} className="no-underline w-full md:w-auto">
+                <div className="w-full md:w-[150px] h-[150px] shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity hover:opacity-80">
                   {/* Placeholder for service image */}
                 </div>
               </Link>
 
               {/* Service Content */}
-              <div style={{ flex: 1 }}>
+              <div className="flex-1 min-w-0">
                 {/* Title - Now clickable */}
-                <Link to={`/services/${service.id}`} style={{ textDecoration: 'none' }}>
-                  <h2 style={{
-                    fontSize: '28px',
-                    fontWeight: '600',
-                    color: '#000000',
-                    marginBottom: '12px',
-                    cursor: 'pointer',
-                    transition: 'color 0.2s'
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.color = '#374151';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.color = '#000000';
-                  }}>
+                <Link to={`/services/${service.id}`} className="no-underline">
+                  <h2 className="text-xl md:text-[28px] font-semibold text-black mb-3 cursor-pointer transition-colors hover:text-gray-700">
                     {service.title}
                   </h2>
                 </Link>
 
-                <p style={{
-                  fontSize: '16px',
-                  color: '#4B5563',
-                  lineHeight: '1.6',
-                  marginBottom: '24px'
-                }}>
+                <p className="text-base text-gray-600 leading-relaxed mb-6">
                   {service.description}
                 </p>
 
                 {/* Buttons Container */}
-                <div style={{ display: 'flex', gap: '12px' }}>
+                <div className="flex flex-wrap gap-3">
                   {/* Learn More - Styled Link */}
-                  <Link to={`/services/${service.id}`} style={{
-                      padding: '10px 24px',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      borderRadius: '6px',
-                      backgroundColor: '#000000',
-                      color: 'white',
-                      border: 'none',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      textDecoration: 'none',
-                      display: 'inline-block'
-                    }}
-                    onMouseOver={(e) => {
-                      e.target.style.backgroundColor = '#374151';
-                    }}
-                    onMouseOut={(e) => {
-                      e.target.style.backgroundColor = '#000000';
-                    }}>
-                      Learn More
+                  <Link
+                    to={`/services/${service.id}`}
+                    className="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white no-underline inline-block transition-colors hover:bg-gray-700"
+                  >
+                    Learn More
                   </Link>
 
                   {/* Request Quote - Styled Link */}
-                  <Link to="/request-quote" style={{
-                      padding: '10px 24px',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      borderRadius: '6px',
-                      backgroundColor: 'white',
-                      color: '#374151',
-                      border: '2px solid #9CA3AF',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      textDecoration: 'none',
-                      display: 'inline-block'
-                    }}
-                    onMouseOver={(e) => {
-                      e.target.style.backgroundColor = '#F3F4F6';
-                    }}
-                    onMouseOut={(e) => {
-                      e.target.style.backgroundColor = 'white';
-                    }}>
-                      Request Quote
+                  <Link
+                    to="/request-quote"
+                    className="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
+                  >
+                    Request Quote
                   </Link>
                 </div>
               </div>
