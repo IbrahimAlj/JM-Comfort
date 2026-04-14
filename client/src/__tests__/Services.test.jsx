@@ -31,7 +31,7 @@ describe("Services page", () => {
       </MemoryRouter>
     );
     expect(getAllByText("Learn More")).toHaveLength(3);
-    expect(getAllByText("Request Quote")).toHaveLength(3);
+    expect(getAllByText("Request a Quote")).toHaveLength(3);
   });
 
   test("service cards use responsive flex classes", () => {
@@ -40,7 +40,7 @@ describe("Services page", () => {
         <Services />
       </MemoryRouter>
     );
-    const cards = container.querySelectorAll(".flex.flex-col.md\\:flex-row");
+    const cards = container.querySelectorAll(".flex.flex-col.sm\\:flex-row");
     expect(cards.length).toBe(3);
   });
 });

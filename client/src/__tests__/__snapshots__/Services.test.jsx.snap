@@ -20,7 +20,7 @@ exports[`Services page renders and matches snapshot 1`] = `
         class="flex flex-col gap-8"
       >
         <div
-          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+          class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
         >
           <a
             class="no-underline w-full md:w-auto"
@@ -63,15 +63,15 @@ exports[`Services page renders and matches snapshot 1`] = `
               <a
                 class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
                 data-discover="true"
-                href="/request-quote"
+                href="/quote?service=Installation"
               >
-                Request Quote
+                Request a Quote
               </a>
             </div>
           </div>
         </div>
         <div
-          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+          class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
         >
           <a
             class="no-underline w-full md:w-auto"
@@ -114,15 +114,15 @@ exports[`Services page renders and matches snapshot 1`] = `
               <a
                 class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
                 data-discover="true"
-                href="/request-quote"
+                href="/quote?service=Repairs"
               >
-                Request Quote
+                Request a Quote
               </a>
             </div>
           </div>
         </div>
         <div
-          class="flex flex-col md:flex-row items-start gap-6 md:gap-8 p-6 md:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
+          class="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
         >
           <a
             class="no-underline w-full md:w-auto"
@@ -165,9 +165,9 @@ exports[`Services page renders and matches snapshot 1`] = `
               <a
                 class="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
                 data-discover="true"
-                href="/request-quote"
+                href="/quote?service=Maintenance"
               >
-                Request Quote
+                Request a Quote
               </a>
             </div>
           </div>

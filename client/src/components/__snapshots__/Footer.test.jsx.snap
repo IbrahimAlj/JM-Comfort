@@ -5,7 +5,7 @@ exports[`Footer matches snapshot 1`] = `
   style="background-color: rgb(0, 0, 0); color: rgb(229, 231, 235); width: 100vw; position: relative; left: 50%; right: 50%; margin: auto -50vw 0px -50vw; padding: 0px;"
 >
   <div
-    style="max-width: 1280px; margin: 0px auto; padding: 40px 64px; display: flex; flex-direction: column; gap: 32px;"
+    style="max-width: 1280px; margin: 0px auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 32px; box-sizing: border-box;"
   >
     <div
       style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;"
@@ -85,7 +85,7 @@ exports[`Footer matches snapshot 1`] = `
       </div>
     </div>
     <div
-      style="display: flex; flex-wrap: wrap; gap: 32px; font-size: 14px; color: rgb(229, 231, 235);"
+      style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: rgb(229, 231, 235);"
     >
       <div
         style="display: flex; align-items: center; gap: 8px;"
@@ -127,7 +127,7 @@ exports[`Footer matches snapshot 1`] = `
         </svg>
         <a
           href="tel:+19165551234"
-          style="color: rgb(229, 231, 235); text-decoration: none; transition: color 0.2s;"
+          style="color: rgb(229, 231, 235); text-decoration: none;"
         >
           (916) 555-1234
         </a>
@@ -151,14 +151,14 @@ exports[`Footer matches snapshot 1`] = `
         </svg>
         <a
           href="mailto:hello@jmcomfort.example"
-          style="color: rgb(229, 231, 235); text-decoration: none; transition: color 0.2s;"
+          style="color: rgb(229, 231, 235); text-decoration: none;"
         >
           hello@jmcomfort.example
         </a>
       </div>
     </div>
     <div
-      style="display: flex; align-items: center; gap: 24px; font-size: 14px; flex-wrap: wrap; color: rgb(229, 231, 235);"
+      style="display: flex; align-items: center; gap: 16px; font-size: 14px; flex-wrap: wrap; color: rgb(229, 231, 235);"
     >
       <div
         style="display: flex; align-items: center; gap: 6px;"
@@ -203,7 +203,7 @@ exports[`Footer matches snapshot 1`] = `
     style="border-top: 1px solid rgb(55, 65, 81); width: 100%;"
   >
     <div
-      style="max-width: 1280px; margin: 0px auto; padding: 20px 64px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgb(176, 181, 189); flex-wrap: wrap; gap: 12px;"
+      style="max-width: 1280px; margin: 0px auto; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgb(176, 181, 189); flex-wrap: wrap; gap: 12px; box-sizing: border-box;"
     >
       <p
         style="margin: 0px;"
@@ -234,7 +234,7 @@ exports[`Footer matches snapshot 1`] = `
         <a
           data-discover="true"
           href="/admin/login"
-          style="color: rgb(176, 181, 189); text-decoration: none; transition: color 0.2s;"
+          style="color: rgb(176, 181, 189); text-decoration: none;"
         >
           Login
         </a>
