@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import Navbar from "../components/Navbar";
 import { captureError } from "../utils/captureError";
 import PageMeta from "../components/PageMeta";
@@ -42,6 +42,35 @@ const Gallery = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [selectedImage]);
 
+  // Group before/after pairs by project_id, rest go to general
+  const { pairs, general } = useMemo(() => {
+    const projectGroups = {};
+    const generalImages = [];
+
+    images.forEach((img) => {
+      if (img.project_id && (img.photo_type === "before" || img.photo_type === "after")) {
+        if (!projectGroups[img.project_id]) {
+          projectGroups[img.project_id] = {};
+        }
+        projectGroups[img.project_id][img.photo_type] = img;
+      } else {
+        generalImages.push(img);
+      }
+    });
+
+    const pairedList = [];
+    Object.entries(projectGroups).forEach(([pid, group]) => {
+      if (group.before && group.after) {
+        pairedList.push({ projectId: pid, before: group.before, after: group.after });
+      } else {
+        if (group.before) generalImages.push(group.before);
+        if (group.after) generalImages.push(group.after);
+      }
+    });
+
+    return { pairs: pairedList, general: generalImages };
+  }, [images]);
+
   return (
     <>
     <PageMeta
@@ -79,25 +108,104 @@ const Gallery = () => {
         </p>
       )}
 
-      {/* Image grid */}
-      {!loading && !error && images.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {images.map((img, idx) => (
-            <div
-              key={idx}
-              className="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
-              onClick={() => setSelectedImage(img.url)}
-            >
-              <img
-                src={img.url}
-                alt={img.title || "JM Comfort HVAC project"}
-                className="w-full h-60 object-cover"
-                onError={(e) => {
-                  e.target.style.display = "none";
+      {/* Before/After pairs */}
+      {!loading && !error && pairs.length > 0 && (
+        <div style={{ marginBottom: "48px" }}>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6">Before & After</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            {pairs.map((pair) => (
+              <div
+                key={`pair-${pair.projectId}`}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                  backgroundColor: "white",
+                  borderRadius: "12px",
+                  padding: "16px",
+                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
                 }}
-              />
-            </div>
-          ))}
+              >
+                <div>
+                  <span style={{
+                    display: "inline-block",
+                    marginBottom: "8px",
+                    padding: "2px 10px",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    color: "#DC2626",
+                    backgroundColor: "#FEF2F2",
+                    borderRadius: "9999px",
+                  }}>
+                    Before
+                  </span>
+                  <div
+                    className="cursor-pointer overflow-hidden rounded-lg"
+                    onClick={() => setSelectedImage(pair.before.url)}
+                  >
+                    <img
+                      src={pair.before.url}
+                      alt={`Before - ${pair.before.title || "HVAC project"}`}
+                      className="w-full h-60 object-cover"
+                      onError={(e) => { e.target.style.display = "none"; }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <span style={{
+                    display: "inline-block",
+                    marginBottom: "8px",
+                    padding: "2px 10px",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    color: "#16A34A",
+                    backgroundColor: "#F0FDF4",
+                    borderRadius: "9999px",
+                  }}>
+                    After
+                  </span>
+                  <div
+                    className="cursor-pointer overflow-hidden rounded-lg"
+                    onClick={() => setSelectedImage(pair.after.url)}
+                  >
+                    <img
+                      src={pair.after.url}
+                      alt={`After - ${pair.after.title || "HVAC project"}`}
+                      className="w-full h-60 object-cover"
+                      onError={(e) => { e.target.style.display = "none"; }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* General image grid */}
+      {!loading && !error && general.length > 0 && (
+        <div>
+          {pairs.length > 0 && (
+            <h2 className="text-2xl font-semibold text-gray-800 mb-6">Gallery</h2>
+          )}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {general.map((img, idx) => (
+              <div
+                key={idx}
+                className="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+                onClick={() => setSelectedImage(img.url)}
+              >
+                <img
+                  src={img.url}
+                  alt={img.title || "JM Comfort HVAC project"}
+                  className="w-full h-60 object-cover"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

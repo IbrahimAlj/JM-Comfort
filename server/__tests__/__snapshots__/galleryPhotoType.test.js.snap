@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Gallery Photo Type API API contract snapshots GET /api/gallery response includes photo_type and project_id 1`] = `
+[
+  {
+    "photo_type": Any<String>,
+    "project_id": null,
+    "title": Any<String>,
+    "url": Any<String>,
+  },
+]
+`;

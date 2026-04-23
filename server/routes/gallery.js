@@ -7,6 +7,7 @@ const { s3Client, PutObjectCommand, DeleteObjectCommand, BUCKET_NAME } = require
 
 const router = express.Router();
 
+const VALID_PHOTO_TYPES = ["before", "after", "general"];
 const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const ALLOWED_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -114,6 +115,16 @@ router.post("/", (req, res, next) => {
     return res.status(400).json({ error: "No files provided" });
   }
 
+  const photoType = (req.body.photo_type || "general").toString().trim();
+  const projectId = req.body.project_id ? Number(req.body.project_id) : null;
+
+  if (!VALID_PHOTO_TYPES.includes(photoType)) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: ["photo_type must be one of: before, after, general"],
+    });
+  }
+
   const uploaded = [];
   const failed = [];
 
@@ -133,9 +144,9 @@ router.post("/", (req, res, next) => {
       );
 
       await pool.execute(
-        `INSERT INTO images (s3_key, s3_url, original_name, mime_type, file_size, uploaded_at)
-         VALUES (?, ?, ?, ?, ?, NOW())`,
-        [s3Key, s3Url, file.originalname, file.mimetype, file.size]
+        `INSERT INTO images (s3_key, s3_url, original_name, mime_type, file_size, photo_type, project_id, uploaded_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+        [s3Key, s3Url, file.originalname, file.mimetype, file.size, photoType, projectId]
       );
 
       uploaded.push({
@@ -197,6 +208,16 @@ router.post("/upload", requireAdmin, (req, res, next) => {
     return res.status(400).json({ error: "No files provided" });
   }
 
+  const photoType = (req.body.photo_type || "general").toString().trim();
+  const projectId = req.body.project_id ? Number(req.body.project_id) : null;
+
+  if (!VALID_PHOTO_TYPES.includes(photoType)) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: ["photo_type must be one of: before, after, general"],
+    });
+  }
+
   const uploaded = [];
   const failed = [];
 
@@ -216,9 +237,9 @@ router.post("/upload", requireAdmin, (req, res, next) => {
       );
 
       await pool.execute(
-        `INSERT INTO images (s3_key, s3_url, original_name, mime_type, file_size, uploaded_at)
-         VALUES (?, ?, ?, ?, ?, NOW())`,
-        [s3Key, s3Url, file.originalname, file.mimetype, file.size]
+        `INSERT INTO images (s3_key, s3_url, original_name, mime_type, file_size, photo_type, project_id, uploaded_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())`,
+        [s3Key, s3Url, file.originalname, file.mimetype, file.size, photoType, projectId]
       );
 
       uploaded.push({
@@ -282,12 +303,21 @@ router.delete("/:id", requireAdmin, async (req, res) => {
  */
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await pool.execute(
-      `SELECT s3_url AS url, original_name AS title
+    const projectIdFilter = req.query.project_id;
+    let sql = `SELECT s3_url AS url, original_name AS title, photo_type, project_id
        FROM images
-       WHERE is_active = TRUE
-       ORDER BY uploaded_at DESC`
-    );
+       WHERE is_active = TRUE`;
+    const params = [];
+
+    if (projectIdFilter) {
+      sql += ` AND project_id = ?`;
+      params.push(Number(projectIdFilter));
+    }
+
+    sql += `
+       ORDER BY uploaded_at DESC`;
+
+    const [rows] = await pool.execute(sql, params);
     return res.json(rows);
   } catch (err) {
     console.error("[gallery] Failed to fetch images:", err.message);
