@@ -81,9 +81,8 @@ export default function RequestQuote() {
     setLoading(true);
     setServerError("");
 
-    // MIGHT BE WHATS CAUSING THE ERROR 
     try {
-      const res = await fetch("/api/appointments", { // not sure if this is the correct link to the DB. 
+      const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -91,6 +90,10 @@ export default function RequestQuote() {
           email: values.email.trim(),
           phone: values.phone.trim(),
           address: values.address.trim(),
+          lead_type: "quote",
+          service_type: preselectedService || undefined,
+          preferred_date: values.preferred_date || undefined,
+          preferred_time_slot: values.preferred_time_slot || undefined,
         }),
       });
 
@@ -338,6 +341,48 @@ export default function RequestQuote() {
                 </p>
               </div>
             
+            </div>
+
+            {/* Preferred Date */}
+            <div>
+              <label
+                htmlFor="quote-preferred-date"
+                className="block text-lg font-medium text-gray-800"
+              >
+                Preferred Service Date
+              </label>
+              <input
+                id="quote-preferred-date"
+                name="preferred_date"
+                type="date"
+                value={values.preferred_date}
+                onChange={onChange}
+                disabled={loading}
+                className="mt-2 block w-full rounded-lg border border-gray-400 px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black focus:border-black"
+              />
+            </div>
+
+            {/* Time Slot */}
+            <div>
+              <label
+                htmlFor="quote-time-slot"
+                className="block text-lg font-medium text-gray-800"
+              >
+                Preferred Time Slot
+              </label>
+              <select
+                id="quote-time-slot"
+                name="preferred_time_slot"
+                value={values.preferred_time_slot}
+                onChange={onChange}
+                disabled={loading}
+                className="mt-2 block w-full rounded-lg border border-gray-400 px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black focus:border-black"
+              >
+                <option value="">Select a time slot</option>
+                <option value="Morning (8 AM - 12 PM)">Morning (8 AM - 12 PM)</option>
+                <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                <option value="Evening (4 PM - 6 PM)">Evening (4 PM - 6 PM)</option>
+              </select>
             </div>
 
             {/* Submit */}
