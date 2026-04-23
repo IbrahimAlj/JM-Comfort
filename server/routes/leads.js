@@ -3,6 +3,9 @@ const express = require("express");
 const crypto = require("crypto");
 const pool = require("../config/db");
 const requireAdmin = require("../middleware/requireAdmin");
+const { sendEmail } = require("../config/mailer");
+const { buildAdminNotificationEmail } = require("../templates/adminNotificationEmail");
+const logger = require("../config/logger");
 
 const router = express.Router();
 
@@ -131,6 +134,37 @@ router.post("/", async (req, res) => {
     const [result] = await pool.execute(sql, params);
 
     if (result.insertId && result.insertId > 0) {
+      // Send admin notification email
+      try {
+        const adminEmailContent = buildAdminNotificationEmail({
+          name: lead.name || [lead.first_name, lead.last_name].filter(Boolean).join(" "),
+          email: lead.email,
+          phone: lead.phone,
+          lead_type: lead.lead_type,
+          message: lead.message,
+        });
+        await sendEmail({
+          to: process.env.EMAIL_FROM,
+          subject: adminEmailContent.subject,
+          html: adminEmailContent.html,
+          text: adminEmailContent.text,
+        });
+      } catch (emailErr) {
+        logger.error("[leads] Failed to send admin notification email", { error: emailErr.message });
+      }
+
+      // Send customer confirmation email
+      try {
+        await sendEmail({
+          to: lead.email,
+          subject: "Thank you for contacting JM Comfort",
+          html: "<p>Thank you for reaching out to JM Comfort. We have received your request and will get back to you shortly.</p>",
+          text: "Thank you for reaching out to JM Comfort. We have received your request and will get back to you shortly.",
+        });
+      } catch (emailErr) {
+        logger.error("[leads] Failed to send customer confirmation email", { error: emailErr.message });
+      }
+
       return res.status(201).json({
         message: "Lead created successfully",
         lead_id: result.insertId,

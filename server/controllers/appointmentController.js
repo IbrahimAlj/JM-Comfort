@@ -1,4 +1,8 @@
 const db = require('../config/database');
+const { sendEmail } = require('../config/mailer');
+const { buildConfirmationEmail } = require('../templates/confirmationEmail');
+const { buildRejectionEmail } = require('../templates/rejectionEmail');
+const logger = require('../config/logger');
 
 // Get all appointments
 exports.getAllAppointments = async (req, res) => {
@@ -118,12 +122,30 @@ exports.approveAppointment = async (req, res) => {
     `, [id]);
     
     await connection.commit();
-    
+
+    // Send confirmation email to customer
+    try {
+      const appt = updatedAppointment[0];
+      const emailContent = buildConfirmationEmail({
+        customerName: appt.customer_name,
+        scheduledAt: appt.scheduled_at,
+        status: 'approved',
+      });
+      await sendEmail({
+        to: appt.customer_email,
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text,
+      });
+    } catch (emailErr) {
+      logger.error('Failed to send appointment confirmation email', { error: emailErr.message });
+    }
+
     res.json({
       message: 'Appointment approved successfully',
       appointment: updatedAppointment[0]
     });
-    
+
   } catch (error) {
     await connection.rollback();
     console.error('Error approving appointment:', error);
@@ -200,12 +222,30 @@ exports.rejectAppointment = async (req, res) => {
     `, [id]);
     
     await connection.commit();
-    
+
+    // Send rejection email to customer
+    try {
+      const appt = updatedAppointment[0];
+      const emailContent = buildRejectionEmail({
+        customerName: appt.customer_name,
+        scheduledAt: appt.scheduled_at,
+        rejectionReason: rejection_reason.trim(),
+      });
+      await sendEmail({
+        to: appt.customer_email,
+        subject: emailContent.subject,
+        html: emailContent.html,
+        text: emailContent.text,
+      });
+    } catch (emailErr) {
+      logger.error('Failed to send appointment rejection email', { error: emailErr.message });
+    }
+
     res.json({
       message: 'Appointment rejected successfully',
       appointment: updatedAppointment[0]
     });
-    
+
   } catch (error) {
     await connection.rollback();
     console.error('Error rejecting appointment:', error);

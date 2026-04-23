@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Email Notifications Email subject snapshots admin notification email subject 1`] = `"New Lead Received"`;
+
+exports[`Email Notifications Email subject snapshots confirmation email subject 1`] = `"JM Comfort - Appointment Confirmation"`;
