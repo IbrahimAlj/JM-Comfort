@@ -179,6 +179,8 @@ function AdminUpload() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [validationErrors, setValidationErrors] = useState([]);
+  const [photoType, setPhotoType] = useState("general");
+  const [projectId, setProjectId] = useState("");
 
   function handleFileChange(e) {
     const files = Array.from(e.target.files);
@@ -203,6 +205,8 @@ function AdminUpload() {
 
     const formData = new FormData();
     selectedFiles.forEach((file) => formData.append("images", file));
+    formData.append("photo_type", photoType);
+    if (projectId) formData.append("project_id", projectId);
 
     try {
       const res = await fetch("/api/gallery", {
@@ -243,6 +247,53 @@ function AdminUpload() {
         <p style={{ fontSize: "12px", color: "#9CA3AF", marginTop: "4px" }}>
           Allowed: JPG, JPEG, PNG, WEBP. Max {MAX_FILE_SIZE_MB}MB per file.
         </p>
+      </div>
+
+      <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
+        <div style={{ flex: 1 }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "4px" }}>
+            Photo Type
+          </label>
+          <select
+            value={photoType}
+            onChange={(e) => setPhotoType(e.target.value)}
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "8px 12px",
+              fontSize: "14px",
+              border: "1px solid #D1D5DB",
+              borderRadius: "6px",
+              color: "#374151",
+              backgroundColor: "white",
+            }}
+          >
+            <option value="general">General</option>
+            <option value="before">Before</option>
+            <option value="after">After</option>
+          </select>
+        </div>
+        <div style={{ flex: 1 }}>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "4px" }}>
+            Project ID (optional)
+          </label>
+          <input
+            type="number"
+            value={projectId}
+            onChange={(e) => setProjectId(e.target.value)}
+            placeholder="e.g. 1"
+            style={{
+              display: "block",
+              width: "100%",
+              padding: "8px 12px",
+              fontSize: "14px",
+              border: "1px solid #D1D5DB",
+              borderRadius: "6px",
+              color: "#374151",
+              boxSizing: "border-box",
+            }}
+          />
+        </div>
       </div>
 
       {validationErrors.length > 0 && (
