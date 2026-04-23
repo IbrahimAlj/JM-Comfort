@@ -3,6 +3,8 @@ export const quoteInitialValues = {
   email: "",
   phone: "",
   address: "",
+  preferred_date: "",
+  preferred_time_slot: "",
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[A-Za-z]{3,}$/;

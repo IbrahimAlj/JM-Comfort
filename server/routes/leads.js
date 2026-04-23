@@ -28,6 +28,9 @@ function normalizeLead(body) {
     service_type: normStr(body.service_type) || null,
     message: normStr(body.message) || null,
     source: normStr(body.source) || null,
+    preferred_date: normStr(body.preferred_date) || null,
+    preferred_time_slot: normStr(body.preferred_time_slot) || null,
+    address: normStr(body.address) || null,
   };
 }
 function computeDedupeHash(lead) {
@@ -114,8 +117,8 @@ router.post("/", async (req, res) => {
 
     const sql = `
       INSERT INTO contact_leads
-        (first_name, last_name, name, email, phone, lead_type, service_type, message, dedupe_hash)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (first_name, last_name, name, email, phone, lead_type, service_type, message, preferred_date, preferred_time_slot, address, dedupe_hash)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE id = id
     `;
 
@@ -128,6 +131,9 @@ router.post("/", async (req, res) => {
       lead.lead_type,
       lead.service_type || null,
       lead.message || null,
+      lead.preferred_date || null,
+      lead.preferred_time_slot || null,
+      lead.address || null,
       dedupe_hash,
     ];
 
@@ -200,7 +206,7 @@ router.get("/admin/leads", requireAdmin, async (req, res) => {
     params.push(limit, offset);
 
     const sql = `
-      SELECT id, first_name, last_name, name, email, phone, lead_type, service_type, message, source, status, created_at, updated_at
+      SELECT id, first_name, last_name, name, email, phone, lead_type, service_type, message, source, status, preferred_date, preferred_time_slot, address, created_at, updated_at
       FROM contact_leads
       ${where.length ? `WHERE ${where.join(" AND ")}` : ""}
       ORDER BY created_at DESC
