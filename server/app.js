@@ -23,6 +23,7 @@ const galleryRoutes = require('./routes/gallery');
 const sentryTestRoutes = require('./routes/sentryTest');
 const analyticsRoutes = require('./routes/analytics');
 const feedbackRoutes = require('./routes/feedback');
+const reviewRoutes = require('./routes/reviews');
 const adminLoginRoutes = require('./routes/adminLogin');
 const analyticsSummaryRoutes = require('./routes/analyticsSummary');
 
@@ -49,6 +50,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/sentry', sentryTestRoutes);
 app.use('/api/admin/analytics', analyticsRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminLoginRoutes);
 app.use('/api/analytics/summary', analyticsSummaryRoutes);
 
