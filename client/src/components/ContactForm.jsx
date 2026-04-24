@@ -33,14 +33,31 @@ export default function ContactForm() {
 
     try {
       setSending(true);
-      await new Promise((r) => setTimeout(r, 500));
-
-      trackEvent("contact_form_submit", {
-        form_name: "contact_us",
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lead_type: "contact",
+          name: values.name,
+          email: values.email,
+          phone: values.phone || undefined,
+          preferred_date: values.scheduled_date || undefined,
+          message: values.message,
+          source: "contact_form",
+        }),
       });
 
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setErrors({ submit: data.error || "Failed to send message. Please try again." });
+        return;
+      }
+
+      trackEvent("contact_form_submit", { form_name: "contact_us" });
       setSent(true);
       setValues(initial);
+    } catch (err) {
+      setErrors({ submit: "Network error. Please try again." });
     } finally {
       setSending(false);
     }
@@ -48,13 +65,20 @@ export default function ContactForm() {
 
   const disabled = sending || Object.keys(validate(values)).length > 0;
 
-  return (
-    <section className="w-full max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-semibold mb-4">Contact Us</h2>
+  const inputBase =
+    "block w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-900 focus:ring-1 focus:ring-gray-900";
 
+  return (
+    <div className="w-full px-4 py-4 sm:px-6 sm:py-5">
       {sent && (
-        <div className="mb-4 rounded-lg border p-3 text-sm bg-green-50 border-green-200">
-          Thanks! Your message has been submitted.
+        <div className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+          Thanks — your message has been submitted. We'll follow up within one business day.
+        </div>
+      )}
+
+      {errors.submit && (
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {errors.submit}
         </div>
       )}
 
@@ -68,9 +92,7 @@ export default function ContactForm() {
             name="name"
             value={values.name}
             onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
-              errors.name ? "border-red-400" : "border-gray-400"
-            }`}
+            className={`${inputBase} ${errors.name ? "border-red-400" : "border-gray-300"}`}
             placeholder="Jane Doe"
           />
           {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
@@ -86,9 +108,7 @@ export default function ContactForm() {
             type="email"
             value={values.email}
             onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
-              errors.email ? "border-red-400" : "border-gray-400"
-            }`}
+            className={`${inputBase} ${errors.email ? "border-red-400" : "border-gray-300"}`}
             placeholder="jane@example.com"
           />
           {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
@@ -103,9 +123,7 @@ export default function ContactForm() {
             name="phone"
             value={values.phone}
             onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
-              errors.phone ? "border-red-400" : "border-gray-400"
-            }`}
+            className={`${inputBase} ${errors.phone ? "border-red-400" : "border-gray-300"}`}
             placeholder="(555) 123-4567"
           />
           {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone}</p>}
@@ -121,7 +139,7 @@ export default function ContactForm() {
             type="date"
             value={values.scheduled_date}
             onChange={onChange}
-            className="w-full rounded-lg border border-gray-400 px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400"
+            className={`${inputBase} border-gray-300`}
           />
         </div>
 
@@ -135,9 +153,7 @@ export default function ContactForm() {
             rows={5}
             value={values.message}
             onChange={onChange}
-            className={`w-full rounded-lg border px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-400 ${
-              errors.message ? "border-red-400" : "border-gray-400"
-            }`}
+            className={`${inputBase} ${errors.message ? "border-red-400" : "border-gray-300"}`}
             placeholder="How can we help?"
           />
           {errors.message && <p className="mt-1 text-xs text-red-600">{errors.message}</p>}
@@ -146,15 +162,17 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={disabled}
-          className={`w-full rounded-lg px-4 py-3 min-h-[44px] font-medium ${
-            disabled ? "bg-gray-300 text-gray-600 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700 text-white"
+          className={`inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold shadow-sm transition-colors ${
+            disabled
+              ? "cursor-not-allowed bg-gray-200 text-gray-500"
+              : "bg-gray-900 text-white hover:bg-gray-800"
           }`}
         >
           {sending ? "Sending..." : "Send message"}
         </button>
 
-        <p className="text-xs text-gray-600">* Required fields</p>
+        <p className="text-xs text-gray-500">* Required fields</p>
       </form>
-    </section>
+    </div>
   );
 }

@@ -1,16 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { LuMessageSquareText } from "react-icons/lu";
+import {
+  PageHeader,
+  Table,
+  TH,
+  TD,
+  ErrorBanner,
+  EmptyState,
+  Spinner,
+  Card,
+} from "../ui";
 
-const API_BASE = import.meta.env.VITE_API_URL || '';
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 function formatDate(isoString) {
-  if (!isoString) return '—';
-  const d = new Date(isoString);
-  return d.toLocaleString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
+  if (!isoString) return "—";
+  return new Date(isoString).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
     hour12: true,
   });
 }
@@ -18,7 +28,7 @@ function formatDate(isoString) {
 export default function AdminFeedbackPage() {
   const [feedback, setFeedback] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchFeedback();
@@ -26,179 +36,74 @@ export default function AdminFeedbackPage() {
 
   async function fetchFeedback() {
     setLoading(true);
-    setError('');
+    setError("");
     try {
       const res = await fetch(`${API_BASE}/api/feedback`);
-      if (!res.ok) throw new Error('Failed to load feedback.');
+      if (!res.ok) throw new Error("Failed to load feedback.");
       const data = await res.json();
       setFeedback(data.feedback || []);
     } catch (err) {
-      setError(err.message || 'Could not load feedback.');
+      setError(err.message || "Could not load feedback.");
     } finally {
       setLoading(false);
     }
   }
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <h1 style={{ fontSize: '22px', fontWeight: '600', color: '#1F2937', margin: '0 0 4px 0' }}>
-          Client Feedback
-        </h1>
-        <p style={{ fontSize: '13px', color: '#6B7280', marginTop: '16px' }}>Loading feedback...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <h1 style={{ fontSize: '22px', fontWeight: '600', color: '#1F2937', margin: '0 0 16px 0' }}>
-          Client Feedback
-        </h1>
-        <div
-          style={{
-            backgroundColor: '#FEF2F2',
-            border: '1px solid #FECACA',
-            borderRadius: '6px',
-            padding: '12px 16px',
-            fontSize: '13px',
-            color: '#DC2626',
-            marginBottom: '12px',
-          }}
-        >
-          {error}
-        </div>
-        <button
-          onClick={fetchFeedback}
-          style={{
-            padding: '8px 16px',
-            fontSize: '13px',
-            fontWeight: '500',
-            color: 'white',
-            backgroundColor: '#000000',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-          }}
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h1 style={{ fontSize: '22px', fontWeight: '600', color: '#1F2937', margin: '0 0 4px 0' }}>
-        Client Feedback
-      </h1>
-      <p style={{ fontSize: '13px', color: '#6B7280', margin: '0 0 24px 0' }}>
-        UAT feedback submitted by clients during testing.
-      </p>
+    <div>
+      <PageHeader
+        title="Client Feedback"
+        subtitle="UAT feedback submitted by clients during testing."
+      />
 
-      {feedback.length === 0 ? (
-        <p style={{ fontSize: '14px', color: '#6B7280' }}>No feedback has been submitted yet.</p>
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner onRetry={fetchFeedback}>{error}</ErrorBanner>
+        </div>
+      )}
+
+      {loading ? (
+        <Card className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Spinner /> Loading feedback...
+          </div>
+        </Card>
+      ) : feedback.length === 0 ? (
+        <EmptyState
+          icon={<LuMessageSquareText size={22} />}
+          title="No feedback yet"
+          description="When testers submit UAT feedback it will appear here."
+        />
       ) : (
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+        <>
+          <Table>
             <thead>
-              <tr style={{ backgroundColor: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-                <th
-                  style={{
-                    padding: '10px 16px',
-                    textAlign: 'left',
-                    fontSize: '11px',
-                    fontWeight: '600',
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    whiteSpace: 'nowrap',
-                    width: '1%',
-                  }}
-                >
-                  #
-                </th>
-                <th
-                  style={{
-                    padding: '10px 16px',
-                    textAlign: 'left',
-                    fontSize: '11px',
-                    fontWeight: '600',
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                  }}
-                >
-                  Feedback
-                </th>
-                <th
-                  style={{
-                    padding: '10px 16px',
-                    textAlign: 'left',
-                    fontSize: '11px',
-                    fontWeight: '600',
-                    color: '#6B7280',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Submitted
-                </th>
+              <tr>
+                <TH className="w-16">#</TH>
+                <TH>Feedback</TH>
+                <TH className="whitespace-nowrap">Submitted</TH>
               </tr>
             </thead>
-            <tbody>
-              {feedback.map((entry, index) => (
-                <tr
-                  key={entry.id}
-                  style={{
-                    borderBottom: '1px solid #E5E7EB',
-                    backgroundColor: index % 2 === 0 ? 'white' : '#F9FAFB',
-                  }}
-                >
-                  <td
-                    style={{
-                      padding: '12px 16px',
-                      color: '#9CA3AF',
-                      fontSize: '12px',
-                      whiteSpace: 'nowrap',
-                      verticalAlign: 'top',
-                    }}
-                  >
-                    {entry.id}
-                  </td>
-                  <td
-                    style={{
-                      padding: '12px 16px',
-                      color: '#1F2937',
-                      lineHeight: '1.6',
-                      whiteSpace: 'pre-wrap',
-                      wordBreak: 'break-word',
-                      verticalAlign: 'top',
-                    }}
-                  >
-                    {entry.feedback_text}
-                  </td>
-                  <td
-                    style={{
-                      padding: '12px 16px',
-                      color: '#6B7280',
-                      whiteSpace: 'nowrap',
-                      verticalAlign: 'top',
-                      fontSize: '13px',
-                    }}
-                  >
+            <tbody className="divide-y divide-gray-100">
+              {feedback.map((entry) => (
+                <tr key={entry.id} className="align-top hover:bg-gray-50">
+                  <TD className="text-xs text-gray-400">{entry.id}</TD>
+                  <TD>
+                    <p className="whitespace-pre-wrap break-words text-gray-800">
+                      {entry.feedback_text}
+                    </p>
+                  </TD>
+                  <TD className="whitespace-nowrap text-gray-500">
                     {formatDate(entry.created_at)}
-                  </td>
+                  </TD>
                 </tr>
               ))}
             </tbody>
-          </table>
-          <p style={{ fontSize: '12px', color: '#9CA3AF', marginTop: '12px' }}>
-            {feedback.length} {feedback.length === 1 ? 'entry' : 'entries'} total
+          </Table>
+          <p className="mt-3 text-xs text-gray-400">
+            {feedback.length} {feedback.length === 1 ? "entry" : "entries"} total
           </p>
-        </div>
+        </>
       )}
     </div>
   );

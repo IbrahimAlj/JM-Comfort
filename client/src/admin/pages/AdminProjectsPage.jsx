@@ -1,14 +1,41 @@
 import { useState, useEffect } from "react";
+import { LuPencil, LuTrash2, LuFolderKanban } from "react-icons/lu";
+import {
+  PageHeader,
+  SectionCard,
+  Table,
+  TH,
+  TD,
+  Pill,
+  Button,
+  Field,
+  inputClass,
+  ErrorBanner,
+  EmptyState,
+  Spinner,
+  Card,
+} from "../ui";
 
 const STATUS_OPTIONS = ["planned", "in_progress", "completed", "cancelled"];
-const STATUS_STYLES = {
-  planned: "bg-blue-100 text-blue-800",
-  in_progress: "bg-yellow-100 text-yellow-800",
-  completed: "bg-green-100 text-green-800",
-  cancelled: "bg-gray-100 text-gray-500",
+const STATUS_TONE = {
+  planned: "blue",
+  in_progress: "yellow",
+  completed: "green",
+  cancelled: "slate",
 };
 
-const EMPTY_FORM = { name: "", customer_id: "", status: "planned", start_date: "", end_date: "" };
+const EMPTY_FORM = {
+  name: "",
+  customer_id: "",
+  status: "planned",
+  start_date: "",
+  end_date: "",
+};
+
+function formatDate(dateStr) {
+  if (!dateStr) return "—";
+  return new Date(dateStr).toLocaleDateString();
+}
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -57,6 +84,7 @@ export default function AdminProjectsPage() {
       end_date: project.end_date ? project.end_date.split("T")[0] : "",
     });
     setFormError("");
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function cancelEdit() {
@@ -67,14 +95,8 @@ export default function AdminProjectsPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!formData.name.trim()) {
-      setFormError("Project name is required");
-      return;
-    }
-    if (!formData.customer_id) {
-      setFormError("Customer ID is required");
-      return;
-    }
+    if (!formData.name.trim()) return setFormError("Project name is required");
+    if (!formData.customer_id) return setFormError("Customer ID is required");
 
     setFormLoading(true);
     setFormError("");
@@ -97,11 +119,12 @@ export default function AdminProjectsPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.error || `Failed to ${editingId ? "update" : "create"} project`);
+        throw new Error(
+          data?.error || `Failed to ${editingId ? "update" : "create"} project`
+        );
       }
 
       const data = await res.json();
-
       if (editingId) {
         setProjects((prev) =>
           prev.map((p) => (p.id === editingId ? data.project : p))
@@ -109,7 +132,6 @@ export default function AdminProjectsPage() {
       } else {
         setProjects((prev) => [data.project, ...prev]);
       }
-
       setFormData(EMPTY_FORM);
       setEditingId(null);
     } catch (err) {
@@ -137,52 +159,20 @@ export default function AdminProjectsPage() {
     }
   }
 
-  function formatDate(dateStr) {
-    if (!dateStr) return "—";
-    return new Date(dateStr).toLocaleDateString();
-  }
-
-  if (loading) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Projects</h1>
-        <p className="text-gray-500">Loading projects...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Projects</h1>
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
-          {error}
-        </div>
-        <button
-          onClick={fetchProjects}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Projects</h1>
+    <div>
+      <PageHeader
+        title="Projects"
+        subtitle="Track scheduled and in-progress installations and repairs."
+      />
 
-      {/* Create / Edit Form */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h2 className="text-lg font-medium mb-3">
-          {editingId ? "Edit Project" : "Create Project"}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Project Name <span className="text-red-600">*</span>
-              </label>
+      <SectionCard
+        className="mb-6"
+        title={editingId ? "Edit project" : "Create project"}
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Project Name" required>
               <input
                 type="text"
                 name="name"
@@ -190,13 +180,10 @@ export default function AdminProjectsPage() {
                 onChange={handleChange}
                 disabled={formLoading}
                 placeholder="e.g. HVAC Installation"
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Customer ID <span className="text-red-600">*</span>
-              </label>
+            </Field>
+            <Field label="Customer ID" required>
               <input
                 type="number"
                 name="customer_id"
@@ -204,17 +191,16 @@ export default function AdminProjectsPage() {
                 onChange={handleChange}
                 disabled={formLoading || !!editingId}
                 placeholder="e.g. 1"
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Status</label>
+            </Field>
+            <Field label="Status">
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
                 disabled={formLoading}
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               >
                 {STATUS_OPTIONS.map((s) => (
                   <option key={s} value={s}>
@@ -222,152 +208,150 @@ export default function AdminProjectsPage() {
                   </option>
                 ))}
               </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Start Date</label>
+            </Field>
+            <Field label="Start Date">
               <input
                 type="date"
                 name="start_date"
                 value={formData.start_date}
                 onChange={handleChange}
                 disabled={formLoading}
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">End Date</label>
+            </Field>
+            <Field label="End Date">
               <input
                 type="date"
                 name="end_date"
                 value={formData.end_date}
                 onChange={handleChange}
                 disabled={formLoading}
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
+            </Field>
           </div>
 
-          {formError && (
-            <p className="text-sm text-red-600">{formError}</p>
-          )}
+          {formError && <ErrorBanner>{formError}</ErrorBanner>}
 
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              disabled={formLoading}
-              className="px-4 py-2 bg-blue-600 text-white rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+          <div className="flex flex-wrap justify-end gap-2 pt-2">
+            {editingId && (
+              <Button type="button" variant="secondary" onClick={cancelEdit} disabled={formLoading}>
+                Cancel
+              </Button>
+            )}
+            <Button type="submit" disabled={formLoading}>
               {formLoading
                 ? editingId
                   ? "Updating..."
                   : "Creating..."
                 : editingId
-                  ? "Update Project"
-                  : "Create Project"}
-            </button>
-            {editingId && (
-              <button
-                type="button"
-                onClick={cancelEdit}
-                disabled={formLoading}
-                className="px-4 py-2 border border-gray-300 rounded text-sm text-gray-700"
-              >
-                Cancel
-              </button>
-            )}
+                  ? "Update project"
+                  : "Create project"}
+            </Button>
           </div>
         </form>
-      </div>
+      </SectionCard>
 
-      {/* Projects Table */}
-      {projects.length === 0 ? (
-        <p className="text-gray-500">No projects found.</p>
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner onRetry={fetchProjects}>{error}</ErrorBanner>
+        </div>
+      )}
+
+      {loading ? (
+        <Card className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Spinner /> Loading projects...
+          </div>
+        </Card>
+      ) : projects.length === 0 ? (
+        <EmptyState
+          icon={<LuFolderKanban size={22} />}
+          title="No projects yet"
+          description="Create a project to start tracking its status and timeline."
+        />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {projects.map((project) => (
-                <tr key={project.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {project.name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {project.customer_name}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        STATUS_STYLES[project.status] || "bg-gray-100 text-gray-800"
-                      }`}
+        <Table>
+          <thead>
+            <tr>
+              <TH>Name</TH>
+              <TH>Customer</TH>
+              <TH>Status</TH>
+              <TH>Start</TH>
+              <TH>End</TH>
+              <TH className="text-right">Actions</TH>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {projects.map((project) => (
+              <tr key={project.id} className="hover:bg-gray-50">
+                <TD className="font-medium text-gray-900">{project.name}</TD>
+                <TD>{project.customer_name || `#${project.customer_id}`}</TD>
+                <TD>
+                  <Pill tone={STATUS_TONE[project.status] || "gray"}>
+                    {project.status.replace("_", " ")}
+                  </Pill>
+                </TD>
+                <TD className="whitespace-nowrap text-gray-600">
+                  {formatDate(project.start_date)}
+                </TD>
+                <TD className="whitespace-nowrap text-gray-600">
+                  {formatDate(project.end_date)}
+                </TD>
+                <TD>
+                  <div className="flex flex-wrap justify-end gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      leftIcon={<LuPencil size={14} />}
+                      onClick={() => startEdit(project)}
                     >
-                      {project.status.replace("_", " ")}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {formatDate(project.start_date)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {formatDate(project.end_date)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => startEdit(project)}
-                        className="px-3 py-1 bg-blue-600 text-white rounded text-xs font-medium"
-                      >
-                        Edit
-                      </button>
-                      {deleteConfirm === project.id ? (
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => handleDelete(project.id)}
-                            disabled={deleteLoading}
-                            className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium disabled:opacity-50"
-                          >
-                            {deleteLoading ? "Deleting..." : "Confirm"}
-                          </button>
-                          <button
-                            onClick={() => {
-                              setDeleteConfirm(null);
-                              setDeleteError("");
-                            }}
-                            disabled={deleteLoading}
-                            className="px-3 py-1 border border-gray-300 rounded text-xs text-gray-700"
-                          >
-                            Cancel
-                          </button>
-                          {deleteError && (
-                            <span className="text-xs text-red-600">{deleteError}</span>
-                          )}
-                        </div>
-                      ) : (
-                        <button
+                      Edit
+                    </Button>
+                    {deleteConfirm === project.id ? (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => handleDelete(project.id)}
+                          disabled={deleteLoading}
+                        >
+                          {deleteLoading ? "Deleting..." : "Confirm"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="secondary"
                           onClick={() => {
-                            setDeleteConfirm(project.id);
+                            setDeleteConfirm(null);
                             setDeleteError("");
                           }}
-                          className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium"
+                          disabled={deleteLoading}
                         >
-                          Delete
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        leftIcon={<LuTrash2 size={14} />}
+                        onClick={() => {
+                          setDeleteConfirm(project.id);
+                          setDeleteError("");
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </div>
+                  {deleteError && deleteConfirm === project.id && (
+                    <p className="mt-1 text-right text-xs text-red-600">{deleteError}</p>
+                  )}
+                </TD>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       )}
     </div>
   );

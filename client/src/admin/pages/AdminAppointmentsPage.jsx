@@ -1,14 +1,33 @@
 import { useState, useEffect } from "react";
+import { LuCheck, LuX, LuCalendarDays } from "react-icons/lu";
+import {
+  PageHeader,
+  Table,
+  TH,
+  TD,
+  Pill,
+  Button,
+  inputClass,
+  ErrorBanner,
+  EmptyState,
+  Spinner,
+  Card,
+} from "../ui";
 
-const STATUS_STYLES = {
-  pending: "bg-yellow-100 text-yellow-800",
-  approved: "bg-green-100 text-green-800",
-  rejected: "bg-red-100 text-red-800",
-  scheduled: "bg-blue-100 text-blue-800",
-  completed: "bg-gray-100 text-gray-800",
-  cancelled: "bg-gray-100 text-gray-500",
-  no_show: "bg-orange-100 text-orange-800",
+const STATUS_TONE = {
+  pending: "yellow",
+  approved: "green",
+  rejected: "red",
+  scheduled: "blue",
+  completed: "slate",
+  cancelled: "gray",
+  no_show: "red",
 };
+
+function formatDate(dateStr) {
+  if (!dateStr) return "—";
+  return new Date(dateStr).toLocaleString();
+}
 
 export default function AdminAppointmentsPage() {
   const [appointments, setAppointments] = useState([]);
@@ -58,10 +77,7 @@ export default function AdminAppointmentsPage() {
       );
       setActioned((prev) => ({ ...prev, [id]: true }));
     } catch (err) {
-      setActionError((prev) => ({
-        ...prev,
-        [id]: err.message || "Failed to approve",
-      }));
+      setActionError((prev) => ({ ...prev, [id]: err.message || "Failed to approve" }));
     } finally {
       setActionLoading((prev) => ({ ...prev, [id]: null }));
     }
@@ -70,10 +86,7 @@ export default function AdminAppointmentsPage() {
   async function handleReject(id) {
     const reason = rejectionReasons[id]?.trim();
     if (!reason) {
-      setActionError((prev) => ({
-        ...prev,
-        [id]: "Rejection reason is required",
-      }));
+      setActionError((prev) => ({ ...prev, [id]: "Rejection reason is required" }));
       return;
     }
     setActionLoading((prev) => ({ ...prev, [id]: "reject" }));
@@ -82,10 +95,7 @@ export default function AdminAppointmentsPage() {
       const res = await fetch(`/api/appointments/${id}/reject`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          approved_by: "admin",
-          rejection_reason: reason,
-        }),
+        body: JSON.stringify({ approved_by: "admin", rejection_reason: reason }),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
@@ -98,170 +108,132 @@ export default function AdminAppointmentsPage() {
       setActioned((prev) => ({ ...prev, [id]: true }));
       setShowRejectForm((prev) => ({ ...prev, [id]: false }));
     } catch (err) {
-      setActionError((prev) => ({
-        ...prev,
-        [id]: err.message || "Failed to reject",
-      }));
+      setActionError((prev) => ({ ...prev, [id]: err.message || "Failed to reject" }));
     } finally {
       setActionLoading((prev) => ({ ...prev, [id]: null }));
     }
   }
 
-  function formatDate(dateStr) {
-    if (!dateStr) return "N/A";
-    return new Date(dateStr).toLocaleString();
-  }
-
-  if (loading) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Appointments</h1>
-        <p className="text-gray-500">Loading appointments...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Appointments</h1>
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
-          {error}
-        </div>
-        <button
-          onClick={fetchAppointments}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Appointments</h1>
+    <div>
+      <PageHeader
+        title="Appointments"
+        subtitle="Approve or reject booking requests from customers."
+      />
 
-      {appointments.length === 0 ? (
-        <p className="text-gray-500">No appointments found.</p>
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner onRetry={fetchAppointments}>{error}</ErrorBanner>
+        </div>
+      )}
+
+      {loading ? (
+        <Card className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Spinner /> Loading appointments...
+          </div>
+        </Card>
+      ) : appointments.length === 0 ? (
+        <EmptyState
+          icon={<LuCalendarDays size={22} />}
+          title="No appointments yet"
+          description="Incoming appointment requests will show here."
+        />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Customer
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Scheduled
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Project
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {appointments.map((appt) => (
-                <tr key={appt.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {appt.customer_name}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {appt.customer_email}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {formatDate(appt.scheduled_at)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {appt.project_name || "—"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        STATUS_STYLES[appt.status] || "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {appt.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    {appt.status === "pending" && !actioned[appt.id] ? (
-                      <div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleApprove(appt.id)}
-                            disabled={!!actionLoading[appt.id]}
-                            className="px-3 py-1 bg-green-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            {actionLoading[appt.id] === "approve"
-                              ? "Approving..."
-                              : "Approve"}
-                          </button>
-                          <button
-                            onClick={() =>
-                              setShowRejectForm((prev) => ({
+        <Table>
+          <thead>
+            <tr>
+              <TH>Customer</TH>
+              <TH>Scheduled</TH>
+              <TH>Project</TH>
+              <TH>Status</TH>
+              <TH className="text-right">Actions</TH>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {appointments.map((appt) => (
+              <tr key={appt.id} className="hover:bg-gray-50">
+                <TD>
+                  <div className="font-medium text-gray-900">{appt.customer_name}</div>
+                  <div className="text-xs text-gray-500">{appt.customer_email}</div>
+                </TD>
+                <TD className="whitespace-nowrap text-gray-600">
+                  {formatDate(appt.scheduled_at)}
+                </TD>
+                <TD className="text-gray-600">{appt.project_name || "—"}</TD>
+                <TD>
+                  <Pill tone={STATUS_TONE[appt.status] || "gray"}>{appt.status}</Pill>
+                </TD>
+                <TD>
+                  {appt.status === "pending" && !actioned[appt.id] ? (
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="flex flex-wrap justify-end gap-2">
+                        <Button
+                          size="sm"
+                          variant="success"
+                          leftIcon={<LuCheck size={14} />}
+                          onClick={() => handleApprove(appt.id)}
+                          disabled={!!actionLoading[appt.id]}
+                        >
+                          {actionLoading[appt.id] === "approve" ? "Approving..." : "Approve"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          leftIcon={<LuX size={14} />}
+                          onClick={() =>
+                            setShowRejectForm((prev) => ({
+                              ...prev,
+                              [appt.id]: !prev[appt.id],
+                            }))
+                          }
+                          disabled={!!actionLoading[appt.id]}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+
+                      {showRejectForm[appt.id] && (
+                        <div className="flex w-full max-w-sm flex-col items-end gap-2">
+                          <input
+                            type="text"
+                            placeholder="Rejection reason"
+                            value={rejectionReasons[appt.id] || ""}
+                            onChange={(e) =>
+                              setRejectionReasons((prev) => ({
                                 ...prev,
-                                [appt.id]: !prev[appt.id],
+                                [appt.id]: e.target.value,
                               }))
                             }
+                            className={`${inputClass} text-xs`}
+                          />
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            onClick={() => handleReject(appt.id)}
                             disabled={!!actionLoading[appt.id]}
-                            className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                           >
-                            Reject
-                          </button>
+                            {actionLoading[appt.id] === "reject"
+                              ? "Rejecting..."
+                              : "Confirm reject"}
+                          </Button>
                         </div>
-                        {showRejectForm[appt.id] && (
-                          <div className="mt-2">
-                            <input
-                              type="text"
-                              placeholder="Rejection reason"
-                              value={rejectionReasons[appt.id] || ""}
-                              onChange={(e) =>
-                                setRejectionReasons((prev) => ({
-                                  ...prev,
-                                  [appt.id]: e.target.value,
-                                }))
-                              }
-                              className="block w-full rounded border border-gray-300 px-2 py-1 text-xs"
-                            />
-                            <button
-                              onClick={() => handleReject(appt.id)}
-                              disabled={!!actionLoading[appt.id]}
-                              className="mt-1 px-3 py-1 bg-red-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              {actionLoading[appt.id] === "reject"
-                                ? "Rejecting..."
-                                : "Confirm Reject"}
-                            </button>
-                          </div>
-                        )}
-                        {actionError[appt.id] && (
-                          <p className="mt-1 text-xs text-red-600">
-                            {actionError[appt.id]}
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <span className="text-gray-400 text-xs">
-                        {actioned[appt.id]
-                          ? "Action completed"
-                          : "No actions available"}
-                      </span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                      )}
+
+                      {actionError[appt.id] && (
+                        <p className="text-xs text-red-600">{actionError[appt.id]}</p>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="block text-right text-xs text-gray-400">
+                      {actioned[appt.id] ? "Action completed" : "No actions"}
+                    </span>
+                  )}
+                </TD>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       )}
     </div>
   );

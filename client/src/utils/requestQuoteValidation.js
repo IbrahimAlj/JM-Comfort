@@ -3,10 +3,12 @@ export const quoteInitialValues = {
   email: "",
   phone: "",
   address: "",
+  zip: "",
+  availability_slot_id: "",
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[A-Za-z]{3,}$/;
-const zipRegex = /\b\d{5}(?:-\d{4})?\b/;
+const zipRegex = /^\d{5}(?:-\d{4})?$/;
 
 function getPhoneDigits(value) {
   return value.replace(/\D/g, "");
@@ -33,8 +35,12 @@ export function validateQuote(values) {
 
   if (!values.address.trim()) {
     errors.address = "Address is required.";
-  } else if (!zipRegex.test(values.address.trim())) {
-    errors.address = "Address must include a valid ZIP code.";
+  }
+
+  if (!values.zip.trim()) {
+    errors.zip = "ZIP code is required.";
+  } else if (!zipRegex.test(values.zip.trim())) {
+    errors.zip = "Enter a valid ZIP (e.g. 95814 or 95814-1234).";
   }
 
   return errors;
@@ -74,8 +80,12 @@ return "";
 
     case "address":
       if (!trimmed) return "";
+      return "";
+
+    case "zip":
+      if (!trimmed) return "";
       if (!zipRegex.test(trimmed)) {
-        return "Address must include a valid ZIP code.";
+        return "Enter a valid ZIP (e.g. 95814 or 95814-1234).";
       }
       return "";
 

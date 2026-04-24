@@ -10,9 +10,10 @@ import Reviews from "./pages/Reviews";
 import Contact from "./pages/Contact";
 import RequestQuote from "./pages/RequestQuote";
 import Gallery from './pages/Gallery';
-import ServiceDetail from './components/ServiceDetail';
+import ServiceDetail from './pages/ServiceDetail';
 import SentryTestPage from './pages/SentryTestPage';
 import UATFeedback from './pages/UATFeedback';
+import NotFound from './pages/NotFound';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import CTAFloatingButton from "./components/CallToActionBanner";
@@ -58,7 +59,8 @@ function AppShell() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/sentry-test" element={<SentryTestPage />} />
         <Route path="/uat-feedback" element={<UATFeedback />} />
-        <Route path="/*" element={<AdminRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       {!isAdmin && <CTAFloatingButton />}
       {!isAdmin && <Footer />}

@@ -1,12 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import {
+  LuPencil,
+  LuTrash2,
+  LuImagePlus,
+  LuX,
+  LuWrench,
+} from "react-icons/lu";
+import {
+  PageHeader,
+  SectionCard,
+  Table,
+  TH,
+  TD,
+  Button,
+  Field,
+  inputClass,
+  ErrorBanner,
+  SuccessBanner,
+  EmptyState,
+  Spinner,
+  Card,
+} from "../ui";
 
 const EMPTY_FORM = { title: "", description: "", price: "" };
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 export default function AdminServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState(EMPTY_FORM);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
   const [formError, setFormError] = useState("");
   const [formLoading, setFormLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -14,10 +40,21 @@ export default function AdminServicesPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchServices();
   }, []);
+
+  useEffect(() => {
+    if (!imageFile) {
+      setImagePreview("");
+      return;
+    }
+    const url = URL.createObjectURL(imageFile);
+    setImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [imageFile]);
 
   async function fetchServices() {
     setLoading(true);
@@ -40,20 +77,41 @@ export default function AdminServicesPage() {
     if (formError) setFormError("");
   }
 
+  function handleFileChange(e) {
+    const file = e.target.files?.[0] || null;
+    if (file && file.size > MAX_IMAGE_BYTES) {
+      setFormError("Image must be 5MB or smaller");
+      e.target.value = "";
+      return;
+    }
+    setImageFile(file);
+    if (formError) setFormError("");
+  }
+
+  function clearImageSelection() {
+    setImageFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   function startEdit(service) {
     setEditingId(service.id);
     setFormData({
-      title: service.title,
-      description: service.description,
-      price: service.price || "",
+      title: service.title || service.name || "",
+      description: service.description || service.full_description || "",
+      price: service.price || service.price_description || "",
     });
+    setCurrentImageUrl(service.image_url || service.image || "");
+    clearImageSelection();
     setFormError("");
     setSuccessMsg("");
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function cancelEdit() {
     setEditingId(null);
     setFormData(EMPTY_FORM);
+    setCurrentImageUrl("");
+    clearImageSelection();
     setFormError("");
   }
 
@@ -61,14 +119,9 @@ export default function AdminServicesPage() {
     e.preventDefault();
     setSuccessMsg("");
 
-    if (!formData.title.trim()) {
-      setFormError("Service title is required");
-      return;
-    }
-    if (!formData.description.trim()) {
-      setFormError("Service description is required");
-      return;
-    }
+    if (!formData.title.trim()) return setFormError("Service title is required");
+    if (!formData.description.trim())
+      return setFormError("Service description is required");
 
     setFormLoading(true);
     setFormError("");
@@ -76,24 +129,24 @@ export default function AdminServicesPage() {
     try {
       const url = editingId ? `/api/services/${editingId}` : "/api/services";
       const method = editingId ? "PUT" : "POST";
+      const body = new FormData();
+      body.append("title", formData.title.trim());
+      body.append("description", formData.description.trim());
+      body.append("price", formData.price.trim());
+      if (imageFile) body.append("image", imageFile);
 
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: formData.title.trim(),
-          description: formData.description.trim(),
-          price: formData.price.trim() || null,
-        }),
-      });
-
+      const res = await fetch(url, { method, body });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.error || `Failed to ${editingId ? "update" : "create"} service`);
+        const detail =
+          data?.details?.[0]?.message ||
+          (Array.isArray(data?.details) ? data.details[0] : null) ||
+          data?.error;
+        throw new Error(
+          detail || `Failed to ${editingId ? "update" : "create"} service`
+        );
       }
-
       const data = await res.json();
-
       if (editingId) {
         setServices((prev) =>
           prev.map((s) => (s.id === editingId ? data.service : s))
@@ -103,9 +156,10 @@ export default function AdminServicesPage() {
         setServices((prev) => [data.service, ...prev]);
         setSuccessMsg("Service created successfully");
       }
-
       setFormData(EMPTY_FORM);
       setEditingId(null);
+      setCurrentImageUrl("");
+      clearImageSelection();
     } catch (err) {
       setFormError(err.message || "Something went wrong");
     } finally {
@@ -133,53 +187,31 @@ export default function AdminServicesPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Services</h1>
-        <p className="text-gray-500">Loading services...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Services</h1>
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
-          {error}
-        </div>
-        <button
-          onClick={fetchServices}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Services</h1>
+    <div>
+      <PageHeader
+        title="Services"
+        subtitle="Manage the HVAC services displayed publicly on the website."
+      />
 
       {successMsg && (
-        <div className="mb-4 rounded-lg border border-green-300 bg-green-50 p-3 text-sm text-green-800">
-          {successMsg}
+        <div className="mb-4">
+          <SuccessBanner>{successMsg}</SuccessBanner>
         </div>
       )}
 
-      {/* Create / Edit Form */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h2 className="text-lg font-medium mb-3">
-          {editingId ? "Edit Service" : "Add Service"}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Title <span className="text-red-600">*</span>
-              </label>
+      <SectionCard
+        className="mb-6"
+        title={editingId ? "Edit service" : "Add a service"}
+        description={
+          editingId
+            ? "Update the details below and save changes."
+            : "Fill in the details to add a new service to the catalog."
+        }
+      >
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Title" required>
               <input
                 type="text"
                 name="title"
@@ -187,13 +219,10 @@ export default function AdminServicesPage() {
                 onChange={handleChange}
                 disabled={formLoading}
                 placeholder="e.g. Installation"
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Price
-              </label>
+            </Field>
+            <Field label="Price" hint="Shown as-is on the site.">
               <input
                 type="text"
                 name="price"
@@ -201,132 +230,211 @@ export default function AdminServicesPage() {
                 onChange={handleChange}
                 disabled={formLoading}
                 placeholder="e.g. Starting at $3,500"
-                className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                className={inputClass}
               />
-            </div>
+            </Field>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Description <span className="text-red-600">*</span>
-            </label>
+
+          <Field label="Description" required>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               disabled={formLoading}
-              rows={3}
+              rows={4}
               placeholder="Describe the service..."
-              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm"
+              className={inputClass}
             />
-          </div>
+          </Field>
 
-          {formError && (
-            <p className="text-sm text-red-600">{formError}</p>
-          )}
+          <Field label="Photo" hint="Optional. JPG/PNG/WEBP, max 5MB.">
+            <div className="flex flex-wrap items-center gap-4">
+              <label
+                htmlFor="service-photo-input"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+              >
+                <LuImagePlus size={16} /> Choose file
+                <input
+                  id="service-photo-input"
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleFileChange}
+                  disabled={formLoading}
+                  className="sr-only"
+                />
+              </label>
+              {imageFile && (
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <span className="truncate max-w-[200px]">{imageFile.name}</span>
+                  <button
+                    type="button"
+                    onClick={clearImageSelection}
+                    className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-red-600"
+                    aria-label="Remove selection"
+                  >
+                    <LuX size={14} />
+                  </button>
+                </div>
+              )}
+            </div>
+            {(imagePreview || currentImageUrl) && (
+              <div className="mt-3 flex items-start gap-3">
+                <img
+                  src={imagePreview || currentImageUrl}
+                  alt="Service preview"
+                  className="h-24 w-24 rounded-lg border border-gray-200 object-cover"
+                />
+                <p className="text-xs text-gray-500">
+                  {imagePreview
+                    ? "New photo will replace current on save."
+                    : "Current photo"}
+                </p>
+              </div>
+            )}
+          </Field>
 
-          <div className="flex gap-2">
-            <button
-              type="submit"
-              disabled={formLoading}
-              className="px-4 py-2 bg-blue-600 text-white rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+          {formError && <ErrorBanner>{formError}</ErrorBanner>}
+
+          <div className="flex flex-wrap justify-end gap-2 pt-2">
+            {editingId && (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={cancelEdit}
+                disabled={formLoading}
+              >
+                Cancel
+              </Button>
+            )}
+            <Button type="submit" disabled={formLoading}>
               {formLoading
                 ? editingId
                   ? "Updating..."
                   : "Creating..."
                 : editingId
-                  ? "Update Service"
-                  : "Add Service"}
-            </button>
-            {editingId && (
-              <button
-                type="button"
-                onClick={cancelEdit}
-                disabled={formLoading}
-                className="px-4 py-2 border border-gray-300 rounded text-sm text-gray-700"
-              >
-                Cancel
-              </button>
-            )}
+                  ? "Update service"
+                  : "Add service"}
+            </Button>
           </div>
         </form>
-      </div>
+      </SectionCard>
 
-      {/* Services Table */}
-      {services.length === 0 ? (
-        <p className="text-gray-500">No services found.</p>
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner onRetry={fetchServices}>{error}</ErrorBanner>
+        </div>
+      )}
+
+      {loading ? (
+        <Card className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Spinner /> Loading services...
+          </div>
+        </Card>
+      ) : services.length === 0 ? (
+        <EmptyState
+          icon={<LuWrench size={22} />}
+          title="No services yet"
+          description="Add your first service using the form above."
+        />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {services.map((service) => (
-                <tr key={service.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {service.title}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-700 max-w-xs truncate">
-                    {service.description}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {service.price || "\u2014"}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <div className="flex gap-2">
-                      <button
+        <Table>
+          <thead>
+            <tr>
+              <TH>Photo</TH>
+              <TH>Title</TH>
+              <TH>Description</TH>
+              <TH>Price</TH>
+              <TH className="text-right">Actions</TH>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {services.map((service) => {
+              const title = service.title || service.name;
+              const description =
+                service.description || service.full_description || "";
+              const priceLabel = service.price || service.price_description;
+              const img = service.image_url || service.image;
+              return (
+                <tr key={service.id} className="hover:bg-gray-50">
+                  <TD>
+                    {img ? (
+                      <img
+                        src={img}
+                        alt={title}
+                        className="h-12 w-12 rounded-lg border border-gray-200 object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 text-gray-400">
+                        <LuImagePlus size={16} />
+                      </div>
+                    )}
+                  </TD>
+                  <TD className="font-medium text-gray-900">{title}</TD>
+                  <TD className="max-w-[360px]">
+                    <p className="line-clamp-2 text-gray-600">{description}</p>
+                  </TD>
+                  <TD className="whitespace-nowrap text-gray-600">
+                    {priceLabel || "—"}
+                  </TD>
+                  <TD>
+                    <div className="flex flex-wrap justify-end gap-2">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        leftIcon={<LuPencil size={14} />}
                         onClick={() => startEdit(service)}
-                        className="px-3 py-1 bg-blue-600 text-white rounded text-xs font-medium"
                       >
                         Edit
-                      </button>
+                      </Button>
                       {deleteConfirm === service.id ? (
-                        <div className="flex items-center gap-1">
-                          <button
+                        <>
+                          <Button
+                            size="sm"
+                            variant="danger"
                             onClick={() => handleDelete(service.id)}
                             disabled={deleteLoading}
-                            className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium disabled:opacity-50"
                           >
                             {deleteLoading ? "Deleting..." : "Confirm"}
-                          </button>
-                          <button
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
                             onClick={() => {
                               setDeleteConfirm(null);
                               setDeleteError("");
                             }}
                             disabled={deleteLoading}
-                            className="px-3 py-1 border border-gray-300 rounded text-xs text-gray-700"
                           >
                             Cancel
-                          </button>
-                          {deleteError && (
-                            <span className="text-xs text-red-600">{deleteError}</span>
-                          )}
-                        </div>
+                          </Button>
+                        </>
                       ) : (
-                        <button
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          leftIcon={<LuTrash2 size={14} />}
                           onClick={() => {
                             setDeleteConfirm(service.id);
                             setDeleteError("");
                           }}
-                          className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium"
                         >
                           Delete
-                        </button>
+                        </Button>
                       )}
                     </div>
-                  </td>
+                    {deleteError && deleteConfirm === service.id && (
+                      <p className="mt-1 text-right text-xs text-red-600">
+                        {deleteError}
+                      </p>
+                    )}
+                  </TD>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </Table>
       )}
     </div>
   );
