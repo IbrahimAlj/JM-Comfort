@@ -90,6 +90,7 @@ describe("Email Notifications", () => {
     mockConnection.rollback.mockResolvedValue(undefined);
     database.getConnection.mockResolvedValue(mockConnection);
     process.env.EMAIL_FROM = "admin@jmcomfort.com";
+    process.env.ADMIN_NOTIFICATION_EMAIL = "admin@jmcomfort.com";
   });
 
   const validLead = {
@@ -110,7 +111,7 @@ describe("Email Notifications", () => {
       expect(sendEmail).toHaveBeenCalledTimes(2);
     });
 
-    test("sends admin notification to EMAIL_FROM address", async () => {
+    test("sends admin notification to ADMIN_NOTIFICATION_EMAIL address", async () => {
       pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
 
       await makeRequest(app, "POST", "/api/leads", validLead);

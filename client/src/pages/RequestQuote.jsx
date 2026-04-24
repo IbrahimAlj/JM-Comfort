@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { captureError } from "../utils/captureError";
@@ -8,6 +8,24 @@ import {
   validateQuote,
   validateQuoteField,
 } from "../utils/requestQuoteValidation";
+
+function formatSlotLabel(slot) {
+  const [y, m, d] = slot.slot_date.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  const datePart = dt.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const fmtTime = (t) => {
+    const [hh, mm] = String(t).split(":");
+    const h = Number(hh);
+    const ampm = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 === 0 ? 12 : h % 12;
+    return `${h12}:${mm} ${ampm}`;
+  };
+  return `${datePart} — ${fmtTime(slot.start_time)} to ${fmtTime(slot.end_time)}`;
+}
 
 const fieldErrorClass = "mt-1 text-sm font-medium text-red-600";  // suppose to be the red invalid text that appears 
 // currently not displaying the red color however. 
@@ -21,6 +39,27 @@ export default function RequestQuote() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [slots, setSlots] = useState([]);
+  const [slotsLoading, setSlotsLoading] = useState(true);
+  const [slotsError, setSlotsError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/availability")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("Failed to load time slots"))))
+      .then((data) => {
+        if (!cancelled) setSlots(Array.isArray(data.slots) ? data.slots : []);
+      })
+      .catch((err) => {
+        if (!cancelled) setSlotsError(err.message || "Could not load time slots");
+      })
+      .finally(() => {
+        if (!cancelled) setSlotsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -90,10 +129,12 @@ export default function RequestQuote() {
           email: values.email.trim(),
           phone: values.phone.trim(),
           address: values.address.trim(),
+          zip: values.zip.trim(),
           lead_type: "quote",
           service_type: preselectedService || undefined,
-          preferred_date: values.preferred_date || undefined,
-          preferred_time_slot: values.preferred_time_slot || undefined,
+          availability_slot_id: values.availability_slot_id
+            ? Number(values.availability_slot_id)
+            : undefined,
         }),
       });
 
@@ -121,7 +162,7 @@ export default function RequestQuote() {
     }
   };
 
-  const hasEmptyRequired = ["name", "email", "phone", "address"].some(
+  const hasEmptyRequired = ["name", "email", "phone", "address", "zip"].some(
     (key) => !values[key].trim()
   );
 
@@ -317,7 +358,7 @@ export default function RequestQuote() {
                 onChange={onChange}
                 onBlur={onBlur}
                 disabled={loading}
-                placeholder="1234 Elm St, Sacramento, CA 95819"
+                placeholder="1234 Elm St, Sacramento, CA"
                 
                 className={`mt-2 block w-full rounded-lg border px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
                   errors.address
@@ -340,49 +381,92 @@ export default function RequestQuote() {
                 {errors.address || "placeholder"}
                 </p>
               </div>
-            
+
             </div>
 
-            {/* Preferred Date */}
+            {/* ZIP Code */}
             <div>
               <label
-                htmlFor="quote-preferred-date"
+                htmlFor="quote-zip"
                 className="block text-lg font-medium text-gray-800"
               >
-                Preferred Service Date
+                ZIP Code <span className="text-red-600">*</span>
               </label>
               <input
-                id="quote-preferred-date"
-                name="preferred_date"
-                type="date"
-                value={values.preferred_date}
+                id="quote-zip"
+                name="zip"
+                type="text"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                value={values.zip}
                 onChange={onChange}
+                onBlur={onBlur}
                 disabled={loading}
-                className="mt-2 block w-full rounded-lg border border-gray-400 px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black focus:border-black"
+                maxLength={10}
+                placeholder="95819"
+                className={`mt-2 block w-full rounded-lg border px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black ${
+                  errors.zip
+                    ? "border-red-400 focus:ring-red-400"
+                    : "border-gray-400 focus:border-black"
+                }`}
               />
+              <div style={{ minHeight: "24px", marginTop: "4px" }}>
+                <p
+                  role="alert"
+                  style={{
+                    color: "#dc2626",
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    margin: 0,
+                    visibility: touched.zip && errors.zip ? "visible" : "hidden",
+                  }}
+                >
+                  {errors.zip || "placeholder"}
+                </p>
+              </div>
             </div>
 
-            {/* Time Slot */}
+            {/* Availability slot */}
             <div>
               <label
-                htmlFor="quote-time-slot"
+                htmlFor="quote-availability-slot"
                 className="block text-lg font-medium text-gray-800"
               >
-                Preferred Time Slot
+                Preferred Appointment Slot
               </label>
-              <select
-                id="quote-time-slot"
-                name="preferred_time_slot"
-                value={values.preferred_time_slot}
-                onChange={onChange}
-                disabled={loading}
-                className="mt-2 block w-full rounded-lg border border-gray-400 px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black focus:border-black"
-              >
-                <option value="">Select a time slot</option>
-                <option value="Morning (8 AM - 12 PM)">Morning (8 AM - 12 PM)</option>
-                <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
-                <option value="Evening (4 PM - 6 PM)">Evening (4 PM - 6 PM)</option>
-              </select>
+              <p className="mt-1 text-sm text-gray-500">
+                Pick a time that works for you. We'll confirm by email.
+              </p>
+
+              {slotsLoading ? (
+                <p className="mt-2 text-sm text-gray-500">Loading available times...</p>
+              ) : slotsError ? (
+                <p className="mt-2 text-sm text-red-600">{slotsError}</p>
+              ) : slots.length === 0 ? (
+                <p className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                  No slots are currently open. Submit your request anyway and we'll reach out
+                  to schedule.
+                </p>
+              ) : (
+                <select
+                  id="quote-availability-slot"
+                  name="availability_slot_id"
+                  value={values.availability_slot_id}
+                  onChange={onChange}
+                  disabled={loading}
+                  className="mt-2 block w-full rounded-lg border border-gray-400 px-5 py-3 text-lg text-gray-900 shadow-sm outline-none transition focus:ring-2 focus:ring-black focus:border-black"
+                >
+                  <option value="">No preference — we'll call to schedule</option>
+                  {slots.map((slot) => (
+                    <option key={slot.id} value={slot.id}>
+                      {formatSlotLabel(slot)}
+                      {slot.capacity - slot.booked_count <= 2
+                        ? ` · ${slot.capacity - slot.booked_count} left`
+                        : ""}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
 
             {/* Submit */}

@@ -1,18 +1,32 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import {
+  LuLayoutDashboard,
+  LuUsers,
+  LuFolderKanban,
+  LuCalendarDays,
+  LuCalendarClock,
+  LuWrench,
+  LuStar,
+  LuMessageSquareText,
+  LuImagePlus,
+  LuLogOut,
+} from "react-icons/lu";
 import { logout } from "./Auth";
+import { cn } from "./ui";
 
 const navItems = [
-  { label: "Dashboard", to: "/admin/dashboard" },
-  { label: "Leads", to: "/admin/leads" },
-  { label: "Projects", to: "/admin/projects" },
-  { label: "Appointments", to: "/admin/appointments" },
-  { label: "Services", to: "/admin/services" },
-  { label: "Reviews", to: "/admin/reviews" },
-  { label: "Client Feedback", to: "/admin/feedback" },
-  { label: "Upload Pictures", to: "/admin/upload" },
+  { label: "Dashboard", to: "/admin/dashboard", icon: LuLayoutDashboard },
+  { label: "Leads", to: "/admin/leads", icon: LuUsers },
+  { label: "Projects", to: "/admin/projects", icon: LuFolderKanban },
+  { label: "Appointments", to: "/admin/appointments", icon: LuCalendarDays },
+  { label: "Availability", to: "/admin/availability", icon: LuCalendarClock },
+  { label: "Services", to: "/admin/services", icon: LuWrench },
+  { label: "Reviews", to: "/admin/reviews", icon: LuStar },
+  { label: "Client Feedback", to: "/admin/feedback", icon: LuMessageSquareText },
+  { label: "Upload Pictures", to: "/admin/upload", icon: LuImagePlus },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ onNavigate }) {
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -21,78 +35,58 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside style={{
-      display: "flex",
-      flexDirection: "column",
-      width: "220px",
-      minHeight: "100%",
-      backgroundColor: "#000000",
-      color: "white",
-      flexShrink: 0,
-    }}>
-      {/* Header */}
-      <div style={{
-        padding: "20px 24px",
-        borderBottom: "1px solid #1F2937",
-      }}>
-        <span style={{ fontSize: "16px", fontWeight: "600" }}>
-          JM Comfort
-        </span>
-        <p style={{ fontSize: "11px", color: "#6B7280", margin: "4px 0 0 0" }}>Admin Panel</p>
+    <aside className="flex h-full w-64 shrink-0 flex-col bg-gray-950 text-gray-200">
+      <div className="flex items-center gap-3 border-b border-white/10 px-5 py-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-sm font-bold text-gray-900">
+          JM
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold text-white">JM Comfort</p>
+          <p className="text-[11px] uppercase tracking-wider text-gray-400">
+            Admin Panel
+          </p>
+        </div>
       </div>
 
-      <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto" }} aria-label="Admin navigation">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end
-            style={({ isActive }) => ({
-              display: "block",
-              padding: "9px 12px",
-              borderRadius: "6px",
-              fontSize: "14px",
-              fontWeight: "500",
-              textDecoration: "none",
-              color: isActive ? "white" : "#9CA3AF",
-              backgroundColor: isActive ? "#1F2937" : "transparent",
-              marginBottom: "2px",
-              transition: "background-color 0.15s, color 0.15s",
-            })}
-          >
-            {item.label}
-          </NavLink>
-        ))}
+      <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Admin navigation">
+        <ul className="space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end
+                  onClick={onNavigate}
+                  className={({ isActive }) =>
+                    cn(
+                      "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-white/10 text-white shadow-inner"
+                        : "text-gray-400 hover:bg-white/5 hover:text-white"
+                    )
+                  }
+                >
+                  <Icon
+                    size={18}
+                    className="shrink-0 text-current opacity-90"
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">{item.label}</span>
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
       </nav>
 
-      {/* Logout */}
-      <div style={{ padding: "16px 12px", borderTop: "1px solid #1F2937" }}>
+      <div className="border-t border-white/10 p-3">
         <button
           onClick={handleLogout}
-          style={{
-            display: "block",
-            width: "100%",
-            padding: "9px 12px",
-            borderRadius: "6px",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#9CA3AF",
-            backgroundColor: "transparent",
-            border: "none",
-            cursor: "pointer",
-            textAlign: "left",
-            transition: "background-color 0.15s, color 0.15s",
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#1F2937";
-            e.currentTarget.style.color = "white";
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "transparent";
-            e.currentTarget.style.color = "#9CA3AF";
-          }}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-400 transition-colors hover:bg-white/5 hover:text-white"
         >
-          Logout
+          <LuLogOut size={18} aria-hidden="true" />
+          <span>Sign out</span>
         </button>
       </div>
     </aside>

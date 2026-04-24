@@ -1,7 +1,34 @@
 import { useState, useEffect } from "react";
+import { LuStar, LuTrash2 } from "react-icons/lu";
+import {
+  PageHeader,
+  Table,
+  TH,
+  TD,
+  Pill,
+  Button,
+  ErrorBanner,
+  EmptyState,
+  Spinner,
+  Card,
+} from "../ui";
 
 const API_BASE = import.meta.env.VITE_API_URL || "";
 const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
+
+function formatDate(dateStr) {
+  if (!dateStr) return "N/A";
+  return new Date(dateStr).toLocaleString();
+}
+
+function Stars({ value }) {
+  return (
+    <span className="text-amber-500" aria-label={`${value} out of 5`}>
+      {"★".repeat(value)}
+      <span className="text-gray-300">{"★".repeat(Math.max(0, 5 - value))}</span>
+    </span>
+  );
+}
 
 export default function AdminReviewsPage() {
   const [reviews, setReviews] = useState([]);
@@ -31,18 +58,17 @@ export default function AdminReviewsPage() {
     }
   }
 
-  async function handlePublish(id) {
-    setActionLoading((prev) => ({ ...prev, [id]: "publish" }));
+  async function patch(id, path, updater) {
+    setActionLoading((prev) => ({ ...prev, [id]: path }));
     setActionError((prev) => ({ ...prev, [id]: "" }));
     try {
-      const res = await fetch(`${API_BASE}/api/reviews/${id}/publish`, {
+      const res = await fetch(`${API_BASE}/api/reviews/${id}/${path}`, {
         method: "PATCH",
         headers: { "x-admin-key": ADMIN_KEY },
       });
-      if (!res.ok) throw new Error("Failed to publish review");
-      setReviews((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, published: true } : r))
-      );
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error || `Failed to ${path} review`);
+      setReviews((prev) => prev.map((r) => (r.id === id ? updater(r) : r)));
     } catch (err) {
       setActionError((prev) => ({ ...prev, [id]: err.message }));
     } finally {
@@ -50,24 +76,11 @@ export default function AdminReviewsPage() {
     }
   }
 
-  async function handleUnpublish(id) {
-    setActionLoading((prev) => ({ ...prev, [id]: "unpublish" }));
-    setActionError((prev) => ({ ...prev, [id]: "" }));
-    try {
-      const res = await fetch(`${API_BASE}/api/reviews/${id}/unpublish`, {
-        method: "PATCH",
-        headers: { "x-admin-key": ADMIN_KEY },
-      });
-      if (!res.ok) throw new Error("Failed to unpublish review");
-      setReviews((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, published: false } : r))
-      );
-    } catch (err) {
-      setActionError((prev) => ({ ...prev, [id]: err.message }));
-    } finally {
-      setActionLoading((prev) => ({ ...prev, [id]: null }));
-    }
-  }
+  const handlePublish = (id) => patch(id, "publish", (r) => ({ ...r, published: true }));
+  const handleUnpublish = (id) =>
+    patch(id, "unpublish", (r) => ({ ...r, published: false, featured: false }));
+  const handleFeature = (id) => patch(id, "feature", (r) => ({ ...r, featured: true }));
+  const handleUnfeature = (id) => patch(id, "unfeature", (r) => ({ ...r, featured: false }));
 
   async function handleDelete(id) {
     setActionLoading((prev) => ({ ...prev, [id]: "delete" }));
@@ -86,147 +99,152 @@ export default function AdminReviewsPage() {
     }
   }
 
-  function formatDate(dateStr) {
-    if (!dateStr) return "N/A";
-    return new Date(dateStr).toLocaleString();
-  }
-
-  if (loading) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Reviews</h1>
-        <p className="text-gray-500">Loading reviews...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-6">
-        <h1 className="text-2xl font-semibold mb-4">Reviews</h1>
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
-          {error}
-        </div>
-        <button
-          onClick={fetchReviews}
-          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded text-sm"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  const featuredCount = reviews.filter((r) => r.featured).length;
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Reviews</h1>
+    <div>
+      <PageHeader
+        title="Reviews"
+        subtitle={
+          <>
+            Moderate customer reviews. Featured on homepage:{" "}
+            <span className="font-semibold text-gray-800">{featuredCount} / 3</span>. Only
+            published reviews can be featured.
+          </>
+        }
+      />
 
-      {reviews.length === 0 ? (
-        <p className="text-gray-500">No reviews found.</p>
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner onRetry={fetchReviews}>{error}</ErrorBanner>
+        </div>
+      )}
+
+      {loading ? (
+        <Card className="flex items-center justify-center py-12">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Spinner /> Loading reviews...
+          </div>
+        </Card>
+      ) : reviews.length === 0 ? (
+        <EmptyState
+          icon={<LuStar size={22} />}
+          title="No reviews yet"
+          description="Customer reviews will show here once submitted."
+        />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Customer
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rating
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Comment
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {reviews.map((review) => (
-                <tr key={review.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {review.name}
+        <Table>
+          <thead>
+            <tr>
+              <TH>Customer</TH>
+              <TH>Rating</TH>
+              <TH>Comment</TH>
+              <TH>Status</TH>
+              <TH>Date</TH>
+              <TH className="text-right">Actions</TH>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {reviews.map((review) => {
+              const busy = !!actionLoading[review.id];
+              return (
+                <tr key={review.id} className="hover:bg-gray-50">
+                  <TD>
+                    <div className="font-medium text-gray-900">{review.name}</div>
+                    <div className="text-xs text-gray-500">{review.email}</div>
+                  </TD>
+                  <TD>
+                    <Stars value={review.rating} />
+                  </TD>
+                  <TD className="max-w-[320px]">
+                    <p className="whitespace-pre-wrap break-words text-gray-700">
+                      {review.comment}
+                    </p>
+                  </TD>
+                  <TD>
+                    <div className="flex flex-col gap-1">
+                      <Pill tone={review.published ? "green" : "yellow"}>
+                        {review.published ? "Published" : "Pending"}
+                      </Pill>
+                      {review.featured && (
+                        <Pill tone="blue">★ Featured</Pill>
+                      )}
                     </div>
-                    <div className="text-sm text-gray-500">
-                      {review.email}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                    {"★".repeat(review.rating)}
-                    {"☆".repeat(5 - review.rating)}
-                  </td>
-                  <td
-                    className="px-6 py-4 text-sm text-gray-700"
-                    style={{ maxWidth: "300px", wordBreak: "break-word" }}
-                  >
-                    {review.comment}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        review.published
-                          ? "bg-green-100 text-green-800"
-                          : "bg-yellow-100 text-yellow-800"
-                      }`}
-                    >
-                      {review.published ? "Published" : "Pending"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                  </TD>
+                  <TD className="whitespace-nowrap text-gray-500">
                     {formatDate(review.created_at)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <div className="flex gap-2">
+                  </TD>
+                  <TD>
+                    <div className="flex flex-wrap justify-end gap-2">
                       {!review.published ? (
-                        <button
+                        <Button
+                          size="sm"
+                          variant="success"
                           onClick={() => handlePublish(review.id)}
-                          disabled={!!actionLoading[review.id]}
-                          className="px-3 py-1 bg-green-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={busy}
                         >
                           {actionLoading[review.id] === "publish"
                             ? "Publishing..."
                             : "Publish"}
-                        </button>
+                        </Button>
                       ) : (
-                        <button
+                        <Button
+                          size="sm"
+                          variant="warning"
                           onClick={() => handleUnpublish(review.id)}
-                          disabled={!!actionLoading[review.id]}
-                          className="px-3 py-1 bg-yellow-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={busy}
                         >
                           {actionLoading[review.id] === "unpublish"
                             ? "Unpublishing..."
                             : "Unpublish"}
-                        </button>
+                        </Button>
                       )}
-                      <button
+                      {review.published &&
+                        (review.featured ? (
+                          <Button
+                            size="sm"
+                            variant="info"
+                            onClick={() => handleUnfeature(review.id)}
+                            disabled={busy}
+                          >
+                            {actionLoading[review.id] === "unfeature"
+                              ? "Unfeaturing..."
+                              : "Unfeature"}
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="info"
+                            onClick={() => handleFeature(review.id)}
+                            disabled={busy || featuredCount >= 3}
+                            title={featuredCount >= 3 ? "Unfeature one first (max 3)" : ""}
+                          >
+                            {actionLoading[review.id] === "feature"
+                              ? "Featuring..."
+                              : "Feature"}
+                          </Button>
+                        ))}
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        leftIcon={<LuTrash2 size={14} />}
                         onClick={() => handleDelete(review.id)}
-                        disabled={!!actionLoading[review.id]}
-                        className="px-3 py-1 bg-red-600 text-white rounded text-xs font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={busy}
                       >
-                        {actionLoading[review.id] === "delete"
-                          ? "Deleting..."
-                          : "Delete"}
-                      </button>
+                        {actionLoading[review.id] === "delete" ? "Deleting..." : "Delete"}
+                      </Button>
                     </div>
                     {actionError[review.id] && (
-                      <p className="mt-1 text-xs text-red-600">
+                      <p className="mt-1 text-right text-xs text-red-600">
                         {actionError[review.id]}
                       </p>
                     )}
-                  </td>
+                  </TD>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              );
+            })}
+          </tbody>
+        </Table>
       )}
     </div>
   );

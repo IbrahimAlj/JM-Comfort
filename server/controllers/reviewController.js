@@ -52,11 +52,30 @@ exports.submitReview = async (req, res) => {
   }
 };
 
+// Get featured reviews for homepage (public, up to 3)
+exports.getFeaturedReviews = async (req, res) => {
+  try {
+    const [reviews] = await pool.execute(`
+      SELECT r.id, r.rating, r.comment, r.created_at,
+        COALESCE(r.reviewer_name, CONCAT(c.first_name, ' ', c.last_name)) as name
+      FROM reviews r
+      LEFT JOIN customers c ON r.customer_id = c.id
+      WHERE r.published = TRUE AND r.featured = TRUE
+      ORDER BY r.created_at DESC
+      LIMIT 3
+    `);
+    res.json(reviews);
+  } catch (error) {
+    console.error('Error fetching featured reviews:', error);
+    res.status(500).json({ error: 'Failed to fetch featured reviews' });
+  }
+};
+
 // Get all reviews (admin)
 exports.getAllReviews = async (req, res) => {
   try {
     const [reviews] = await pool.execute(`
-      SELECT r.id, r.rating, r.comment, r.published, r.created_at,
+      SELECT r.id, r.rating, r.comment, r.published, r.featured, r.created_at,
         COALESCE(r.reviewer_name, CONCAT(c.first_name, ' ', c.last_name)) as name,
         COALESCE(r.reviewer_email, c.email) as email
       FROM reviews r
@@ -67,6 +86,53 @@ exports.getAllReviews = async (req, res) => {
   } catch (error) {
     console.error('Error fetching reviews:', error);
     res.status(500).json({ error: 'Failed to fetch reviews' });
+  }
+};
+
+// Feature a review (admin, max 3)
+exports.featureReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [[row]] = await pool.execute(
+      'SELECT published, featured FROM reviews WHERE id = ?',
+      [id]
+    );
+    if (!row) return res.status(404).json({ error: 'Review not found' });
+    if (!row.published) {
+      return res.status(400).json({ error: 'Only published reviews can be featured' });
+    }
+    if (row.featured) {
+      return res.json({ message: 'Review already featured' });
+    }
+    const [[{ cnt }]] = await pool.execute(
+      'SELECT COUNT(*) AS cnt FROM reviews WHERE featured = TRUE'
+    );
+    if (cnt >= 3) {
+      return res.status(400).json({ error: 'Maximum of 3 featured reviews reached. Unfeature one first.' });
+    }
+    await pool.execute('UPDATE reviews SET featured = TRUE WHERE id = ?', [id]);
+    res.json({ message: 'Review featured successfully' });
+  } catch (error) {
+    console.error('Error featuring review:', error);
+    res.status(500).json({ error: 'Failed to feature review' });
+  }
+};
+
+// Unfeature a review (admin)
+exports.unfeatureReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.execute(
+      'UPDATE reviews SET featured = FALSE WHERE id = ?',
+      [id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json({ message: 'Review unfeatured successfully' });
+  } catch (error) {
+    console.error('Error unfeaturing review:', error);
+    res.status(500).json({ error: 'Failed to unfeature review' });
   }
 };
 
@@ -93,7 +159,7 @@ exports.unpublishReview = async (req, res) => {
   try {
     const { id } = req.params;
     const [result] = await pool.execute(
-      'UPDATE reviews SET published = FALSE WHERE id = ?',
+      'UPDATE reviews SET published = FALSE, featured = FALSE WHERE id = ?',
       [id]
     );
     if (result.affectedRows === 0) {

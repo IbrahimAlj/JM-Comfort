@@ -1,55 +1,38 @@
-import Navbar from '../components/Navbar';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LuArrowRight, LuWrench, LuImage } from 'react-icons/lu';
+import Navbar from '../components/Navbar';
 import PageMeta from '../components/PageMeta';
 
 export default function Services() {
-  const services = [
-    {
-      id: 1,
-      title: "Installation",
-      description: "Professional AC and heating installs sized and tuned for your space.",
-      image: "/placeholder-installation.jpg",
-      fullDescription: "Our expert technicians provide complete HVAC installation services tailored to your home or business. We assess your space, recommend the right system size, and ensure optimal performance from day one.",
-      features: [
-        "Free in-home consultation",
-        "Energy-efficient system recommendations",
-        "Professional installation by certified technicians",
-        "System testing and optimization",
-        "Warranty registration and support"
-      ],
-      price: "Starting at $3,500"
-    },
-    {
-      id: 2,
-      title: "Repairs",
-      description: "Fast diagnostics and fixes for leaks, no-cool, airflow, and more.",
-      image: "/placeholder-repairs.jpg",
-      fullDescription: "When your HVAC system breaks down, our skilled technicians respond quickly to diagnose and fix the problem. We handle everything from minor repairs to major component replacements.",
-      features: [
-        "24/7 emergency service available",
-        "Accurate diagnostics",
-        "Transparent pricing",
-        "Quality replacement parts",
-        "90-day repair warranty"
-      ],
-      price: "Starting at $150"
-    },
-    {
-      id: 3,
-      title: "Maintenance",
-      description: "Seasonal tune-ups to improve efficiency and extend equipment life.",
-      image: "/placeholder-maintenance.jpg",
-      fullDescription: "Regular maintenance keeps your HVAC system running efficiently and prevents costly breakdowns. Our comprehensive tune-ups include cleaning, inspection, and performance optimization.",
-      features: [
-        "Complete system inspection",
-        "Filter replacement",
-        "Coil cleaning",
-        "Refrigerant level check",
-        "Priority scheduling for members"
-      ],
-      price: "Starting at $99"
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await fetch('/api/services');
+        if (!res.ok) throw new Error('Failed to load services');
+        const data = await res.json();
+        if (!cancelled) {
+          const active = Array.isArray(data)
+            ? data.filter((s) => s.is_active !== false)
+            : [];
+          setServices(active);
+        }
+      } catch (err) {
+        if (!cancelled) setError(err.message || 'Could not load services');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
     }
-  ];
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <>
@@ -60,63 +43,127 @@ export default function Services() {
       <Navbar />
 
       <main>
+        {/* Page header */}
+        <section className="border-b border-gray-200 bg-gradient-to-b from-gray-50 to-white">
+          <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+            <p className="text-sm font-semibold uppercase tracking-wider text-blue-600">
+              What we offer
+            </p>
+            <h1 className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              HVAC services
+            </h1>
+            <p className="mt-4 max-w-2xl text-lg text-gray-600">
+              Installation, repair, and maintenance — delivered by certified techs with
+              transparent pricing and same-day availability.
+            </p>
+          </div>
+        </section>
 
-      <section className="w-full max-w-screen-xl mx-auto px-4 py-12 md:px-16 md:py-20">
-        {/* Page Title */}
-        <h1 className="text-3xl md:text-5xl font-bold text-black mb-10 md:mb-16">
-          Our Services
-        </h1>
-
-        {/* Services List */}
-        <div className="flex flex-col gap-8">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8 p-6 sm:p-8 border border-gray-200 rounded-lg bg-white overflow-hidden"
-            >
-              {/* Service Image - Now clickable */}
-              <Link to={`/services/${service.id}`} className="no-underline w-full md:w-auto">
-                <div className="w-full md:w-[150px] h-[150px] shrink-0 bg-gray-300 rounded cursor-pointer transition-opacity hover:opacity-80">
-                  {/* Placeholder for service image */}
-                </div>
-              </Link>
-
-              {/* Service Content */}
-              <div className="flex-1 min-w-0">
-                {/* Title - Now clickable */}
-                <Link to={`/services/${service.id}`} className="no-underline">
-                  <h2 className="text-xl md:text-[28px] font-semibold text-black mb-3 cursor-pointer transition-colors hover:text-gray-700">
-                    {service.title}
-                  </h2>
-                </Link>
-
-                <p className="text-base text-gray-600 leading-relaxed mb-6">
-                  {service.description}
-                </p>
-
-                {/* Buttons Container */}
-                <div className="flex flex-wrap gap-3">
-                  {/* Learn More - Styled Link */}
-                  <Link
-                    to={`/services/${service.id}`}
-                    className="px-6 py-2.5 text-base font-medium rounded-md bg-black text-white no-underline inline-block transition-colors hover:bg-gray-700"
-                  >
-                    Learn More
-                  </Link>
-
-                  {/* Request a Quote - CTA with service name query param */}
-                  <Link
-                    to={`/quote?service=${encodeURIComponent(service.title)}`}
-                    className="px-6 py-2.5 text-base font-medium rounded-md bg-white text-gray-700 border-2 border-gray-400 no-underline inline-block transition-colors hover:bg-gray-100"
-                  >
-                    Request a Quote
-                  </Link>
-                </div>
+        <section className="bg-white py-14 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {loading && (
+              <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {[0, 1, 2].map((i) => (
+                  <div
+                    key={i}
+                    className="h-64 animate-pulse rounded-2xl border border-gray-200 bg-gray-50"
+                  />
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            )}
+
+            {!loading && error && (
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-700">
+                {error}
+              </div>
+            )}
+
+            {!loading && !error && services.length === 0 && (
+              <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 px-6 py-20 text-center">
+                <LuWrench className="mb-3 h-10 w-10 text-gray-400" aria-hidden="true" />
+                <h3 className="text-base font-semibold text-gray-900">
+                  Services coming soon
+                </h3>
+                <p className="mt-1 max-w-sm text-sm text-gray-500">
+                  Services haven't been published yet. Check back shortly.
+                </p>
+              </div>
+            )}
+
+            {!loading && !error && services.length > 0 && (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {services.map((service) => {
+                  const title = service.title || service.name;
+                  const description =
+                    service.description ||
+                    service.short_description ||
+                    service.full_description ||
+                    '';
+                  const image = service.image || service.image_url;
+                  const price = service.price || service.price_description;
+                  return (
+                    <article
+                      key={service.id}
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                    >
+                      <Link
+                        to={`/services/${service.id}`}
+                        className="block aspect-[4/3] overflow-hidden bg-gray-100"
+                      >
+                        {image ? (
+                          <img
+                            src={image}
+                            alt={title}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-gray-400">
+                            <LuImage size={28} aria-hidden="true" />
+                          </div>
+                        )}
+                      </Link>
+
+                      <div className="flex flex-1 flex-col p-6">
+                        <div className="flex items-start justify-between gap-3">
+                          <Link
+                            to={`/services/${service.id}`}
+                            className="text-xl font-semibold text-gray-900 hover:text-blue-700"
+                          >
+                            {title}
+                          </Link>
+                          {price && (
+                            <span className="shrink-0 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-700">
+                              {price}
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-gray-600">
+                          {description}
+                        </p>
+
+                        <div className="mt-6 flex flex-wrap items-center gap-2">
+                          <Link
+                            to={`/services/${service.id}`}
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-gray-800"
+                          >
+                            Learn more
+                            <LuArrowRight size={14} />
+                          </Link>
+                          <Link
+                            to={`/quote?service=${encodeURIComponent(title || '')}`}
+                            className="inline-flex items-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:bg-gray-50"
+                          >
+                            Get a quote
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
       </main>
     </>
   );

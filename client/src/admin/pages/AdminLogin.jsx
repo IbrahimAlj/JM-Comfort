@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LuMail, LuLock } from "react-icons/lu";
 import { login } from "../Auth";
+import { Button, inputClass, ErrorBanner } from "../ui";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -25,154 +27,95 @@ export default function AdminLogin() {
   }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      backgroundColor: "white",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "24px",
-    }}>
-      {/* Logo */}
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
-        <img
-          src="/logo.png"
-          alt="JM Comfort"
-          style={{ height: "72px", width: "auto" }}
-          onError={(e) => { e.target.style.display = "none"; }}
-        />
-      </div>
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 p-6">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 20% 10%, #e5e7eb 0, transparent 40%), radial-gradient(circle at 90% 80%, #f3f4f6 0, transparent 40%)",
+        }}
+        aria-hidden="true"
+      />
 
-      {/* Card */}
-      <div style={{
-        width: "100%",
-        maxWidth: "400px",
-        backgroundColor: "white",
-        border: "1px solid #E5E7EB",
-        borderRadius: "8px",
-        padding: "40px 32px",
-      }}>
-        <h1 style={{
-          fontSize: "22px",
-          fontWeight: "600",
-          color: "#1F2937",
-          margin: "0 0 8px 0",
-        }}>
-          Admin Login
-        </h1>
-        <p style={{
-          fontSize: "14px",
-          color: "#6B7280",
-          margin: "0 0 28px 0",
-        }}>
-          Sign in to the JM Comfort admin panel.
-        </p>
-
-        {error && (
-          <div role="alert" style={{
-            backgroundColor: "#FEF2F2",
-            border: "1px solid #FECACA",
-            borderRadius: "6px",
-            padding: "10px 14px",
-            marginBottom: "20px",
-            fontSize: "14px",
-            color: "#DC2626",
-          }}>
-            {error}
+      <div className="relative w-full max-w-md">
+        <div className="mb-6 flex flex-col items-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-900 text-lg font-bold text-white shadow-md">
+            JM
           </div>
-        )}
+          <h1 className="mt-4 text-xl font-semibold text-gray-900">
+            JM Comfort Admin
+          </h1>
+          <p className="text-sm text-gray-500">Sign in to continue</p>
+        </div>
 
-        <form onSubmit={onSubmit}>
-          <label htmlFor="admin-email" style={{
-            display: "block",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#374151",
-            marginBottom: "6px",
-          }}>
-            Email
-          </label>
-          <input
-            id="admin-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{
-              display: "block",
-              width: "100%",
-              padding: "10px 12px",
-              fontSize: "14px",
-              color: "#1F2937",
-              backgroundColor: "white",
-              border: "1px solid #D1D5DB",
-              borderRadius: "6px",
-              marginBottom: "16px",
-              outline: "none",
-              boxSizing: "border-box",
-              transition: "border-color 0.2s",
-            }}
-            onFocus={(e) => { e.target.style.borderColor = "#1F2937"; }}
-            onBlur={(e) => { e.target.style.borderColor = "#D1D5DB"; }}
-          />
+        <div className="rounded-2xl border border-gray-200 bg-white/90 p-6 shadow-xl backdrop-blur sm:p-8">
+          {error && (
+            <div className="mb-4">
+              <ErrorBanner>{error}</ErrorBanner>
+            </div>
+          )}
 
-          <label htmlFor="admin-password" style={{
-            display: "block",
-            fontSize: "14px",
-            fontWeight: "500",
-            color: "#374151",
-            marginBottom: "6px",
-          }}>
-            Password
-          </label>
-          <input
-            id="admin-password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              display: "block",
-              width: "100%",
-              padding: "10px 12px",
-              fontSize: "14px",
-              color: "#1F2937",
-              backgroundColor: "white",
-              border: "1px solid #D1D5DB",
-              borderRadius: "6px",
-              marginBottom: "24px",
-              outline: "none",
-              boxSizing: "border-box",
-              transition: "border-color 0.2s",
-            }}
-            onFocus={(e) => { e.target.style.borderColor = "#1F2937"; }}
-            onBlur={(e) => { e.target.style.borderColor = "#D1D5DB"; }}
-          />
+          <form onSubmit={onSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="admin-email" className="mb-1.5 block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <div className="relative">
+                <LuMail
+                  size={16}
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  aria-hidden="true"
+                />
+                <input
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  className={`${inputClass} pl-9`}
+                  placeholder="you@jmcomfort.com"
+                />
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            disabled={busy}
-            style={{
-              display: "block",
-              width: "100%",
-              padding: "12px 24px",
-              fontSize: "15px",
-              fontWeight: "500",
-              color: "white",
-              backgroundColor: busy ? "#374151" : "#000000",
-              border: "none",
-              borderRadius: "8px",
-              cursor: busy ? "not-allowed" : "pointer",
-              transition: "background-color 0.2s",
-              opacity: busy ? 0.7 : 1,
-            }}
-            onMouseOver={(e) => { if (!busy) e.target.style.backgroundColor = "#374151"; }}
-            onMouseOut={(e) => { if (!busy) e.target.style.backgroundColor = "#000000"; }}
-          >
-            {busy ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
+            <div>
+              <label htmlFor="admin-password" className="mb-1.5 block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="relative">
+                <LuLock
+                  size={16}
+                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  aria-hidden="true"
+                />
+                <input
+                  id="admin-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className={`${inputClass} pl-9`}
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={busy}
+              size="lg"
+              className="w-full"
+            >
+              {busy ? "Signing in..." : "Sign in"}
+            </Button>
+          </form>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-gray-400">
+          Authorized personnel only.
+        </p>
       </div>
     </div>
   );
