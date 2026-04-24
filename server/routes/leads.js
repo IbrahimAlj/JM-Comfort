@@ -13,34 +13,20 @@ function normStr(v) {
 function normLower(v) {
   return normStr(v).toLowerCase();
 }
+
 function normalizeLead(body) {
   const phone = normStr(body.phone).replace(/[^\d+]/g, "");
+
   return {
-    first_name: normStr(body.first_name) || null,
-    last_name: normStr(body.last_name) || null,
-    name: normStr(body.name) || null,
-    email: normLower(body.email || ""),
+    first_name: normStr(body.first_name),
+    last_name: normStr(body.last_name),
+    name: normStr(body.name),
+    email: normLower(body.email),
     phone,
-    lead_type: normStr(body.lead_type) || "contact",
-    service_type: normStr(body.service_type) || null,
-    message: normStr(body.message) || null,
-    source: normStr(body.source) || null,
+    address: normStr(body.address),
+    lead_type: "quote", // always quote
+    service_type: normStr(body.service_type) || null
   };
-}
-function computeDedupeHash(lead) {
-  // Deterministic hash over canonicalized lead fields
-  const payload = JSON.stringify({
-    email: lead.email,
-    phone: lead.phone,
-    name: lead.name,
-    first_name: lead.first_name,
-    last_name: lead.last_name,
-    lead_type: lead.lead_type,
-    service_type: lead.service_type,
-    message: lead.message,
-    source: lead.source,
-  });
-  return crypto.createHash("sha256").update(payload).digest("hex");
 }
 
 /**
@@ -107,25 +93,28 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const dedupe_hash = computeDedupeHash(lead);
-
     const sql = `
       INSERT INTO contact_leads
-        (first_name, last_name, name, email, phone, lead_type, service_type, message, dedupe_hash)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE id = id
-    `;
+    (first_name, last_name, name, email, phone, address, lead_type, service_type)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+    first_name = VALUES(first_name),
+    last_name = VALUES(last_name),
+    name = VALUES(name),
+    address = VALUES(address),
+    service_type = VALUES(service_type),
+    updated_at = CURRENT_TIMESTAMP
+  `;
 
     const params = [
       lead.first_name,
       lead.last_name,
       lead.name,
       lead.email,
-      lead.phone || null,
+      lead.phone,
+      lead.address,
       lead.lead_type,
-      lead.service_type || null,
-      lead.message || null,
-      dedupe_hash,
+      lead.service_type || null
     ];
 
     const [result] = await pool.execute(sql, params);

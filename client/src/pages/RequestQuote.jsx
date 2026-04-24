@@ -71,52 +71,59 @@ export default function RequestQuote() {
   };
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const nextErrors = validateQuote(values);
-    setErrors(nextErrors);
+  const nextErrors = validateQuote(values);
+  setErrors(nextErrors);
 
-    if (Object.keys(nextErrors).length > 0) return;
+  if (Object.keys(nextErrors).length > 0) return;
 
-    setLoading(true);
-    setServerError("");
+  setLoading(true);
+  setServerError("");
 
-    // MIGHT BE WHATS CAUSING THE ERROR 
-    try {
-      const res = await fetch("/api/appointments", { // not sure if this is the correct link to the DB. 
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: values.name.trim(),
-          email: values.email.trim(),
-          phone: values.phone.trim(),
-          address: values.address.trim(),
-        }),
-      });
+  // Split name into first_name and last_name
+  const nameParts = values.name.trim().split(" ");
+  const first_name = nameParts[0];
+  const last_name = nameParts.slice(1).join(" ") || "";
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => null);
-        const message =
-          data && (data.error || data.message)
-            ? data.error || data.message
-            : "Something went wrong. Please try again.";
+  try {
+    const res = await fetch("/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        first_name,
+        last_name,
+        email: values.email.trim(),
+        phone: values.phone.trim(),
+        address: values.address.trim(),
+        lead_type: "quote",
+        service_type: preselectedService || null, 
+      }),
+    });
 
-        setServerError(message);
-        return;
-      }
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      const message =
+        data && (data.error || data.message)
+          ? data.error || data.message
+          : "Something went wrong. Please try again.";
 
-      setSubmitted(true);
-      setValues(quoteInitialValues);
-      setErrors({});
-    } catch (err) {
-      captureError(err, { page: "RequestQuote", action: "submitForm" });
-      setServerError(
-        "Unable to reach the server. Please check your connection and try again."
-      );
-    } finally {
-      setLoading(false);
+      setServerError(message);
+      return;
     }
-  };
+
+    setSubmitted(true);
+    setValues(quoteInitialValues);
+    setErrors({});
+  } catch (err) {
+    captureError(err, { page: "RequestQuote", action: "submitForm" });
+    setServerError(
+      "Unable to reach the server. Please check your connection and try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   const hasEmptyRequired = ["name", "email", "phone", "address"].some(
     (key) => !values[key].trim()

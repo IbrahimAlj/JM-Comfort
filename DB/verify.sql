@@ -1,11 +1,8 @@
--- COMMANDS TO RUN TO VERIFY TABLES EXISTENCE WHEN NEW USER CONNECTS
+-- COMMANDS TO RUN TO VERIFY TABLES EXISTENCE.
 
 USE jm_comfort;      
 SELECT DATABASE();
 SHOW TABLES;
-
--- Verify appointments table structure
-DESCRIBE appointments;
 
 -- Verify contact_leads table structure
 DESCRIBE contact_leads;
