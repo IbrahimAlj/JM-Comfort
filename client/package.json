@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@sentry/react": "^10.42.0",
+    "@sentry/react": "^10.46.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-ga4": "^2.1.0",
