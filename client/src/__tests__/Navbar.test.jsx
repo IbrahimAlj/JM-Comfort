@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom/jest-globals";
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
-const renderNavbar = (route = '/') => {
+const renderNavbar = (route = "/") => {
   return render(
     <MemoryRouter initialEntries={[route]}>
       <Navbar />
@@ -11,43 +11,65 @@ const renderNavbar = (route = '/') => {
   );
 };
 
-describe('Navbar', () => {
-  test('renders all navigation links', () => {
+describe("Navbar", () => {
+  test("renders all primary navigation links", () => {
     renderNavbar();
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Services')).toBeInTheDocument();
-    expect(screen.getByText('Reviews')).toBeInTheDocument();
-    expect(screen.getByText('About')).toBeInTheDocument();
-    expect(screen.getByText('Gallery')).toBeInTheDocument();
-    expect(screen.getByText('Request Quote')).toBeInTheDocument();
+    // Each label may render twice (desktop + mobile drawer); use getAllByText.
+    const labels = ["Home", "Services", "Gallery", "Reviews", "About", "Contact"];
+    for (const label of labels) {
+      expect(screen.getAllByText(label).length).toBeGreaterThan(0);
+    }
   });
 
-  test('Home link is active on / route', () => {
-    renderNavbar('/');
-    const homeLink = screen.getByText('Home');
-    expect(homeLink).toHaveStyle('background-color: #f3f4f6');
-    expect(homeLink).toHaveStyle('border: 2px solid #000000');
-  });
-
-  test('Services link is active on /services route', () => {
-    renderNavbar('/services');
-    const servicesLink = screen.getByText('Services');
-    expect(servicesLink).toHaveStyle('background-color: #f3f4f6');
-  });
-
-  test('non-active links have transparent border', () => {
-    renderNavbar('/');
-    const servicesLink = screen.getByText('Services');
-    expect(servicesLink).toHaveStyle('border: 2px solid transparent');
-  });
-
-  test('all links point to correct routes', () => {
+  test("renders the Request Quote CTA", () => {
     renderNavbar();
-    expect(screen.getByText('Home').closest('a')).toHaveAttribute('href', '/');
-    expect(screen.getByText('Services').closest('a')).toHaveAttribute('href', '/services');
-    expect(screen.getByText('Reviews').closest('a')).toHaveAttribute('href', '/reviews');
-    expect(screen.getByText('About').closest('a')).toHaveAttribute('href', '/about');
-    expect(screen.getByText('Gallery').closest('a')).toHaveAttribute('href', '/gallery');
-    expect(screen.getByText('Request Quote').closest('a')).toHaveAttribute('href', '/request-quote');
+    expect(screen.getAllByText("Request Quote").length).toBeGreaterThan(0);
+  });
+
+  test("active link uses the active text color class on / route", () => {
+    renderNavbar("/");
+    const homeLink = screen.getAllByText("Home")[0].closest("a");
+    expect(homeLink.className).toMatch(/text-gray-900/);
+  });
+
+  test("inactive link uses muted text color class", () => {
+    renderNavbar("/");
+    const servicesLink = screen.getAllByText("Services")[0].closest("a");
+    expect(servicesLink.className).toMatch(/text-gray-600/);
+  });
+
+  test("active link is visually distinguished from inactive on /services", () => {
+    renderNavbar("/services");
+    const servicesLink = screen.getAllByText("Services")[0].closest("a");
+    expect(servicesLink.className).toMatch(/text-gray-900/);
+  });
+
+  test("all links point to correct routes", () => {
+    renderNavbar();
+    const expectations = [
+      ["Home", "/"],
+      ["Services", "/services"],
+      ["Gallery", "/gallery"],
+      ["Reviews", "/reviews"],
+      ["About", "/about"],
+      ["Contact", "/contact"],
+    ];
+    for (const [label, href] of expectations) {
+      const a = screen.getAllByText(label)[0].closest("a");
+      expect(a.getAttribute("href")).toBe(href);
+    }
+    // Request Quote CTA
+    expect(
+      screen.getAllByText("Request Quote")[0].closest("a").getAttribute("href")
+    ).toBe("/request-quote");
+  });
+
+  test("phone number is rendered and dial link is correct", () => {
+    renderNavbar();
+    const phoneLinks = screen.getAllByText(/\(916\) 555-1234/);
+    expect(phoneLinks.length).toBeGreaterThan(0);
+    expect(phoneLinks[0].closest("a").getAttribute("href")).toBe(
+      "tel:+19165551234"
+    );
   });
 });

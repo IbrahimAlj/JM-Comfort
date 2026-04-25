@@ -24,6 +24,17 @@ jest.mock("../utils/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
+beforeEach(() => {
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ slots: [] }),
+  });
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("ContactForm", () => {
   test("renders all form fields", () => {
     render(<ContactForm />);

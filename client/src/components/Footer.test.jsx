@@ -53,6 +53,8 @@ describe('Footer', () => {
         <Footer />
       </MemoryRouter>
     );
-    expect(getByText('Login')).toBeTruthy();
+    const adminLink = getByText('Admin');
+    expect(adminLink).toBeTruthy();
+    expect(adminLink.closest('a').getAttribute('href')).toBe('/admin/login');
   });
 });

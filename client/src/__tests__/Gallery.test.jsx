@@ -19,9 +19,24 @@ jest.mock("../utils/captureError", () => ({
 }));
 
 const mockImages = [
-  { url: "https://example.com/img1.jpg", title: "HVAC Install 1" },
-  { url: "https://example.com/img2.jpg", title: "HVAC Install 2" },
-  { url: "https://example.com/img3.jpg", title: "HVAC Install 3" },
+  {
+    url: "https://example.com/img1.jpg",
+    title: "HVAC Install 1",
+    photo_type: "general",
+    project_id: null,
+  },
+  {
+    url: "https://example.com/img2.jpg",
+    title: "HVAC Install 2",
+    photo_type: "general",
+    project_id: null,
+  },
+  {
+    url: "https://example.com/img3.jpg",
+    title: "HVAC Install 3",
+    photo_type: "general",
+    project_id: null,
+  },
 ];
 
 describe("Gallery page", () => {
@@ -29,7 +44,7 @@ describe("Gallery page", () => {
     jest.clearAllMocks();
   });
 
-  test("renders loading state and matches snapshot", () => {
+  test("renders skeleton loading state and matches snapshot", () => {
     global.fetch = jest.fn(() => new Promise(() => {}));
 
     const { container } = render(
@@ -37,11 +52,13 @@ describe("Gallery page", () => {
         <Gallery />
       </MemoryRouter>
     );
+
     expect(container).toMatchSnapshot();
-    expect(screen.getByText("Loading gallery...")).toBeTruthy();
+    // Skeleton placeholders use the animate-pulse class.
+    expect(container.querySelectorAll(".animate-pulse").length).toBeGreaterThan(0);
   });
 
-  test("renders images in responsive grid and matches snapshot", async () => {
+  test("renders images in grid and matches snapshot", async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
@@ -60,12 +77,9 @@ describe("Gallery page", () => {
     });
 
     expect(container).toMatchSnapshot();
-
-    const grid = container.querySelector(".grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3");
-    expect(grid).toBeTruthy();
   });
 
-  test("renders empty state when no images", async () => {
+  test("renders empty state when no images are returned", async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
@@ -80,11 +94,14 @@ describe("Gallery page", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("No images in the gallery yet.")).toBeTruthy();
+      expect(screen.getByText("Nothing to show yet")).toBeTruthy();
     });
+    expect(
+      screen.getByText("Fresh photos are on the way. Check back soon.")
+    ).toBeTruthy();
   });
 
-  test("images use w-full and object-cover classes", async () => {
+  test("rendered general images use object-cover class", async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
@@ -102,7 +119,7 @@ describe("Gallery page", () => {
       expect(screen.getByAltText("HVAC Install 1")).toBeTruthy();
     });
 
-    const images = container.querySelectorAll("img.w-full.object-cover");
+    const images = container.querySelectorAll("img.object-cover");
     expect(images.length).toBe(3);
   });
 });

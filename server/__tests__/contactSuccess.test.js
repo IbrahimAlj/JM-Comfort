@@ -7,13 +7,21 @@ jest.mock('../config/db', () => ({
 const pool = require('../config/db');
 const app = require('../app');
 
+function findInsertCall() {
+  return pool.execute.mock.calls.find((c) =>
+    String(c[0]).includes('INSERT INTO contact_leads')
+  );
+}
+
 describe('POST /api/leads - contact form success', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('creates a contact lead and returns 201', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT
+      .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
     const res = await request(app)
       .post('/api/leads')
@@ -30,7 +38,8 @@ describe('POST /api/leads - contact form success', () => {
   });
 
   test('returns 200 with deduped flag when duplicate contact is submitted', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 0 }]);
+    // Dedupe SELECT finds an existing row within window
+    pool.execute.mockResolvedValueOnce([[{ id: 99 }]]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -47,7 +56,9 @@ describe('POST /api/leads - contact form success', () => {
   });
 
   test('saves the correct fields to the database', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 2 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 2 }]);
 
     await request(app)
       .post('/api/leads')
@@ -60,8 +71,9 @@ describe('POST /api/leads - contact form success', () => {
         source: 'website',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [sql, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    expect(insertCall).toBeDefined();
+    const [sql, params] = insertCall;
     expect(sql).toMatch(/INSERT INTO contact_leads/);
     expect(params).toContain('bob@example.com');
     expect(params).toContain('contact');
@@ -69,7 +81,9 @@ describe('POST /api/leads - contact form success', () => {
   });
 
   test('trims whitespace from submitted fields', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 3 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 3 }]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -81,7 +95,8 @@ describe('POST /api/leads - contact form success', () => {
       });
 
     expect(res.statusCode).toBe(201);
-    const [, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    const params = insertCall[1];
     expect(params).toContain('carol@example.com');
     expect(params).toContain('Need an estimate.');
   });
