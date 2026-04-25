@@ -16,7 +16,6 @@ import UATFeedback from './pages/UATFeedback';
 import NotFound from './pages/NotFound';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
-import CTAFloatingButton from "./components/CallToActionBanner";
 import AdminRoutes from "./admin/AdminRoutes";
 
 // Initialize GA4 only if the ID exists
@@ -62,7 +61,6 @@ function AppShell() {
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      {!isAdmin && <CTAFloatingButton />}
       {!isAdmin && <Footer />}
     </div>
   );
