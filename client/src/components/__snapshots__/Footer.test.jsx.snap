@@ -2,241 +2,356 @@
 
 exports[`Footer matches snapshot 1`] = `
 <footer
-  style="background-color: rgb(0, 0, 0); color: rgb(229, 231, 235); width: 100vw; position: relative; left: 50%; right: 50%; margin: auto -50vw 0px -50vw; padding: 0px;"
+  class="mt-auto bg-gray-950 text-gray-300"
 >
   <div
-    style="max-width: 1280px; margin: 0px auto; padding: 40px 24px; display: flex; flex-direction: column; gap: 32px; box-sizing: border-box;"
+    class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4 lg:px-8"
   >
     <div
-      style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;"
+      class="lg:col-span-2"
     >
-      <div>
-        <h3
-          style="font-size: 24px; font-weight: 600; margin: 0px; color: white;"
-        >
-          JM Comfort
-        </h3>
-        <p
-          style="margin: 8px 0px 0px 0px; font-size: 14px; color: rgb(176, 181, 189);"
-        >
-          Heating • Cooling • Comfort
-        </p>
-      </div>
       <div
-        style="display: flex; gap: 16px; font-size: 20px;"
+        class="flex items-center gap-3"
+      >
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-sm font-bold text-gray-900"
+        >
+          JM
+        </div>
+        <div>
+          <p
+            class="text-lg font-semibold text-white"
+          >
+            JM Comfort
+          </p>
+          <p
+            class="text-xs uppercase tracking-wider text-gray-500"
+          >
+            Heating · Cooling · Comfort
+          </p>
+        </div>
+      </div>
+      <p
+        class="mt-5 max-w-md text-sm leading-relaxed text-gray-400"
+      >
+        Family-owned HVAC for the Greater Sacramento area. Honest service, transparent pricing, and long-term comfort for every home and business.
+      </p>
+      <div
+        class="mt-6 flex items-center gap-2"
       >
         <a
           aria-label="Facebook"
+          class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
           href="#"
-          style="color: rgb(229, 231, 235); transition: color 0.2s;"
         >
           <svg
-            fill="currentColor"
-            height="1em"
+            fill="none"
+            height="16"
             stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 512 512"
-            width="1em"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="16"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"
+              d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
             />
           </svg>
         </a>
         <a
           aria-label="Instagram"
+          class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
           href="#"
-          style="color: rgb(229, 231, 235); transition: color 0.2s;"
         >
           <svg
-            fill="currentColor"
-            height="1em"
+            fill="none"
+            height="16"
             stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 448 512"
-            width="1em"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="16"
             xmlns="http://www.w3.org/2000/svg"
           >
+            <rect
+              height="20"
+              rx="5"
+              ry="5"
+              width="20"
+              x="2"
+              y="2"
+            />
             <path
-              d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+              d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+            />
+            <line
+              x1="17.5"
+              x2="17.51"
+              y1="6.5"
+              y2="6.5"
             />
           </svg>
         </a>
         <a
           aria-label="Twitter"
+          class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
           href="#"
-          style="color: rgb(229, 231, 235); transition: color 0.2s;"
         >
           <svg
-            fill="currentColor"
-            height="1em"
+            fill="none"
+            height="16"
             stroke="currentColor"
-            stroke-width="0"
-            viewBox="0 0 512 512"
-            width="1em"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="16"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"
+              d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"
             />
           </svg>
         </a>
       </div>
     </div>
-    <div
-      style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 14px; color: rgb(229, 231, 235);"
-    >
-      <div
-        style="display: flex; align-items: center; gap: 8px;"
+    <div>
+      <h3
+        class="text-sm font-semibold uppercase tracking-wider text-white"
       >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          style="font-size: 16px; flex-shrink: 0;"
-          viewBox="0 0 384 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"
-          />
-        </svg>
-        <span>
-          1234 Elm St, Sacramento CA 95819
-        </span>
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 8px;"
+        Explore
+      </h3>
+      <ul
+        class="mt-4 space-y-2.5 text-sm"
       >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          style="font-size: 16px; flex-shrink: 0;"
-          viewBox="0 0 512 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"
-          />
-        </svg>
-        <a
-          href="tel:+19165551234"
-          style="color: rgb(229, 231, 235); text-decoration: none;"
-        >
-          (916) 555-1234
-        </a>
-      </div>
-      <div
-        style="display: flex; align-items: center; gap: 8px;"
-      >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          style="font-size: 16px; flex-shrink: 0;"
-          viewBox="0 0 512 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"
-          />
-        </svg>
-        <a
-          href="mailto:hello@jmcomfort.example"
-          style="color: rgb(229, 231, 235); text-decoration: none;"
-        >
-          hello@jmcomfort.example
-        </a>
-      </div>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/services"
+          >
+            Services
+          </a>
+        </li>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/gallery"
+          >
+            Gallery
+          </a>
+        </li>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/reviews"
+          >
+            Reviews
+          </a>
+        </li>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </li>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/contact"
+          >
+            Contact
+          </a>
+        </li>
+        <li>
+          <a
+            class="text-gray-400 transition-colors hover:text-white"
+            data-discover="true"
+            href="/request-quote"
+          >
+            Request Quote
+          </a>
+        </li>
+      </ul>
     </div>
-    <div
-      style="display: flex; align-items: center; gap: 16px; font-size: 14px; flex-wrap: wrap; color: rgb(229, 231, 235);"
-    >
-      <div
-        style="display: flex; align-items: center; gap: 6px;"
+    <div>
+      <h3
+        class="text-sm font-semibold uppercase tracking-wider text-white"
       >
-        <svg
-          fill="currentColor"
-          height="1em"
-          stroke="currentColor"
-          stroke-width="0"
-          viewBox="0 0 512 512"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
+        Contact
+      </h3>
+      <ul
+        class="mt-4 space-y-3 text-sm text-gray-400"
+      >
+        <li
+          class="flex items-start gap-2.5"
         >
-          <path
-            d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z"
-          />
-        </svg>
-        <span
-          style="font-weight: 600;"
+          <svg
+            class="mt-0.5 shrink-0 text-gray-500"
+            fill="none"
+            height="16"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"
+            />
+            <circle
+              cx="12"
+              cy="10"
+              r="3"
+            />
+          </svg>
+          <span>
+            1234 Elm St, Sacramento CA 95819
+          </span>
+        </li>
+        <li>
+          <a
+            class="flex items-start gap-2.5 text-gray-400 hover:text-white"
+            href="tel:+19165551234"
+          >
+            <svg
+              class="mt-0.5 shrink-0 text-gray-500"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+              />
+            </svg>
+            (916) 555-1234
+          </a>
+        </li>
+        <li>
+          <a
+            class="flex items-start gap-2.5 text-gray-400 hover:text-white"
+            href="mailto:hello@jmcomfort.example"
+          >
+            <svg
+              class="mt-0.5 shrink-0 text-gray-500"
+              fill="none"
+              height="16"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="16"
+                rx="2"
+                width="20"
+                x="2"
+                y="4"
+              />
+              <path
+                d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"
+              />
+            </svg>
+            hello@jmcomfort.example
+          </a>
+        </li>
+        <li
+          class="flex items-start gap-2.5"
         >
-          Hours:
-        </span>
-      </div>
-      <span>
-        Mon–Fri 8 AM – 6 PM
-      </span>
-      <span>
-        •
-      </span>
-      <span>
-        Sat 9 AM – 2 PM
-      </span>
-      <span>
-        •
-      </span>
-      <span>
-        Sun Closed
-      </span>
+          <svg
+            class="mt-0.5 shrink-0 text-gray-500"
+            fill="none"
+            height="16"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+            />
+            <polyline
+              points="12 6 12 12 16 14"
+            />
+          </svg>
+          <div
+            class="space-y-0.5 text-xs"
+          >
+            <p>
+              Mon–Fri · 8 AM – 6 PM
+            </p>
+            <p>
+              Sat · 9 AM – 2 PM
+            </p>
+            <p>
+              Sun · Closed
+            </p>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
   <div
-    style="border-top: 1px solid rgb(55, 65, 81); width: 100%;"
+    class="border-t border-white/10"
   >
     <div
-      style="max-width: 1280px; margin: 0px auto; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: rgb(176, 181, 189); flex-wrap: wrap; gap: 12px; box-sizing: border-box;"
+      class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-gray-500 sm:flex-row sm:px-6 lg:px-8"
     >
-      <p
-        style="margin: 0px;"
-      >
+      <p>
         © 
         2026
          JM Comfort. All rights reserved.
       </p>
       <div
-        style="display: flex; gap: 8px;"
+        class="flex items-center gap-3"
       >
-        <span
-          style="color: rgb(176, 181, 189);"
-        >
+        <span>
           Privacy
         </span>
-        <span>
-          •
-        </span>
         <span
-          style="color: rgb(176, 181, 189);"
+          aria-hidden="true"
         >
+          ·
+        </span>
+        <span>
           Terms
         </span>
-        <span>
-          •
+        <span
+          aria-hidden="true"
+        >
+          ·
         </span>
         <a
+          class="hover:text-gray-300"
           data-discover="true"
           href="/admin/login"
-          style="color: rgb(176, 181, 189); text-decoration: none;"
         >
-          Login
+          Admin
         </a>
       </div>
     </div>

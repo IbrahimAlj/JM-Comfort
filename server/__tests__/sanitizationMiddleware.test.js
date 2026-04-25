@@ -7,13 +7,25 @@ jest.mock('../config/db', () => ({
 const pool = require('../config/db');
 const app = require('../app');
 
+function findInsertCall() {
+  return pool.execute.mock.calls.find((c) =>
+    String(c[0]).includes('INSERT INTO contact_leads')
+  );
+}
+
+function mockNoDupeThenInsert(insertId) {
+  pool.execute
+    .mockResolvedValueOnce([[]]) // dedupe SELECT — empty
+    .mockResolvedValueOnce([{ insertId }]); // INSERT
+}
+
 describe('Sanitization middleware - leads route', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('strips script tags from message before saving', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    mockNoDupeThenInsert(1);
 
     await request(app)
       .post('/api/leads')
@@ -24,14 +36,14 @@ describe('Sanitization middleware - leads route', () => {
         message: '<script>alert("xss")</script>Hello',
       });
 
-    const [, params] = pool.execute.mock.calls[0];
-    const message = params[7];
+    const insertCall = findInsertCall();
+    const message = insertCall[1][7];
     expect(message).not.toContain('<script>');
     expect(message).not.toContain('</script>');
   });
 
   test('strips onerror event attribute from name field', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 2 }]);
+    mockNoDupeThenInsert(2);
 
     await request(app)
       .post('/api/leads')
@@ -41,13 +53,13 @@ describe('Sanitization middleware - leads route', () => {
         lead_type: 'contact',
       });
 
-    const [, params] = pool.execute.mock.calls[0];
-    const savedName = params[2];
+    const insertCall = findInsertCall();
+    const savedName = insertCall[1][2];
     expect(savedName).not.toContain('onerror');
   });
 
   test('strips javascript: href from message field', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 3 }]);
+    mockNoDupeThenInsert(3);
 
     await request(app)
       .post('/api/leads')
@@ -58,13 +70,13 @@ describe('Sanitization middleware - leads route', () => {
         message: '<a href="javascript:void(0)">click</a>',
       });
 
-    const [, params] = pool.execute.mock.calls[0];
-    const message = params[7];
+    const insertCall = findInsertCall();
+    const message = insertCall[1][7];
     expect(message).not.toContain('javascript:');
   });
 
   test('SQL injection style input does not break the route', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 4 }]);
+    mockNoDupeThenInsert(4);
 
     const res = await request(app)
       .post('/api/leads')
@@ -76,11 +88,11 @@ describe('Sanitization middleware - leads route', () => {
       });
 
     expect(res.statusCode).toBe(201);
-    expect(pool.execute).toHaveBeenCalledTimes(1);
+    expect(findInsertCall()).toBeDefined();
   });
 
   test('plain text fields pass through unchanged', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 5 }]);
+    mockNoDupeThenInsert(5);
 
     await request(app)
       .post('/api/leads')
@@ -91,13 +103,14 @@ describe('Sanitization middleware - leads route', () => {
         message: 'I need HVAC maintenance scheduled.',
       });
 
-    const [, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    const params = insertCall[1];
     expect(params).toContain('I need HVAC maintenance scheduled.');
     expect(params).toContain('eve@example.com');
   });
 
   test('iframe injection is stripped from message', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 6 }]);
+    mockNoDupeThenInsert(6);
 
     await request(app)
       .post('/api/leads')
@@ -108,8 +121,8 @@ describe('Sanitization middleware - leads route', () => {
         message: '<iframe src="evil.com"></iframe>Need service.',
       });
 
-    const [, params] = pool.execute.mock.calls[0];
-    const message = params[7];
+    const insertCall = findInsertCall();
+    const message = insertCall[1][7];
     expect(message).not.toContain('<iframe');
   });
 });

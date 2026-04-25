@@ -7,13 +7,21 @@ jest.mock('../config/db', () => ({
 const pool = require('../config/db');
 const app = require('../app');
 
+function findInsertCall() {
+  return pool.execute.mock.calls.find((c) =>
+    String(c[0]).includes('INSERT INTO contact_leads')
+  );
+}
+
 describe('POST /api/leads - quote form success', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('creates a quote lead and returns 201', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 1 }]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -31,7 +39,7 @@ describe('POST /api/leads - quote form success', () => {
   });
 
   test('returns 200 with deduped flag when duplicate quote is submitted', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 0 }]);
+    pool.execute.mockResolvedValueOnce([[{ id: 99 }]]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -49,7 +57,9 @@ describe('POST /api/leads - quote form success', () => {
   });
 
   test('saves service_type to the database for a quote request', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 2 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 2 }]);
 
     await request(app)
       .post('/api/leads')
@@ -61,8 +71,9 @@ describe('POST /api/leads - quote form success', () => {
         message: 'Furnace not working.',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [sql, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    expect(insertCall).toBeDefined();
+    const [sql, params] = insertCall;
     expect(sql).toMatch(/INSERT INTO contact_leads/);
     expect(params).toContain('emma@example.com');
     expect(params).toContain('quote');
@@ -70,7 +81,9 @@ describe('POST /api/leads - quote form success', () => {
   });
 
   test('accepts a quote with first_name and last_name instead of name', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 3 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 3 }]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -84,7 +97,8 @@ describe('POST /api/leads - quote form success', () => {
       });
 
     expect(res.statusCode).toBe(201);
-    const [, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    const params = insertCall[1];
     expect(params).toContain('Frank');
     expect(params).toContain('Miller');
   });

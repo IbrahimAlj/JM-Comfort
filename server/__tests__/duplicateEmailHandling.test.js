@@ -1,5 +1,4 @@
 const request = require('supertest');
-const crypto = require('crypto');
 
 jest.mock('../config/db', () => ({
   execute: jest.fn(),
@@ -8,13 +7,21 @@ jest.mock('../config/db', () => ({
 const pool = require('../config/db');
 const app = require('../app');
 
+function findInsertCall() {
+  return pool.execute.mock.calls.find((c) =>
+    String(c[0]).includes('INSERT INTO contact_leads')
+  );
+}
+
 describe('POST /api/leads - duplicate email handling', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('first submission with unique payload returns 201', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT — no duplicates
+      .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
     const res = await request(app)
       .post('/api/leads')
@@ -29,8 +36,9 @@ describe('POST /api/leads - duplicate email handling', () => {
     expect(res.body.lead_id).toBe(1);
   });
 
-  test('duplicate submission returns 200 with deduped true', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 0 }]);
+  test('duplicate submission within window returns 200 with deduped true', async () => {
+    // Dedupe SELECT finds an existing row
+    pool.execute.mockResolvedValueOnce([[{ id: 7 }]]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -47,7 +55,9 @@ describe('POST /api/leads - duplicate email handling', () => {
   });
 
   test('same email with different message is treated as new lead', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 2 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 2 }]);
 
     const res = await request(app)
       .post('/api/leads')
@@ -62,8 +72,10 @@ describe('POST /api/leads - duplicate email handling', () => {
     expect(res.body.lead_id).toBe(2);
   });
 
-  test('deduplication uses ON DUPLICATE KEY UPDATE in SQL', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 0 }]);
+  test('insert SQL is parameterized and includes dedupe_hash', async () => {
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 11 }]);
 
     await request(app)
       .post('/api/leads')
@@ -74,13 +86,17 @@ describe('POST /api/leads - duplicate email handling', () => {
         service_type: 'AC Repair',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [sql] = pool.execute.mock.calls[0];
-    expect(sql).toMatch(/ON DUPLICATE KEY UPDATE/i);
+    const insertCall = findInsertCall();
+    expect(insertCall).toBeDefined();
+    const [sql] = insertCall;
+    expect(sql).toMatch(/INSERT INTO contact_leads/);
+    expect(sql).toMatch(/dedupe_hash/);
   });
 
-  test('email is normalized to lowercase before deduplication', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 3 }]);
+  test('email is normalized to lowercase before persisting', async () => {
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 3 }]);
 
     await request(app)
       .post('/api/leads')
@@ -91,14 +107,14 @@ describe('POST /api/leads - duplicate email handling', () => {
         message: 'Hello.',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [, params] = pool.execute.mock.calls[0];
+    const insertCall = findInsertCall();
+    const params = insertCall[1];
     expect(params).toContain('carol@example.com');
     expect(params).not.toContain('CAROL@EXAMPLE.COM');
   });
 
-  test('quote duplicate returns 200 with deduped flag', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 0 }]);
+  test('quote duplicate within window returns 200 with deduped flag', async () => {
+    pool.execute.mockResolvedValueOnce([[{ id: 8 }]]);
 
     const res = await request(app)
       .post('/api/leads')
