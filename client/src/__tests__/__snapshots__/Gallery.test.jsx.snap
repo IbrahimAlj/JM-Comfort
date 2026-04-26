@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`Gallery page renders images in responsive grid and matches snapshot 1`] = `
+exports[`Gallery page renders images in grid and matches snapshot 1`] = `
 <div>
   <nav
     data-testid="navbar"
@@ -8,49 +8,140 @@ exports[`Gallery page renders images in responsive grid and matches snapshot 1`]
     Navbar
   </nav>
   <main
-    class="min-h-screen bg-gray-50 py-10 px-6"
+    class="min-h-screen bg-gray-50"
   >
-    <h1
-      class="text-3xl font-semibold text-center mb-8 text-gray-800"
+    <section
+      class="border-b border-gray-200 bg-white"
     >
-      Our Project Gallery
-    </h1>
+      <div
+        class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8"
+      >
+        <p
+          class="text-sm font-semibold uppercase tracking-wider text-blue-600"
+        >
+          Our work
+        </p>
+        <h1
+          class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+        >
+          Project gallery
+        </h1>
+        <p
+          class="mt-4 max-w-2xl text-lg text-gray-600"
+        >
+          Real installs and repairs from the Sacramento area — see the before, the after, and everything in between.
+        </p>
+        <div
+          class="mt-8 flex flex-wrap gap-2"
+        >
+          <button
+            class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors bg-gray-900 text-white"
+            type="button"
+          >
+            All
+          </button>
+          <button
+            class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+            type="button"
+          >
+            Before / After
+          </button>
+          <button
+            class="rounded-full px-4 py-1.5 text-sm font-medium transition-colors border border-gray-300 bg-white text-gray-700 hover:bg-gray-100"
+            type="button"
+          >
+            Gallery
+          </button>
+        </div>
+      </div>
+    </section>
     <div
-      class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
+      class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
     >
       <div
-        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
+        class="space-y-14"
       >
-        <img
-          alt="HVAC Install 1"
-          class="w-full h-60 object-cover"
-          src="https://example.com/img1.jpg"
-        />
-      </div>
-      <div
-        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
-      >
-        <img
-          alt="HVAC Install 2"
-          class="w-full h-60 object-cover"
-          src="https://example.com/img2.jpg"
-        />
-      </div>
-      <div
-        class="relative cursor-pointer overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform"
-      >
-        <img
-          alt="HVAC Install 3"
-          class="w-full h-60 object-cover"
-          src="https://example.com/img3.jpg"
-        />
+        <section>
+          <div
+            class="mb-5 flex items-center gap-2"
+          >
+            <svg
+              class="text-gray-400"
+              fill="none"
+              height="18"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="18"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                height="18"
+                rx="2"
+                ry="2"
+                width="18"
+                x="3"
+                y="3"
+              />
+              <circle
+                cx="9"
+                cy="9"
+                r="2"
+              />
+              <path
+                d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"
+              />
+            </svg>
+            <h2
+              class="text-xl font-semibold text-gray-900"
+            >
+              Gallery
+            </h2>
+          </div>
+          <div
+            class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            <button
+              class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+              type="button"
+            >
+              <img
+                alt="HVAC Install 1"
+                class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://example.com/img1.jpg"
+              />
+            </button>
+            <button
+              class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+              type="button"
+            >
+              <img
+                alt="HVAC Install 2"
+                class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://example.com/img2.jpg"
+              />
+            </button>
+            <button
+              class="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md"
+              type="button"
+            >
+              <img
+                alt="HVAC Install 3"
+                class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://example.com/img3.jpg"
+              />
+            </button>
+          </div>
+        </section>
       </div>
     </div>
   </main>
 </div>
 `;
 
-exports[`Gallery page renders loading state and matches snapshot 1`] = `
+exports[`Gallery page renders skeleton loading state and matches snapshot 1`] = `
 <div>
   <nav
     data-testid="navbar"
@@ -58,18 +149,57 @@ exports[`Gallery page renders loading state and matches snapshot 1`] = `
     Navbar
   </nav>
   <main
-    class="min-h-screen bg-gray-50 py-10 px-6"
+    class="min-h-screen bg-gray-50"
   >
-    <h1
-      class="text-3xl font-semibold text-center mb-8 text-gray-800"
+    <section
+      class="border-b border-gray-200 bg-white"
     >
-      Our Project Gallery
-    </h1>
-    <p
-      class="text-center text-gray-600"
+      <div
+        class="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8"
+      >
+        <p
+          class="text-sm font-semibold uppercase tracking-wider text-blue-600"
+        >
+          Our work
+        </p>
+        <h1
+          class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl"
+        >
+          Project gallery
+        </h1>
+        <p
+          class="mt-4 max-w-2xl text-lg text-gray-600"
+        >
+          Real installs and repairs from the Sacramento area — see the before, the after, and everything in between.
+        </p>
+      </div>
+    </section>
+    <div
+      class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8"
     >
-      Loading gallery...
-    </p>
+      <div
+        class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+        <div
+          class="aspect-[4/3] animate-pulse rounded-2xl bg-gray-200"
+        />
+      </div>
+    </div>
   </main>
 </div>
 `;

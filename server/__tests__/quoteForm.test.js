@@ -67,7 +67,9 @@ describe("POST /api/leads (quote form)", () => {
   };
 
   test("returns 201 with all new fields populated", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT
+      .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
     const res = await makeRequest(app, "POST", "/api/leads", validQuote);
 
@@ -77,7 +79,9 @@ describe("POST /api/leads (quote form)", () => {
   });
 
   test("returns 201 when optional fields are absent", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 2 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 2 }]);
 
     const res = await makeRequest(app, "POST", "/api/leads", {
       name: "Jane Smith",
@@ -90,35 +94,47 @@ describe("POST /api/leads (quote form)", () => {
     expect(res.body.lead_id).toBe(2);
   });
 
+  function findInsertCall() {
+    return pool.execute.mock.calls.find((c) =>
+      String(c[0]).includes("INSERT INTO contact_leads")
+    );
+  }
+
   test("stores preferred_date in the database insert", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 1 }]);
 
     await makeRequest(app, "POST", "/api/leads", validQuote);
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const insertCall = pool.execute.mock.calls[0];
-    const sql = insertCall[0];
-    const params = insertCall[1];
+    const insertCall = findInsertCall();
+    expect(insertCall).toBeDefined();
+    const [sql, params] = insertCall;
     expect(sql).toContain("preferred_date");
     expect(params).toContain("2030-07-15");
   });
 
   test("stores preferred_time_slot in the database insert", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 1 }]);
 
     await makeRequest(app, "POST", "/api/leads", validQuote);
 
-    const params = pool.execute.mock.calls[0][1];
+    const insertCall = findInsertCall();
+    const params = insertCall[1];
     expect(params).toContain("Morning (8 AM - 12 PM)");
   });
 
   test("stores address in the database insert", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 1 }]);
 
     await makeRequest(app, "POST", "/api/leads", validQuote);
 
-    const sql = pool.execute.mock.calls[0][0];
-    const params = pool.execute.mock.calls[0][1];
+    const insertCall = findInsertCall();
+    const [sql, params] = insertCall;
     expect(sql).toContain("address");
     expect(params).toContain("1234 Elm St, Sacramento, CA 95819");
   });
@@ -134,7 +150,9 @@ describe("POST /api/leads (quote form)", () => {
   });
 
   test("existing contact form submission still returns 201", async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 3 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]])
+      .mockResolvedValueOnce([{ insertId: 3 }]);
 
     const res = await makeRequest(app, "POST", "/api/leads", {
       name: "Contact User",

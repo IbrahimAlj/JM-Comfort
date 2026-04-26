@@ -13,7 +13,9 @@ describe('POST /api/leads - contact route', () => {
   });
 
   test('valid contact submission returns 201', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT — no duplicates
+      .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
     const res = await request(app)
       .post('/api/leads')
@@ -72,7 +74,9 @@ describe('POST /api/leads - contact route', () => {
   });
 
   test('sanitizes XSS script tags from message field', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 5 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT
+      .mockResolvedValueOnce([{ insertId: 5 }]); // INSERT
 
     await request(app)
       .post('/api/leads')
@@ -83,15 +87,21 @@ describe('POST /api/leads - contact route', () => {
         message: '<script>alert("xss")</script>Need help.',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [, params] = pool.execute.mock.calls[0];
+    // INSERT call is index 1 (after dedupe SELECT at 0)
+    const insertCall = pool.execute.mock.calls.find((c) =>
+      String(c[0]).includes('INSERT INTO contact_leads')
+    );
+    expect(insertCall).toBeDefined();
+    const params = insertCall[1];
     const savedMessage = params[7];
     expect(savedMessage).not.toContain('<script>');
     expect(savedMessage).not.toContain('</script>');
   });
 
   test('sanitizes XSS from name field', async () => {
-    pool.execute.mockResolvedValueOnce([{ insertId: 6 }]);
+    pool.execute
+      .mockResolvedValueOnce([[]]) // dedupe SELECT
+      .mockResolvedValueOnce([{ insertId: 6 }]); // INSERT
 
     await request(app)
       .post('/api/leads')
@@ -101,8 +111,11 @@ describe('POST /api/leads - contact route', () => {
         lead_type: 'contact',
       });
 
-    expect(pool.execute).toHaveBeenCalledTimes(1);
-    const [, params] = pool.execute.mock.calls[0];
+    const insertCall = pool.execute.mock.calls.find((c) =>
+      String(c[0]).includes('INSERT INTO contact_leads')
+    );
+    expect(insertCall).toBeDefined();
+    const params = insertCall[1];
     const savedName = params[2];
     expect(savedName).not.toContain('onerror');
   });

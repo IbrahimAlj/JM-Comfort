@@ -103,7 +103,9 @@ describe("Email Notifications", () => {
 
   describe("POST /api/leads", () => {
     test("calls sendEmail twice on successful lead submission", async () => {
-      pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+      pool.execute
+        .mockResolvedValueOnce([[]]) // dedupe SELECT
+        .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
       const res = await makeRequest(app, "POST", "/api/leads", validLead);
 
@@ -112,7 +114,9 @@ describe("Email Notifications", () => {
     });
 
     test("sends admin notification to ADMIN_NOTIFICATION_EMAIL address", async () => {
-      pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+      pool.execute
+        .mockResolvedValueOnce([[]]) // dedupe SELECT
+        .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
       await makeRequest(app, "POST", "/api/leads", validLead);
 
@@ -125,7 +129,9 @@ describe("Email Notifications", () => {
     });
 
     test("sends customer confirmation to lead email address", async () => {
-      pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+      pool.execute
+        .mockResolvedValueOnce([[]]) // dedupe SELECT
+        .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
 
       await makeRequest(app, "POST", "/api/leads", validLead);
 
@@ -138,7 +144,9 @@ describe("Email Notifications", () => {
     });
 
     test("still returns 201 when sendEmail throws", async () => {
-      pool.execute.mockResolvedValueOnce([{ insertId: 1 }]);
+      pool.execute
+        .mockResolvedValueOnce([[]]) // dedupe SELECT
+        .mockResolvedValueOnce([{ insertId: 1 }]); // INSERT
       sendEmail
         .mockRejectedValueOnce(new Error("SMTP connection failed"))
         .mockRejectedValueOnce(new Error("SMTP connection failed"));
