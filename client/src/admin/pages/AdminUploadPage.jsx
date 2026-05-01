@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { LuUpload, LuImagePlus, LuX } from "react-icons/lu";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { LuUpload, LuImagePlus, LuX, LuTrash2, LuLoader } from "react-icons/lu";
 import { captureError } from "../../utils/captureError";
 import {
   PageHeader,
@@ -10,6 +10,8 @@ import {
   ErrorBanner,
   SuccessBanner,
 } from "../ui";
+
+const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
 
 const ALLOWED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
 const MAX_FILE_SIZE_MB = 5;
@@ -44,6 +46,58 @@ export default function AdminUploadPage() {
   const [validationErrors, setValidationErrors] = useState([]);
   const [photoType, setPhotoType] = useState("general");
   const [projectId, setProjectId] = useState("");
+
+  const [gallery, setGallery] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(true);
+  const [galleryError, setGalleryError] = useState(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
+
+  const fetchGallery = useCallback(async () => {
+    setGalleryLoading(true);
+    setGalleryError(null);
+    try {
+      const res = await fetch("/api/gallery");
+      const data = await res.json();
+      if (!res.ok) {
+        setGalleryError(data.error || "Failed to load images");
+      } else {
+        setGallery(data);
+      }
+    } catch {
+      setGalleryError("Could not connect to server");
+    } finally {
+      setGalleryLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchGallery();
+  }, [fetchGallery]);
+
+  async function handleDelete() {
+    if (!confirmDeleteId) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch(`/api/gallery/${confirmDeleteId}`, {
+        method: "DELETE",
+        headers: { "x-admin-key": ADMIN_KEY },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setDeleteError(data.error || "Failed to delete image");
+      } else {
+        setGallery((prev) => prev.filter((img) => img.id !== confirmDeleteId));
+        setConfirmDeleteId(null);
+      }
+    } catch {
+      setDeleteError("Could not connect to server");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   function handleFileChange(e) {
     const files = Array.from(e.target.files || []);
@@ -85,6 +139,7 @@ export default function AdminUploadPage() {
         setResult(data);
         setSelectedFiles([]);
         if (fileInputRef.current) fileInputRef.current.value = "";
+        fetchGallery();
       }
     } catch (err) {
       captureError(err, { page: "AdminUpload", action: "uploadFiles" });
@@ -103,6 +158,39 @@ export default function AdminUploadPage() {
         title="Upload Pictures"
         subtitle="Add photos to the public gallery. Tag them as before/after for project pairings."
       />
+
+      {confirmDeleteId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+            <h2 className="mb-2 text-base font-semibold text-gray-900">Delete image?</h2>
+            <p className="mb-5 text-sm text-gray-600">
+              This will permanently remove the image from the gallery and cannot be undone.
+            </p>
+            {deleteError && (
+              <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{deleteError}</p>
+            )}
+            <div className="flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => { setConfirmDeleteId(null); setDeleteError(null); }}
+                disabled={deleting}
+                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={deleting}
+                className="flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
+              >
+                {deleting && <LuLoader size={14} className="animate-spin" />}
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <SectionCard title="New upload">
         <div className="space-y-5">
@@ -231,6 +319,42 @@ export default function AdminUploadPage() {
             </Button>
           </div>
         </div>
+      </SectionCard>
+
+      <SectionCard title={`Gallery (${gallery.length} image${gallery.length !== 1 ? "s" : ""})`}>
+        {galleryLoading ? (
+          <div className="flex items-center justify-center py-12 text-gray-400">
+            <LuLoader size={24} className="animate-spin" />
+          </div>
+        ) : galleryError ? (
+          <ErrorBanner>{galleryError}</ErrorBanner>
+        ) : gallery.length === 0 ? (
+          <p className="py-8 text-center text-sm text-gray-500">No images uploaded yet.</p>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {gallery.map((img) => (
+              <div key={img.id} className="group relative overflow-hidden rounded-lg border border-gray-200 bg-gray-50">
+                <img
+                  src={img.url}
+                  alt={img.title}
+                  className="h-40 w-full object-cover"
+                />
+                <div className="px-2 pb-2 pt-1.5">
+                  <p className="truncate text-xs text-gray-600" title={img.title}>{img.title}</p>
+                  <p className="text-xs capitalize text-gray-400">{img.photo_type}{img.project_id ? ` · #${img.project_id}` : ""}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setConfirmDeleteId(img.id); setDeleteError(null); }}
+                  className="absolute right-2 top-2 rounded-lg bg-red-600 p-1.5 text-white opacity-0 transition-opacity group-hover:opacity-100 hover:bg-red-700"
+                  aria-label={`Delete ${img.title}`}
+                >
+                  <LuTrash2 size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </SectionCard>
     </div>
   );
