@@ -14,6 +14,8 @@ import ServiceDetail from './pages/ServiceDetail';
 import SentryTestPage from './pages/SentryTestPage';
 import UATFeedback from './pages/UATFeedback';
 import NotFound from './pages/NotFound';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 import { Helmet } from 'react-helmet-async';
 import homeMeta from "./seo/homeMeta";
 import AdminRoutes from "./admin/AdminRoutes";
@@ -58,6 +60,8 @@ function AppShell() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/sentry-test" element={<SentryTestPage />} />
         <Route path="/uat-feedback" element={<UATFeedback />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

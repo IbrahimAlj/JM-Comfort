@@ -19,8 +19,12 @@ function validateEnv() {
   const missing = requiredVars.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {
-    console.error('STARTUP ERROR: Missing required environment variables:');
+    console.error('STARTUP WARNING: Missing required environment variables:');
     missing.forEach((key) => console.error(`  - ${key}`));
+    if (process.env.VERCEL || process.env.SKIP_ENV_VALIDATION === '1') {
+      console.error('Continuing despite missing vars (serverless / opt-out mode).');
+      return;
+    }
     process.exit(1);
   }
 

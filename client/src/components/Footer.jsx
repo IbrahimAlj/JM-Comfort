@@ -1,19 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  LuPhone,
-  LuMail,
-  LuMapPin,
-  LuClock,
-  LuFacebook,
-  LuInstagram,
-  LuTwitter,
-} from "react-icons/lu";
-
-const socials = [
-  { icon: LuFacebook, href: "#", label: "Facebook" },
-  { icon: LuInstagram, href: "#", label: "Instagram" },
-  { icon: LuTwitter, href: "#", label: "Twitter" },
-];
+import { LuPhone, LuMail, LuMapPin, LuClock } from "react-icons/lu";
 
 const siteLinks = [
   { to: "/services", label: "Services" },
@@ -44,19 +30,6 @@ export default function Footer() {
             Family-owned HVAC for the Greater Sacramento area. Honest service,
             transparent pricing, and long-term comfort for every home and business.
           </p>
-
-          <div className="mt-6 flex items-center gap-2">
-            {socials.map(({ icon: Icon, href, label }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white"
-              >
-                <Icon size={16} />
-              </a>
-            ))}
-          </div>
         </div>
 
         <div>
@@ -120,9 +93,13 @@ export default function Footer() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-gray-500 sm:flex-row sm:px-6 lg:px-8">
           <p>© {new Date().getFullYear()} JM Comfort. All rights reserved.</p>
           <div className="flex items-center gap-3">
-            <span>Privacy</span>
+            <Link to="/privacy" className="hover:text-gray-300">
+              Privacy
+            </Link>
             <span aria-hidden="true">·</span>
-            <span>Terms</span>
+            <Link to="/terms" className="hover:text-gray-300">
+              Terms
+            </Link>
             <span aria-hidden="true">·</span>
             <Link to="/admin/login" className="hover:text-gray-300">
               Admin
