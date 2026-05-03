@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   LuWrench,
@@ -11,31 +12,61 @@ import Navbar from '../components/Navbar';
 import WhyChooseUs from '../components/WhyChooseUs';
 import PageMeta from '../components/PageMeta';
 
-const SERVICE_TEASERS = [
+const TEASER_FALLBACKS = [
   {
+    matchers: ['install'],
     icon: LuWrench,
-    title: 'Installation',
-    blurb:
-      'Right-sized, right-tuned HVAC installs for your space and budget.',
+    blurb: 'Right-sized, right-tuned HVAC installs for your space and budget.',
     tone: 'bg-blue-50 text-blue-600 ring-blue-100',
   },
   {
+    matchers: ['repair', 'ac '],
     icon: LuSnowflake,
-    title: 'AC Repair',
-    blurb:
-      'Fast diagnostics for leaks, no-cool calls, airflow issues, and more.',
+    blurb: 'Fast diagnostics for leaks, no-cool calls, airflow issues, and more.',
     tone: 'bg-cyan-50 text-cyan-600 ring-cyan-100',
   },
   {
+    matchers: ['heat', 'maintenance', 'tune'],
     icon: LuFlame,
-    title: 'Heating & Maintenance',
-    blurb:
-      'Seasonal tune-ups that extend equipment life and lower energy bills.',
+    blurb: 'Seasonal tune-ups that extend equipment life and lower energy bills.',
     tone: 'bg-orange-50 text-orange-600 ring-orange-100',
   },
 ];
 
+const DEFAULT_TEASER = {
+  icon: LuWrench,
+  blurb: 'Professional HVAC service from certified Sacramento technicians.',
+  tone: 'bg-gray-50 text-gray-600 ring-gray-200',
+};
+
+function teaserFor(service) {
+  const haystack = `${service.name || ''} ${service.slug || ''}`.toLowerCase();
+  const match = TEASER_FALLBACKS.find((t) =>
+    t.matchers.some((m) => haystack.includes(m))
+  );
+  return match || DEFAULT_TEASER;
+}
+
 export default function Home() {
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/services')
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => {
+        if (cancelled) return;
+        const active = Array.isArray(data)
+          ? data.filter((s) => s.is_active !== false).slice(0, 3)
+          : [];
+        setServices(active);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <>
       <PageMeta
@@ -69,28 +100,36 @@ export default function Home() {
             </div>
 
             <div className="mt-10 grid gap-5 md:grid-cols-3">
-              {SERVICE_TEASERS.map(({ icon: Icon, title, blurb, tone }) => (
-                <Link
-                  key={title}
-                  to="/services"
-                  className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md"
-                >
-                  <div
-                    className={`flex h-12 w-12 items-center justify-center rounded-xl ring-1 ring-inset ${tone}`}
+              {services.map((service) => {
+                const { icon: Icon, blurb, tone } = teaserFor(service);
+                const title = service.title || service.name;
+                const description =
+                  service.short_description ||
+                  service.full_description ||
+                  blurb;
+                return (
+                  <Link
+                    key={service.id}
+                    to={`/services/${service.id}`}
+                    className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md"
                   >
-                    <Icon size={22} aria-hidden="true" />
-                  </div>
-                  <h3 className="mt-5 text-lg font-semibold text-gray-900">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                    {blurb}
-                  </p>
-                  <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-blue-600 transition-transform group-hover:translate-x-0.5">
-                    Learn more <LuArrowRight size={14} />
-                  </span>
-                </Link>
-              ))}
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-xl ring-1 ring-inset ${tone}`}
+                    >
+                      <Icon size={22} aria-hidden="true" />
+                    </div>
+                    <h3 className="mt-5 text-lg font-semibold text-gray-900">
+                      {title}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-600">
+                      {description}
+                    </p>
+                    <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-blue-600 transition-transform group-hover:translate-x-0.5">
+                      Learn more <LuArrowRight size={14} />
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
