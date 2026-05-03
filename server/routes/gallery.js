@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const crypto = require("crypto");
 const path = require("path");
+const jwt = require("jsonwebtoken");
 const pool = require("../config/db");
 const { s3Client, PutObjectCommand, DeleteObjectCommand, BUCKET_NAME } = require("../config/s3");
 
@@ -63,17 +64,26 @@ function generateS3Key(originalName) {
 
 function requireAdmin(req, res, next) {
   const adminKey = process.env.ADMIN_API_KEY;
+  const jwtSecret = process.env.JWT_SECRET || adminKey;
   if (!adminKey) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const headerKey =
-    (req.headers["x-admin-key"] || "").toString() ||
-    ((req.headers.authorization || "").toString().startsWith("Bearer ")
-      ? req.headers.authorization.split(" ")[1]
-      : "");
+  const authHeader = (req.headers.authorization || "").toString();
+  const bearer = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+  const headerKey = (req.headers["x-admin-key"] || "").toString();
 
-  if (headerKey === adminKey) return next();
+  if (headerKey && headerKey === adminKey) return next();
+  if (bearer && bearer === adminKey) return next();
+
+  if (bearer && jwtSecret) {
+    try {
+      const payload = jwt.verify(bearer, jwtSecret);
+      if (payload && payload.role === "admin") return next();
+    } catch (_err) {
+      // fall through
+    }
+  }
 
   return res.status(401).json({ error: "Unauthorized" });
 }

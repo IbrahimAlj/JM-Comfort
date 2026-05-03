@@ -17,8 +17,9 @@ import {
   Card,
 } from "../ui";
 
+import { apiFetch } from "../Auth";
+
 const API_BASE = import.meta.env.VITE_API_URL || "";
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
 
 const EMPTY_FORM = {
   slot_date: "",
@@ -64,9 +65,7 @@ export default function AdminAvailabilityPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_BASE}/api/availability/admin`, {
-        headers: { "x-admin-key": ADMIN_KEY },
-      });
+      const res = await apiFetch(`${API_BASE}/api/availability/admin`);
       if (!res.ok) throw new Error("Failed to load availability");
       const data = await res.json();
       setSlots(data.slots || []);
@@ -99,12 +98,9 @@ export default function AdminAvailabilityPage() {
     setFormLoading(true);
     setFormError("");
     try {
-      const res = await fetch(`${API_BASE}/api/availability`, {
+      const res = await apiFetch(`${API_BASE}/api/availability`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-key": ADMIN_KEY,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slot_date: formData.slot_date,
           start_time: formData.start_time,
@@ -138,12 +134,9 @@ export default function AdminAvailabilityPage() {
     setRowLoading((p) => ({ ...p, [slot.id]: "toggle" }));
     setRowError((p) => ({ ...p, [slot.id]: "" }));
     try {
-      const res = await fetch(`${API_BASE}/api/availability/${slot.id}`, {
+      const res = await apiFetch(`${API_BASE}/api/availability/${slot.id}`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          "x-admin-key": ADMIN_KEY,
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ is_active: !slot.is_active }),
       });
       const data = await res.json().catch(() => null);
@@ -166,9 +159,8 @@ export default function AdminAvailabilityPage() {
     setRowLoading((p) => ({ ...p, [slot.id]: "delete" }));
     setRowError((p) => ({ ...p, [slot.id]: "" }));
     try {
-      const res = await fetch(`${API_BASE}/api/availability/${slot.id}`, {
+      const res = await apiFetch(`${API_BASE}/api/availability/${slot.id}`, {
         method: "DELETE",
-        headers: { "x-admin-key": ADMIN_KEY },
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) throw new Error(data?.error || "Failed to delete slot");

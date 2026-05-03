@@ -13,8 +13,9 @@ import {
   Card,
 } from "../ui";
 
+import { apiFetch } from "../Auth";
+
 const API_BASE = import.meta.env.VITE_API_URL || "";
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
 
 function formatDate(dateStr) {
   if (!dateStr) return "N/A";
@@ -45,9 +46,7 @@ export default function AdminReviewsPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${API_BASE}/api/reviews/admin`, {
-        headers: { "x-admin-key": ADMIN_KEY },
-      });
+      const res = await apiFetch(`${API_BASE}/api/reviews/admin`);
       if (!res.ok) throw new Error("Failed to fetch reviews");
       const data = await res.json();
       setReviews(data.reviews || []);
@@ -62,9 +61,8 @@ export default function AdminReviewsPage() {
     setActionLoading((prev) => ({ ...prev, [id]: path }));
     setActionError((prev) => ({ ...prev, [id]: "" }));
     try {
-      const res = await fetch(`${API_BASE}/api/reviews/${id}/${path}`, {
+      const res = await apiFetch(`${API_BASE}/api/reviews/${id}/${path}`, {
         method: "PATCH",
-        headers: { "x-admin-key": ADMIN_KEY },
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error || `Failed to ${path} review`);
@@ -86,9 +84,8 @@ export default function AdminReviewsPage() {
     setActionLoading((prev) => ({ ...prev, [id]: "delete" }));
     setActionError((prev) => ({ ...prev, [id]: "" }));
     try {
-      const res = await fetch(`${API_BASE}/api/reviews/${id}`, {
+      const res = await apiFetch(`${API_BASE}/api/reviews/${id}`, {
         method: "DELETE",
-        headers: { "x-admin-key": ADMIN_KEY },
       });
       if (!res.ok) throw new Error("Failed to delete review");
       setReviews((prev) => prev.filter((r) => r.id !== id));

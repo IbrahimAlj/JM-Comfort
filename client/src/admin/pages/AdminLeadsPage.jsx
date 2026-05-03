@@ -15,8 +15,9 @@ import {
   Card,
 } from "../ui";
 
+import { apiFetch } from "../Auth";
+
 const API_BASE = import.meta.env.VITE_API_URL || "";
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
 const PAGE_SIZE = 25;
 
 function formatDate(dateStr) {
@@ -70,9 +71,8 @@ export default function AdminLeadsPage() {
       params.set("limit", String(PAGE_SIZE));
       params.set("offset", String(page * PAGE_SIZE));
 
-      const res = await fetch(
-        `${API_BASE}/api/leads/admin/leads?${params.toString()}`,
-        { headers: { "x-admin-key": ADMIN_KEY } }
+      const res = await apiFetch(
+        `${API_BASE}/api/leads/admin/leads?${params.toString()}`
       );
       if (!res.ok) throw new Error("Failed to fetch leads");
       const data = await res.json();

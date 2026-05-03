@@ -5,8 +5,7 @@ import {
   LuFolderCheck,
   LuStar,
 } from "react-icons/lu";
-
-const ADMIN_KEY = import.meta.env.VITE_ADMIN_API_KEY || "";
+import { apiFetch } from "../Auth";
 
 const CARDS = [
   {
@@ -44,10 +43,7 @@ export default function AnalyticsSummaryCards() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch("/api/analytics/summary", {
-      signal: controller.signal,
-      headers: ADMIN_KEY ? { "x-admin-key": ADMIN_KEY } : {},
-    })
+    apiFetch("/api/analytics/summary", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch");
         return res.json();

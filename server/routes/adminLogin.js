@@ -1,9 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const rateLimit = require("express-rate-limit");
 const router = express.Router();
 
 const SALT_ROUNDS = 10;
+const TOKEN_TTL = "8h";
 let adminHash = null;
 
 (async () => {
@@ -19,6 +21,10 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
   message: { message: "Too many login attempts please try again later" },
 });
+
+function getJwtSecret() {
+  return process.env.JWT_SECRET || process.env.ADMIN_API_KEY;
+}
 
 router.post("/register", async (req, res) => {
   try {
@@ -46,7 +52,12 @@ router.post("/login", loginLimiter, async (req, res) => {
     if (!match) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    return res.status(200).json({ message: "Login successful" });
+    const secret = getJwtSecret();
+    if (!secret) {
+      return res.status(500).json({ error: "JWT secret not configured" });
+    }
+    const token = jwt.sign({ role: "admin" }, secret, { expiresIn: TOKEN_TTL });
+    return res.status(200).json({ message: "Login successful", token });
   } catch (err) {
     return res.status(500).json({ error: "Login failed" });
   }

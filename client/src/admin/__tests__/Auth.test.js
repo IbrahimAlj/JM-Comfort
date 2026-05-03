@@ -14,12 +14,13 @@ describe("admin Auth", () => {
     global.fetch.mockResolvedValueOnce({
       ok: true,
       status: 200,
-      json: async () => ({ ok: true }),
+      json: async () => ({ message: "Login successful", token: "jwt.token.here" }),
     });
 
     const result = await login({ email: "a@b.c", password: "x" });
     expect(result.user.email).toBe("a@b.c");
-    expect(getToken()).toBeTruthy();
+    expect(result.token).toBe("jwt.token.here");
+    expect(getToken()).toBe("jwt.token.here");
     expect(getUser()).toEqual({ email: "a@b.c" });
   });
 
