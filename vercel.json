@@ -5,13 +5,12 @@
   "buildCommand": "npm run build --prefix client",
   "outputDirectory": "client/dist",
   "functions": {
-    "api/index.js": {
+    "api/[...path].js": {
       "maxDuration": 60,
       "includeFiles": "server/**"
     }
   },
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
