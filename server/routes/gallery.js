@@ -140,7 +140,8 @@ router.post("/", (req, res, next) => {
 
   for (const file of req.files) {
     const s3Key = generateS3Key(file.originalname);
-    const s3Url = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION || "us-west-1"}.amazonaws.com/${s3Key}`;
+    const region = (process.env.AWS_REGION || "us-west-1").trim().replace(/^['"]+|['"]+$/g, "");
+    const s3Url = `https://${BUCKET_NAME}.s3.${region}.amazonaws.com/${s3Key}`;
 
     try {
       await s3Client.send(
@@ -233,7 +234,8 @@ router.post("/upload", requireAdmin, (req, res, next) => {
 
   for (const file of req.files) {
     const s3Key = generateS3Key(file.originalname);
-    const s3Url = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION || "us-west-1"}.amazonaws.com/${s3Key}`;
+    const region = (process.env.AWS_REGION || "us-west-1").trim().replace(/^['"]+|['"]+$/g, "");
+    const s3Url = `https://${BUCKET_NAME}.s3.${region}.amazonaws.com/${s3Key}`;
 
     try {
       await s3Client.send(
