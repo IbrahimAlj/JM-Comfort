@@ -35,8 +35,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 - Support analytics features such as performance metrics and salary calculations
 
-**Why:** Our aim is to digitize and modernize the JM Comfort service experience by creating a seamless and user-friendly platform that benefits both customers and employees.
-
+**Why:** Our goal is to provide a website where users can easily learn about JM‑Comfort and the services the company offers. When visitors feel the company is the right fit, they can quickly get in touch to request a quote or schedule an appointment.
 
 ## 🧪 Testing
 
@@ -92,29 +91,39 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 Our goal is to have more finalized versions of most of the website pages by the end of the first sprint in CSC 191.
 
 ### Home page 
-<img src="client/public/Home.png" alt="HVAC home page" width="500" />
-
-### About page 
-<img src="client/public/About.png" alt="HVAC About" width="500" />
-
-### Reviews page 
-<img src="client/public/Reviews.png" alt="HVAC Review" width="500" /> 
+<img src="client/public/Home-new.png" alt="HVAC home page" width="500" />
 
 ### Services page 
-<img src="client/public/Services.png" alt="HVAC Services Page" width="500" />
+<img src="client/public/Services-new.png" alt="HVAC Services Page" width="500" />
+
+### Gallery page 
+<img src="client/public/Gallery-new.png" alt="HVAC Services Page" width="500" />
+
+### Reviews page 
+<img src="client/public/Reviews-new.png" alt="HVAC Review" width="500" /> 
+
+### About page 
+<img src="client/public/About-new.png" alt="HVAC About" width="500" />
+
+### Contact page 
+<img src="client/public/Contact-New.png" alt="HVAC Review" width="500" /> 
+
+### Request-a-Quote Form 
+<img src="client/public/Request-Quote-New.png" alt="HVAC Review" width="500" /> 
 
 ### Login page
-<img src="client/public/Inital Login Screen.png" alt="HVAC Login Page" width="500" />
-
-### Successful login
-<img src="client/public/login successful.png" alt="HVAC successful login" width="500" /> 
+<img src="client/public/Login-New.png" alt="HVAC Login Page" width="500" />
 
 ### Admin Dashboard 
+<img src="client/public/Admin-Dash.png" alt="HVAC Services Page" width="500" />
+
+### Admin Panel
+<img src="client/public/Admin-Panel.png" alt="HVAC Services Page" width="500" />
 
 ### ERD diagram 
 <img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
 
-To summarize the ERD briefly: The only login required is for the admin, who can dynamically manage the website by updating gallery images, managing reviews, changing or updating service cards and their details, and updating time slots for the contact page. Besides managing the frontend, the admin dashboard also provides the user the ability to manage incoming requests and followup on any of the forms submitted through the website, as information submitted through said forms can be seen from the admins point of view. 
+**Summary of ERD**: The only login required is for the admin, who can dynamically manage the website by updating gallery images, managing reviews, changing or updating service cards and their details, and updating time slots for the contact page. Besides managing the frontend, the admin dashboard also provides the user the ability to manage incoming requests and followup on any of the forms submitted through the website, as information submitted through said forms can be seen from the admins point of view. 
 
 ## 🏫 Academic Information 
 **Sacramento State - CSC 190/191 Senior Project**  
