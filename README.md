@@ -16,7 +16,7 @@
 - [Development](#-development)
 - [Developer Instructions](#-developer-instructions)
 - [Academic Information](#-academic-information)
-- [Product Owner](#-project-product-owner)
+- [Product Owner](#-product-owner)
 
 
 ## 📝 Synopsis 
@@ -148,7 +148,7 @@ Our goal is to have more finalized versions of most of the website pages by the 
 - Faizan Tariq
 - Ammar Taeha
 
-## 🤵 Project Product Owner
+## 🤵 Product Owner
 **Name:** Jose Maldanado     
 **Title:** Owner   
 **Organization:** JM Comfort     
