@@ -16,7 +16,7 @@
 - [Development](#-development)
 - [Developer Instructions](#-developer-instructions)
 - [Academic Information](#-academic-information)
-- [Project Product Owner](#-project-product-owner)
+- [Product Owner](#-project-product-owner)
 
 
 ## 📝 Synopsis 
