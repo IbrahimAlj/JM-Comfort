@@ -12,7 +12,6 @@
 - [Collaborators](#-collaborators)
 - [Synopsis](#-synopsis)
 - [Visuals](#-visuals)
-- [Project Timeline](#-project-timeline)
 - [Testing](#-testing)
 - [Development](#-development)
 - [Developer Instructions](#-developer-instructions)
@@ -110,29 +109,12 @@ Our goal is to have more finalized versions of most of the website pages by the 
 ### Successful login
 <img src="client/public/login successful.png" alt="HVAC successful login" width="500" /> 
 
+### Admin Dashboard 
+
 ### ERD diagram 
 <img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
 
-To summarize the ERD briefly: the only login required is for the admin, who is responsible for updating pictures and certain descriptions. 
-
-## 📅 Project Timeline
-
-**CSC 190/191 Timeline** 
-
-This timeline outlines our current status of development for CSC 190 and future development milestones for CSC 191, basing it off our current user stories and estimates from the JIRA backlog.
-
-  | Sprint   | Key Feature(s)               | Date | Status        |
-  |----------|-----------------|------------------------------|--------------------|
-  | Spirnt 0 |  Foundation/setup of group | 8/25-9/21  | Complete ✅ |
-  | Sprint 1 |  Research |       9/22-10/05   | Complete✅  |
-  | Sprint 2 |     Setting up the DB, server, and creating pages |  10/06-10/19    |  Complete✅  |
-  | Sprint 3 |       Add companies about and main page  |      10/20-11/02   |      Complete✅  |
-  | Sprint 4 |    Implement services and reviews pages as well as the admin page for login and image updates  |          11/03-11/16    |    Image updates still in progress ⏰       |
-  | Sprint 5 | Service request, admin page gallery setup completion, & scheduling system | TBD         | ⏳ Upcoming  |
-  | Sprint 6 | Full completion of admin page, that allows user full permissions, which allow the user to manage appointments, reviews, services, and projects without code. | TBD | ⏳ Upcoming                     |
-  | Sprint 7 | Ensure the website is near full completion, including password hashing, correct email sending and receiving, deletion of user data upon request, and major backend completion.   | TBD    | ⏳ Upcoming       |
-  | Sprint 8 | Finalize testing, optimize performance, and prepare for the process of deployment      | TBD      | ⏳ Upcoming       |
-  | Sprint 9 | Testing and deployment | TBD | ⏳ Upcoming  |
+To summarize the ERD briefly: The only login required is for the admin, who can dynamically manage the website by updating gallery images, managing reviews, changing or updating service cards and their details, and updating time slots for the contact page. Besides managing the frontend, the admin dashboard also provides the user the ability to manage incoming requests and followup on any of the forms submitted through the website, as information submitted through said forms can be seen from the admins point of view. 
 
 ## 🏫 Academic Information 
 **Sacramento State - CSC 190/191 Senior Project**  
@@ -145,7 +127,7 @@ This timeline outlines our current status of development for CSC 190 and future 
 
 **190 Lab Advisor:** Peng Kang  
 
-**191 Lab Advisor:** TBD  
+**191 Lab Advisor:** Maryam Siddique
 
 ## 🤝 Collaborators:
 - Ibrahim Aljanabi
