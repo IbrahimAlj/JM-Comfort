@@ -39,51 +39,132 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 ## 🧪 Testing
 
-<details>
-  <summary><strong>To be completed in CSC 191</strong></summary>
+The project uses a two-layer testing strategy: **Jest** for backend unit/integration tests and **Playwright** for automated frontend testing.
 
-  <br>
+**Backend (Jest)** — `server/` directory  
+- 13 Jest tests covering gallery upload, validation, metadata, and error handling  
+- Run with: `cd server && npm test`
 
-  **Expected deliverables may include:**
-  - Unit tests for backend services
-  - Integration tests for API routes
-  - Automated frontend tests for components
-  - Manual workflow testing (with logs + screenshots)
+**Frontend (Playwright)** — `scripts/` directory  
+- 83 test cases across 21 test categories (home, services, gallery, admin, etc.)  
+- Run with: `npm test` from the root
 
-</details>
+**Final test results:**
+
+| Result | Count |
+|--------|-------|
+| PASS | 38 |
+| FAIL | 5 |
+| BLOCKED (requires backend) | 38 |
+| NOT TESTED | 2 |
+| **Pass rate (testable cases)** | **88.4%** |
+
+### Home page test
+
+<img src="docs/screenshots/home-page-pass.png" alt="Home page test pass" width="500" />
+
+### Services page test
+
+<img src="docs/screenshots/services-page.png" alt="Services page test" width="500" />
+
+### Request a Quote test
+
+<img src="docs/screenshots/request-quote-form.png" alt="Request a Quote form test" width="500" />
+
+### Admin login test
+
+<img src="docs/screenshots/admin-login-pass.png" alt="Admin login test pass" width="500" />
+
+### Known open defects
+
+| ID | Severity | Description |
+|----|----------|-------------|
+| DEF-001 | High | Service detail route (`/services/:id`) missing — "Learn More" redirects to admin login |
+| DEF-002 | High | Contact page shows placeholder instead of the contact form |
+| DEF-003 | Low | Confirmation page renders duplicate footer |
+| DEF-004 | Low | Unknown public URLs redirect to admin login instead of a 404 page |
 
 
 ## 🚀 Deployment
 
-<details>
-  <summary><strong>To be completed in CSC 191</strong></summary>
+| Layer | Technology | Notes |
+|-------|------------|-------|
+| Frontend | React 19 / Vite / Tailwind CSS | Deployed as static assets |
+| Backend | Node.js / Express 5 | Managed by PM2 (`ecosystem.config.js`) |
+| Database | MySQL on AWS RDS | Schema in `DB/schema.sql`, migrations in `DB/migrations/` |
+| File Storage | AWS S3 | Gallery image uploads via `server/config/s3.js` |
+| Error Monitoring | Sentry | Configured via `SENTRY_DSN` env var |
 
-  <br>
-
-  **Deployment targets may include:**
-  - Frontend: React / Tailwind / Vite
-  - Backend: Node.js
-  - Database: AWS RDS (MySQL)
-  - Environment: CI/CD via GitHub Actions
-
-</details>
+**Environment variables** — copy `.env.example` to `.env` and fill in the values provided by the Admin (DB credentials, AWS keys, SMTP settings).
 
 
 ## 📃 Developer Instructions
 
-<details>
-  <summary><strong>To be completed in CSC 191</strong></summary>
+### Prerequisites
+- Node.js v22+
+- MySQL (or access to the AWS RDS instance)
+- AWS credentials (for gallery uploads)
 
-  <br>
+### 1. Clone and install
 
-  **This section will include:**
-  - How to run the frontend & backend locally
-  - API route documentation
-  - Database setup instructions
-  - Environment variable configuration
-  - How to add new features or components
+```bash
+git clone https://github.com/IbrahimAlj/JM-Comfort.git
+cd JM-Comfort
 
-</details>
+# Install root dependencies
+npm install
+
+# Install backend dependencies
+cd server && npm install && cd ..
+
+# Install frontend dependencies
+cd client && npm install && cd ..
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+# Fill in DB_HOST, DB_PASS, AWS keys, and SMTP values — get credentials from Admin
+```
+
+### 3. Run database migrations
+
+```bash
+cd server && npm run migrate
+```
+
+### 4. Start the development servers
+
+```bash
+# Backend (runs on http://localhost:5000)
+cd server && npm run dev
+
+# Frontend — in a separate terminal (runs on http://localhost:5173)
+cd client && npm run dev
+```
+
+### 5. Run tests
+
+```bash
+# Backend Jest tests
+cd server && npm test
+
+# Full test suite (backend + frontend)
+npm test
+```
+
+### Key directories
+
+| Path | Purpose |
+|------|---------|
+| `client/src/pages/` | Public-facing pages |
+| `client/src/admin/` | Admin dashboard and upload UI |
+| `server/routes/` | Express API route handlers |
+| `server/services/` | Business logic layer |
+| `server/__tests__/` | Jest unit/integration tests |
+| `DB/migrations/` | SQL migration files |
+| `docs/` | Architecture docs and test reports |
 
 ## 🖼️ Visuals 
 
