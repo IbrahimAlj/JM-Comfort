@@ -9,13 +9,13 @@
 </p>
 
 ## Table of Contents
-- [Collaborators](#-collaborators)
 - [Synopsis](#-synopsis)
 - [Visuals](#-visuals)
 - [Testing](#-testing)
-- [Development](#-development)
+- [Deployment](#-deployment)
 - [Developer Instructions](#-developer-instructions)
 - [Academic Information](#-academic-information)
+- [Collaborators](#-collaborators)
 - [Product Owner](#-product-owner)
 
 
@@ -59,22 +59,6 @@ The project uses a two-layer testing strategy: **Jest** for backend unit/integra
 | NOT TESTED | 2 |
 | **Pass rate (testable cases)** | **88.4%** |
 
-### Home page test
-
-<img src="docs/screenshots/home-page-pass.png" alt="Home page test pass" width="500" />
-
-### Services page test
-
-<img src="docs/screenshots/services-page.png" alt="Services page test" width="500" />
-
-### Request a Quote test
-
-<img src="docs/screenshots/request-quote-form.png" alt="Request a Quote form test" width="500" />
-
-### Admin login test
-
-<img src="docs/screenshots/admin-login-pass.png" alt="Admin login test pass" width="500" />
-
 ### Known open defects
 
 | ID | Severity | Description |
@@ -84,7 +68,7 @@ The project uses a two-layer testing strategy: **Jest** for backend unit/integra
 | DEF-003 | Low | Confirmation page renders duplicate footer |
 | DEF-004 | Low | Unknown public URLs redirect to admin login instead of a 404 page |
 
-
+<br><br>
 ## 🚀 Deployment
 
 | Layer | Technology | Notes |
@@ -202,7 +186,7 @@ Our goal is to have more finalized versions of most of the website pages by the 
 <img src="client/public/Admin-Panel.png" alt="HVAC Services Page" width="500" />
 
 ### ERD diagram 
-<img src="client/public/Senior_Project_MD_ERD.png" alt="ERD diagram" width="500" />
+<img src="client/public/ERD-New.png" alt="ERD diagram" width="700" />
 
 **Summary of ERD**: The only login required is for the admin, who can dynamically manage the website by updating gallery images, managing reviews, changing or updating service cards and their details, and updating time slots for the contact page. Besides managing the frontend, the admin dashboard also provides the user the ability to manage incoming requests and followup on any of the forms submitted through the website, as information submitted through said forms can be seen from the admins point of view. 
 
