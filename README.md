@@ -10,6 +10,7 @@
 
 ## Table of Contents
 - [Synopsis](#-synopsis)
+- [Technologies](#-technologies)
 - [Visuals](#-visuals)
 - [Testing](#-testing)
 - [Deployment](#-deployment)
@@ -21,21 +22,70 @@
 
 ## 📝 Synopsis 
 
-JM Comfort is a full-stack HVAC service management platform designed to streamline the experience for both customers and mechanics. Our system focuses on allowing customers to schedule appointments, view services, read promotions, and interact with mechanics, while giving the business side tools for performance analytics, salary calculations, and status tracking.
+JM Comfort is a full-stack HVAC service management platform designed to streamline the experience for both customers and admin. Our system focuses on allowing users to request quotes, schedule appointments, view services, leave reviews, and learn more about the company.  
 
 **Core goals:**
 
 - Build a clean, modern, mobile-friendly interface for customers
 
-- Provide an intuitive dashboard for mechanics and staff
+- Provide an intuitive dashboard for the admin
 
 - Implement an appointment scheduling system with confirmations & notifications
 
-- Track services, promotions, reviews, and status updates
+- Support analytics feature of requests that come in
 
-- Support analytics features such as performance metrics and salary calculations
+- Provide the admin the ability to dynamically update the site in real time. 
 
 **Why:** Our goal is to provide a website where users can easily learn about JM‑Comfort and the services the company offers. When visitors feel the company is the right fit, they can quickly get in touch to request a quote or schedule an appointment.
+
+## 🖥️ Technologies 
+
+### Frontend
+
+- Next.js 14 (App Router) + React 19
+
+- Tailwind CSS for utility‑first styling
+
+- React Router v7 
+
+- Sentry for error monitoring
+
+- Hosted on Vercel with CI/CD on push to main
+
+### Backend
+
+- Node.js 20 + Express 5 REST API
+
+- API Routes (serverless functions in Next.js architecture)
+
+- Auth: bcrypt + JWT
+
+- Email: Nodemailer
+
+- File Uploads: AWS S3 Buckets 
+
+### Database
+
+- Amazon RDS MySQL
+
+- mysql2 connection pool
+
+- Core tables: appointments, services, projects, reviews, leads, gallery
+
+### System Architecture
+
+<img src="client/public/system arch.png" alt="System Architecture Image" width="500" />
+
+### Development Tools
+
+- VS Code (IDE)
+
+- Git & GitHub for feature branches + pull requests
+
+- Vite (used in the React SPA architecture)
+
+- Jira for sprint planning, user stories, subtasks, backlog management
+
 
 ## 🧪 Testing
 
