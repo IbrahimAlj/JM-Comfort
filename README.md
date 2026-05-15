@@ -69,7 +69,7 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 ### Development Tools
 
 - <img src="client/public/visual-studio-code-logo.png" alt="VS code logo" width="20" /> VS Code (IDE)
-- <img src="client/public/github-logo.png" alt="github logo" width="20" /> Git & GitHub for feature branches + pull requests
+- Git & GitHub for feature branches + pull requests
 - Vite (used in the React SPA architecture)
 - Jira for sprint planning, user stories, subtasks, backlog management
 
