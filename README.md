@@ -43,33 +43,23 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 ### Frontend
 
 - Next.js 14 (App Router) + React 19
-
 - Tailwind CSS for utility‑first styling
-
 - React Router v7 
-
 - Sentry for error monitoring
-
 - Hosted on Vercel with CI/CD on push to main
 
 ### Backend
 
 - Node.js 20 + Express 5 REST API
-
 - API Routes (serverless functions in Next.js architecture)
-
-- Auth: bcrypt + JWT
-
+- Authentication: bcrypt + JWT
 - Email: Nodemailer
-
 - File Uploads: AWS S3 Buckets 
 
 ### Database
 
 - Amazon RDS MySQL
-
 - mysql2 connection pool
-
 - Core tables: appointments, services, projects, reviews, leads, gallery
 
 ### System Architecture
@@ -78,12 +68,9 @@ JM Comfort is a full-stack HVAC service management platform designed to streamli
 
 ### Development Tools
 
-- VS Code (IDE)
-
+- <img src="client/public/visual-studio-code-logo.png" alt="VS code logo" width="20" /> VS Code (IDE)
 - Git & GitHub for feature branches + pull requests
-
 - Vite (used in the React SPA architecture)
-
 - Jira for sprint planning, user stories, subtasks, backlog management
 
 
