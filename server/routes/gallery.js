@@ -316,7 +316,7 @@ router.delete("/:id", requireAdmin, async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const projectIdFilter = req.query.project_id;
-    let sql = `SELECT s3_url AS url, original_name AS title, photo_type, project_id
+    let sql = `SELECT id, s3_url AS url, original_name AS title, photo_type, project_id
        FROM images
        WHERE is_active = TRUE`;
     const params = [];
